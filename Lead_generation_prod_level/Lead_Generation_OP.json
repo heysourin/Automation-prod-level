@@ -1,0 +1,2827 @@
+{
+  "name": "Lead Generation OP",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Google maps lead generation",
+        "formDescription": "Extract leads from Google Maps",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Search Term",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "City",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Country",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1120,
+        -380
+      ],
+      "id": "97d32453-37ce-4486-b034-e678281bb14d",
+      "name": "On form submission",
+      "webhookId": "7d395c62-cac5-45c4-96d2-ddf31382fa5e"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/lukaskrivka~google-maps-with-contact-details/run-sync-get-dataset-items?token=apify_api_Yd9UbLgeftUcp2MhnReYy70qmwr0z52NiKKf",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"language\": \"en\",\n  \"locationQuery\": \"{{ $json.Location }}\",\n  \"maxCrawledPlacesPerSearch\": {{ $json['Limit the number of places per search term/URL'] }},\n  \"searchStringsArray\": [\"{{ $('On form submission').item.json['Search Term'] }}\"],\n  \"skipClosedPlaces\": false,\n  \"website\": \"withWebsite\"\n}",
+        "options": {
+          "timeout": 50000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -260,
+        -380
+      ],
+      "id": "067aac93-6666-4d7e-97fa-18e43c53ec13",
+      "name": "Apify Google Map Scraper"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e8ffc20-b392-4641-a8dd-dce4265f1899",
+              "name": "Search Term",
+              "value": "={{ $json['Search Term'] }}",
+              "type": "string"
+            },
+            {
+              "id": "46bc1ff5-9453-4bac-9b67-b5a4a7d23da1",
+              "name": "Location",
+              "value": "={{ $json.City }}, {{ $json.Country }}",
+              "type": "string"
+            },
+            {
+              "id": "47a1ea83-e3e7-4490-b17c-41b2a6760bf8",
+              "name": "Limit the number of places per search term/URL",
+              "value": 10,
+              "type": "number"
+            },
+            {
+              "id": "0a27512c-87c4-4d77-ba0e-9fcbaa309282",
+              "name": "Language",
+              "value": "English",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -700,
+        -380
+      ],
+      "id": "26c5bd6d-9a6e-41f9-a61d-4e4f91b0664d",
+      "name": "Set URL to scrape"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c3e0aac3-54ec-4d65-b74d-a078ab8f17b2",
+              "name": "Business Name",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "3c721b95-351d-43cc-b44a-a19eda34eb6e",
+              "name": "Business Category",
+              "value": "={{ $json.categoryName }}",
+              "type": "string"
+            },
+            {
+              "id": "f7d6557d-a352-4e10-bc89-2ae14c078129",
+              "name": "Address",
+              "value": "=Pin: {{ $json.postalCode }}, \nAddress: {{ $json.street }}, {{ $json.city }}, {{ $json.address }}",
+              "type": "string"
+            },
+            {
+              "id": "1a540ac3-a523-4603-b2d6-24944eba4d36",
+              "name": "Website",
+              "value": "={{ $json.website.replace(/(^\\w+:|^)\\/\\/|www\\.|\\/|:/g, '').replace(/(\\.co\\.za).*$/, '$1') }}",
+              "type": "string"
+            },
+            {
+              "id": "f8fd1bc3-a82a-412f-bf86-7ba8900d191e",
+              "name": "Google Map URL",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "bdd974db-8ce4-40aa-b56d-74a7b3983755",
+              "name": "email 1",
+              "value": "={{ $json.emails[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "fd2c290a-b3c8-4bbd-a69d-7f9aac85539b",
+              "name": "email 2",
+              "value": "={{ $json.emails[1] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1100,
+        -60
+      ],
+      "id": "27e0ebd9-fc9d-4302-b611-404806af57c6",
+      "name": "Process the items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0dcad7c9-2ac3-4c2b-a80c-3f6ef4aafbc4",
+              "leftValue": "={{ $json.emails }}",
+              "rightValue": "=",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        -380
+      ],
+      "id": "d524e597-bd82-453f-a958-eefa8ba82c4f",
+      "name": "If email address found"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E",
+          "mode": "list",
+          "cachedResultName": "lead_gen_and_email",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "=Google Map URL",
+              "lookupValue": "={{ $json[\"Google Map URL\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -880,
+        -180
+      ],
+      "id": "62a3166e-04b9-43d4-9c45-7ba7c9914fdb",
+      "name": "Checks if already processed",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WG3Xq13W8y4uamac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E",
+          "mode": "list",
+          "cachedResultName": "lead_gen_and_email",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Google Map URL": "={{ $json['Google Map URL'] }}",
+            "Search Phrase": "={{ $json['Business Category'] }}",
+            "Business Name": "={{ $json['Business Name'] }}",
+            "Business Category": "={{ $json['Business Category'] }}",
+            "Address": "={{ $json.Address }}",
+            "Website": "={{ $json.Website }}",
+            "Email 1": "={{ $json['email 1'] }}",
+            "Email 2": "={{ $json['email 2'] }}"
+          },
+          "matchingColumns": [
+            "Google Map URL"
+          ],
+          "schema": [
+            {
+              "id": "Search Phrase",
+              "displayName": "Search Phrase",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Business Category",
+              "displayName": "Business Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Google Map URL",
+              "displayName": "Google Map URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Subject Line",
+              "displayName": "Subject Line",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ice Breaker Email",
+              "displayName": "Ice Breaker Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -380,
+        -60
+      ],
+      "id": "78de0b94-5596-46c2-bb93-e0aad31cc3ba",
+      "name": "Update DB",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WG3Xq13W8y4uamac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bb827baf-02d8-431b-bbe5-41131f11a699",
+              "leftValue": "={{ $json.Website }}",
+              "rightValue": "facebook",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -120,
+        -60
+      ],
+      "id": "76b1831c-58d3-4751-9050-07b737184921",
+      "name": "Website is a website not a fb page"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "181d8982-c647-49ca-9a2a-98a72a229f3c",
+              "name": "Website",
+              "value": "={{ $json.Website }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "5ea87ab0-94d1-4d8d-b3b7-a9a5e4627be6",
+      "name": "Set correct domain format for merging"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Website"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1100,
+        220
+      ],
+      "id": "24b52012-fa1f-4667-846d-978cbc78f38f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "[\"Google Map URL\"]",
+        "joinMode": "keepNonMatches",
+        "outputDataFrom": "input2",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -660,
+        -60
+      ],
+      "id": "078b1bdc-1036-43e9-acb7-af586920cf7f",
+      "name": "Process Companies, not in db"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/6sigmag~fast-website-content-crawler/run-sync-get-dataset-items?token=apify_api_Yd9UbLgeftUcp2MhnReYy70qmwr0z52NiKKf",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"startUrls\": [\n        {{ $json[\"Website\"].map(item=>`\"${item}\"`).join(', ')}}\n    ]\n}",
+        "options": {
+          "timeout": "={{ 50000 }}"
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -840,
+        220
+      ],
+      "id": "08a73e28-6b86-469f-8742-2f5c22a2168c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a65baeda-6eeb-4f86-87f6-9f9f000d2562",
+              "name": "domain",
+              "value": "={{ $json.domain }}",
+              "type": "string"
+            },
+            {
+              "id": "8265e3c8-d260-4274-905e-63142a16cbca",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -580,
+        220
+      ],
+      "id": "955c5ec6-7948-4ae3-8cd2-d90bda4361eb",
+      "name": "Connect scrape and biz"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "Website",
+              "field2": "choice.message.content.Website"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        180,
+        240
+      ],
+      "id": "48ea72d4-1ebf-4824-943d-a743737871e8",
+      "name": "Merge email with lead",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo-1106",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO-1106"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=# Automated Quote System Cold Email Generator  \n\n## Objective  \nGenerate a **concise, persuasive HTML cold email** (without hard selling) to promote an automated system for:  \n- Quote request responses  \n- Site visit scheduling  \n- Quote generation  \n- Follow-up management  \n\n## Input Analysis  \nAnalyze **\"\"\"{{ $json.text.slice(0, Math.floor($json.text.length / 10)) }}\"\"\"** for:  \n1. Business type & services  \n2. Decision maker's first name (**required**)  \n3. Growth indicators or achievements  \n4. Evidence of manual processes/pain points  \n5. Company size & market position  \n\n## Output Format  \n```json  \n{  \n  \"website\": \"{{ $json.domain }}\",  \n  \"firstname\": \"decision maker name\",  \n  \"subject\": \"email subject\",  \n  \"emailBody\": \"<p>HTML formatted email</p>\"  \n}  \n```  \n\n## Requirements  \n1. **HTML Formatting**: `<p>` & `<br>` tags, no greetings/sign-offs, mobile-friendly.  \n2. **Email Structure**:  \n   - 2-3 short paragraphs, **<100 words**.  \n   - Clear value proposition, industry relevance, & automation benefits.  \n3. **Subject**:  \n   - **≤50 characters**, intriguing, industry-specific, no generic phrases.  \n4. **Tone**:  \n   - **Professional, conversational, subtly persuasive** (no hard selling).  \n5. **Technical Constraints**:  \n   - **No apostrophes**  \n   - **Domain format unchanged** (`www` only if present in input)  \n   - **No output if first name missing**  \n\n## Example Outputs  \n\n### **Construction Company**  \n```json  \n{  \n  \"website\": \"buildmaster.com\",  \n  \"firstname\": \"Sarah\",  \n  \"subject\": \"200% faster quote responses\",  \n  \"emailBody\": \"<p>Your recent projects show BuildMaster’s efficiency.</p><p>Our system helps construction firms double site visit handling & cut quote response times by 200%.</p><p>Let’s explore how you can automate quotes while keeping a personal touch.</p>\"  \n}  \n```  \n\n### **Real Estate Agency**  \n```json  \n{  \n  \"website\": \"premiumestates.com\",  \n  \"firstname\": \"Michael\",  \n  \"subject\": \"24/7 luxury property scheduling\",  \n  \"emailBody\": \"<p>Premium Estates excels in high-end marketing—imagine pairing that with instant view scheduling.</p><p>Our automation boosts luxury agency bookings by 40%.</p><p>Let me show you how it enhances your client experience.</p>\"  \n}  \n```  \n\n### **Home Services**  \n```json  \n{  \n  \"website\": \"eliteservices.net\",  \n  \"firstname\": \"James\",  \n  \"subject\": \"3x faster quote response for Elite Services\",  \n  \"emailBody\": \"<p>Elite Services is known for fast responses.</p><p>Our system enables **instant** quotes & site visit scheduling—even at 2 AM.</p><p>Similar businesses improved conversion rates by 35%. Let’s talk.</p>\"  \n}  \n```  \n\n## Key Success Factors  \n✅ **Industry-specific** (mentions achievements/pain points)  \n✅ **Clear value proposition** (time savings, 24/7 automation)  \n✅ **Low-commitment CTA** (clear next step)  \n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -320,
+        220
+      ],
+      "id": "a5a5a1ae-18bf-49d6-9308-259ac35f82a3",
+      "name": "Create Ice breaker email",
+      "credentials": {
+        "openAiApi": {
+          "id": "puoHPCGg8j55iya0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E",
+          "mode": "list",
+          "cachedResultName": "lead_gen_and_email",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Website": "={{ $json.Website }}",
+            "Person Name": "={{ $json.choice.message.content.firstname }}",
+            "Subject Line": "={{ $json.choice.message.content.subject }}",
+            "Ice Breaker Email": "={{ $json.choice.message.content.emailBody }}"
+          },
+          "matchingColumns": [
+            "Website"
+          ],
+          "schema": [
+            {
+              "id": "Search Phrase",
+              "displayName": "Search Phrase",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business Category",
+              "displayName": "Business Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Google Map URL",
+              "displayName": "Google Map URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Person Name",
+              "displayName": "Person Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Subject Line",
+              "displayName": "Subject Line",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ice Breaker Email",
+              "displayName": "Ice Breaker Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1100,
+        520
+      ],
+      "id": "40e39d69-36ae-493c-8a52-188a5e51e1ad",
+      "name": "Update person name, email body and subject",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WG3Xq13W8y4uamac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E",
+          "mode": "list",
+          "cachedResultName": "lead_gen_and_email",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Website",
+              "lookupValue": "={{ $json.Website }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -700,
+        520
+      ],
+      "id": "555cca33-9293-4126-8496-c4562e7db634",
+      "name": "Get business name",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WG3Xq13W8y4uamac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "Website",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        520
+      ],
+      "id": "5132e5c5-81a7-461e-977e-6740453ae195",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cd2f1798-1b7c-42af-83ae-f19dbe669194",
+              "leftValue": "={{ $json['Person Name'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        180,
+        520
+      ],
+      "id": "77ad7ee9-1cee-4aac-81c7-4f9ca6052ece",
+      "name": "If no first name"
+    },
+    {
+      "parameters": {
+        "model": "deepseek-r1-distill-llama-70b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        1040
+      ],
+      "id": "20b4a78f-9e8a-4afd-988a-36fa696f156c",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "FIWnSWXuxeLRWrvl",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=Please review these email addresses:\n{{ $json['Email 1'] }}\n{{ $json['Email 2'] }}\n\nDetermine if any of the email addresses contain a first name. If\nfound, return a JSON object with the first name. If no first name\nis found, return a JSON object with null. Do not include any other\ntext or explanation in your response.\n\nExample of response when a name is found:\n{\n\"firstname\": \"David\"\n}\n\nExample of response when no name is found:\n{\n\"firstname\": \"\"\n}",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"firstname\":\"\"\n}",
+        "options": {
+          "systemPromptTemplate": "You are an expert extraction algorithm.\nOnly extract relevant information from the text.\nIf you do not know the value of an attribute asked to extract, you may omit the attribute's value."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        860
+      ],
+      "id": "83244e42-574e-4c39-b5a1-7cd5493e48f8",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E",
+          "mode": "list",
+          "cachedResultName": "lead_gen_and_email",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15Y_MuDKR9NYFT233hE_AZjNS0FUtcsXYSEm8Qx4a_6E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Website": "={{ $('If no first name').item.json.Website }}",
+            "Person Name": "={{ $json.output.firstname }}"
+          },
+          "matchingColumns": [
+            "Website"
+          ],
+          "schema": [
+            {
+              "id": "Search Phrase",
+              "displayName": "Search Phrase",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business Category",
+              "displayName": "Business Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Google Map URL",
+              "displayName": "Google Map URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Person Name",
+              "displayName": "Person Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Subject Line",
+              "displayName": "Subject Line",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ice Breaker Email",
+              "displayName": "Ice Breaker Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -680,
+        860
+      ],
+      "id": "d4937df2-dfa2-4325-9149-885b85a0f905",
+      "name": "Update the name",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WG3Xq13W8y4uamac",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "Search Term": "Plumber",
+          "City": "Cape Town",
+          "Country": "South Africa",
+          "submittedAt": "2025-02-23709: 19:22.751+02:00",
+          "formMode": "test"
+        }
+      }
+    ],
+    "Apify Google Map Scraper": [
+      {
+        "json": {
+          "rank": 19,
+          "title": "TMF PROPERTY MAINTENANCE",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "84 Chamberlain St, Woodstock, Cape Town, 7925, South Africa",
+          "neighborhood": "Woodstock",
+          "street": "84 Chamberlain St",
+          "city": "Cape Town",
+          "postalCode": "7925",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "https://www.facebook.com/TMFpropertymaintenance?mibextid=zLoPMf",
+          "phone": "+27 76 588 1479",
+          "phoneUnformatted": "+27765881479",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9335289,
+            "lng": 18.4508743
+          },
+          "totalScore": 5,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJ53YM2vhdzB0Rg6vlF4PrkL8",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc5df8da0c76e7:0xbf90eb8317e5ab83",
+          "cid": "13803791806164740995",
+          "reviewsCount": 3,
+          "imagesCount": 9,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:25.068Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=TMF%20PROPERTY%20MAINTENANCE&query_place_id=ChIJ53YM2vhdzB0Rg6vlF4PrkL8",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.94309684548004,18.43442320008781,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=w6wAXLAOetgrjhTVy-_8Hg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=359.40274&pitch=0&thumbfov=100",
+          "kgmid": "/g/11vpl28xb7",
+          "domain": "facebook.com",
+          "emails": [],
+          "phones": [],
+          "phonesUncertain": [],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [
+            "facebook.com/TMFpropertymaintenance",
+            "https://www.facebook.com/TMFpropertymaintenance"
+          ],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 10,
+          "title": "Jaf Plumbers and Renovations",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "Gardens, Cape Town, 8000, South Africa",
+          "neighborhood": "Gardens",
+          "street": null,
+          "city": "Cape Town",
+          "postalCode": "8000",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "https://jafplumbersandrenovations.co.za/",
+          "phone": "+27 73 138 7158",
+          "phoneUnformatted": "+27731387158",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9325863,
+            "lng": 18.4236902
+          },
+          "totalScore": 5,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJEe1HhrpnzB0R1zJDy37RDk8",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc67ba8647ed11:0x4f0ed17ecb4332d7",
+          "cid": "5696720921176519383",
+          "reviewsCount": 2,
+          "imagesCount": 7,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:25.067Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Thursday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Friday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Saturday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Open 24 hours"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=Jaf%20Plumbers%20and%20Renovations&query_place_id=ChIJEe1HhrpnzB0R1zJDy37RDk8",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.94309684548004,18.43442320008781,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipNPNElF6vzUvTMWn74SZHGhgYU-MzZDYdcpAuFX=w408-h272-k-no",
+          "kgmid": "/g/11fm52w80r",
+          "domain": "jafplumbersandrenovations.co.za",
+          "emails": [],
+          "phones": [],
+          "phonesUncertain": [],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 19,
+          "title": "ER Plumbers WC",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "16 Pickwick Rd, Salt River, Cape Town, 7925, South Africa",
+          "neighborhood": "Salt River",
+          "street": "16 Pickwick Rd",
+          "city": "Cape Town",
+          "postalCode": "7925",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "http://erplumberswc.co.za/",
+          "phone": "+27 44 874 2545",
+          "phoneUnformatted": "+27448742545",
+          "claimThisBusiness": true,
+          "location": {
+            "lat": -33.9364201,
+            "lng": 18.4574236
+          },
+          "totalScore": 4.7,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJx6guWAldzB0R6F_oyotWTQk",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc5d09582ea8c7:0x94d568bcae85fe8",
+          "cid": "670287077952741352",
+          "reviewsCount": 3,
+          "imagesCount": null,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:25.309Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Thursday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Friday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Saturday",
+              "hours": "Closed"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Closed"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=ER%20Plumbers%20WC&query_place_id=ChIJx6guWAldzB0R6F_oyotWTQk",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.957363590960064,18.451626700175623,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "kgmid": "/g/11h8j7560_",
+          "emails": [],
+          "phones": [],
+          "phonesUncertain": [],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 17,
+          "title": "Pipe Surgeon",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "37 Gympie St, Woodstock, Cape Town, 7915, South Africa",
+          "neighborhood": "Woodstock",
+          "street": "37 Gympie St",
+          "city": "Cape Town",
+          "postalCode": "7915",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "http://www.pipesurgeon.co.za/",
+          "claimThisBusiness": true,
+          "location": {
+            "lat": -33.9275357,
+            "lng": 18.4439615
+          },
+          "totalScore": 5,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJ_cZOPttdzB0RI7oOIzQ1c7o",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc5ddb3e4ec6fd:0xba733534230eba23",
+          "cid": "13435140611419060771",
+          "reviewsCount": 1,
+          "imagesCount": 2,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:25.068Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Thursday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Friday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Saturday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Closed"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=Pipe%20Surgeon&query_place_id=ChIJ_cZOPttdzB0RI7oOIzQ1c7o",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.94309684548004,18.43442320008781,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=BSQH9P2U1bpJP1cy1s7wbg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=108.28369&pitch=0&thumbfov=100",
+          "kgmid": "/g/11rf8x0x71",
+          "domain": "pipesurgeon.co.za",
+          "emails": [
+            "enquiries@pipesurgeon.co.za"
+          ],
+          "phones": [
+            "+27826883248"
+          ],
+          "phonesUncertain": [
+            "82 688 3248"
+          ],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 7,
+          "title": "The Drain Surgeon Cape Town Central and Atlantic Seaboard",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "16 Keerom St, Cape Town City Centre, Cape Town, 8000, South Africa",
+          "neighborhood": "Cape Town City Centre",
+          "street": "16 Keerom St",
+          "city": "Cape Town",
+          "postalCode": "8000",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "https://drainsurgeon.co.za/cape-town-central/",
+          "phone": "+27 86 175 8623",
+          "phoneUnformatted": "+27861758623",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9246985,
+            "lng": 18.4176191
+          },
+          "totalScore": 4.8,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJHYumGNm11CURLd1U5p0JFwI",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x25d4b5d918a68b1d:0x217099de654dd2d",
+          "cid": "150599686319037741",
+          "reviewsCount": 204,
+          "imagesCount": 133,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:25.067Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Thursday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Friday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Saturday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Open 24 hours"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "additionalInfo": {
+            "From the business": [
+              {
+                "Identifies as women-owned": true
+              }
+            ],
+            "Service options": [
+              {
+                "Online estimates": true
+              }
+            ],
+            "Offerings": [
+              {
+                "Repair services": true
+              }
+            ],
+            "Planning": [
+              {
+                "Appointment required": true
+              }
+            ],
+            "Payments": [
+              {
+                "Credit cards": true
+              }
+            ]
+          },
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=The%20Drain%20Surgeon%20Cape%20Town%20Central%20and%20Atlantic%20Seaboard&query_place_id=ChIJHYumGNm11CURLd1U5p0JFwI",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.94309684548004,18.43442320008781,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipNgKonOT5jtTsDz6vJuRYKeFMk0jlMWGPYnKb0w=w408-h271-k-no",
+          "kgmid": "/g/11pcrsfnxb",
+          "domain": "drainsurgeon.co.za",
+          "emails": [
+            "capetowncentral@drainsurgeon.co.za",
+            "stellenbosch@drainsurgeon.co.za"
+          ],
+          "phones": [
+            "+27861758623",
+            "+27686197862"
+          ],
+          "phonesUncertain": [
+            "+27 861 758 623",
+            "+27 68 619 7862"
+          ],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [
+            "https://www.facebook.com/thedrainsurgeon/"
+          ],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 5,
+          "title": "Plumbing It Fine",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "67 Regent Rd, Sea Point, Cape Town, 8005, South Africa",
+          "neighborhood": "Sea Point",
+          "street": "67 Regent Rd",
+          "city": "Cape Town",
+          "postalCode": "8005",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "https://plumbingitfine.co.za/",
+          "phone": "+27 60 464 7501",
+          "phoneUnformatted": "+27604647501",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9205545,
+            "lng": 18.3842271
+          },
+          "totalScore": 5,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJbfG6kKJnzB0RdcfYr9ytSTU",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc67a290baf16d:0x3549addcafd8c775",
+          "cid": "3839791320664688501",
+          "reviewsCount": 41,
+          "imagesCount": 4,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:47.941Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Thursday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Friday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Saturday",
+              "hours": "Closed"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Closed"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=Plumbing%20It%20Fine&query_place_id=ChIJbfG6kKJnzB0RdcfYr9ytSTU",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.90029660903998,18.38281269982437,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipOUhtoi2cWCp-TLylSvkJuZogcQuKUJYsTPPh9T=w408-h725-k-no",
+          "kgmid": "/g/11f8k3rcgs",
+          "domain": "plumbingitfine.co.za",
+          "emails": [
+            "info@plumbingitfine.co.za",
+            "accounts@plumbingitfine.co.za"
+          ],
+          "phones": [
+            "+27 60 464 7501"
+          ],
+          "phonesUncertain": [
+            "+27 60 464 7501"
+          ],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [
+            "https://www.instagram.com/plumbing_it_fine/",
+            "https://www.instagram.com/plumb_it_fine/"
+          ],
+          "facebooks": [
+            "https://www.facebook.com/plumbingitfine",
+            "https://www.facebook.com/plumbingitfine/"
+          ],
+          "youtubes": [
+            "https://www.youtube.com/channel/UCCEU11y81b8YljJ-fg_GDZQ"
+          ],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 4,
+          "title": "TKZ01 Plumbing Services",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "8 B Upland Ave, Devil's Peak Estate, Cape Town, 8001, South Africa",
+          "neighborhood": "Devil's Peak Estate",
+          "street": "8 B Upland Ave",
+          "city": "Cape Town",
+          "postalCode": "8001",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "https://www.tkz01.co.za/",
+          "phone": "+27 84 099 9332",
+          "phoneUnformatted": "+27840999332",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9374283,
+            "lng": 18.4310653
+          },
+          "totalScore": 5,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJr7dCdXxdzB0RmCsyWJV9Y74",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc5d7c7542b7af:0xbe637d9558322b98",
+          "cid": "13718946970283944856",
+          "reviewsCount": 3,
+          "imagesCount": 6,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:25.067Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "7:30 AM to 5 PM"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "7:30 AM to 5 PM"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "7:30 AM to 5 PM"
+            },
+            {
+              "day": "Thursday",
+              "hours": "7:30 AM to 5 PM"
+            },
+            {
+              "day": "Friday",
+              "hours": "7:30 AM to 5 PM"
+            },
+            {
+              "day": "Saturday",
+              "hours": "8 AM to 1 PM"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Closed"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=TKZ01%20Plumbing%20Services&query_place_id=ChIJr7dCdXxdzB0RmCsyWJV9Y74",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.94309684548004,18.43442320008781,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipPZQv8CnP9h2J5KVWVCk4Beo7A4-L6Tzjmo6p2_=w408-h544-k-no",
+          "kgmid": "/g/11vrdq45lm",
+          "domain": "tkz01.co.za",
+          "emails": [
+            "info@tkz01.co.za"
+          ],
+          "phones": [],
+          "phonesUncertain": [
+            "+27 84 099 9332"
+          ],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 3,
+          "title": "Bob the Plumber",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "2 Wesley St, Gardens, Cape Town, 8001, South Africa",
+          "neighborhood": "Gardens",
+          "street": "2 Wesley St",
+          "city": "Cape Town",
+          "postalCode": "8001",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "http://bobtheplumber.co.za/",
+          "phone": "+27 76 267 5523",
+          "phoneUnformatted": "+27762675523",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9315681,
+            "lng": 18.4188835
+          },
+          "totalScore": 4.7,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJQ7QbzHtnzB0RAAP8rTBXNWY",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc677bcc1bb443:0x66355730adfc0300",
+          "cid": "7364888632223335168",
+          "reviewsCount": 76,
+          "imagesCount": 17,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:25.067Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Thursday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Friday",
+              "hours": "8 AM to 4 PM"
+            },
+            {
+              "day": "Saturday",
+              "hours": "Closed"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Closed"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=Bob%20the%20Plumber&query_place_id=ChIJQ7QbzHtnzB0RAAP8rTBXNWY",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.94309684548004,18.43442320008781,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipPROqvLqsbpxTNbW8pUq3ATGcpSZTgbA1R7_LZ1=w408-h839-k-no",
+          "kgmid": "/g/11cfgkvvr",
+          "domain": "bobtheplumber.co.za",
+          "emails": [
+            "info@bobtheplumber.co.za"
+          ],
+          "phones": [],
+          "phonesUncertain": [
+            "+21 461 9106",
+            "076 267 5523",
+            "021 461 9106"
+          ],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 1,
+          "title": "DJV Plumbing",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "205 Beach Rd, Sea Point, Cape Town, 8001, South Africa",
+          "neighborhood": "Sea Point",
+          "street": "205 Beach Rd",
+          "city": "Cape Town",
+          "postalCode": "8001",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "https://djvplumbing.co.za/",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9093278,
+            "lng": 18.3933395
+          },
+          "totalScore": 5,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJ-9va1ahnzB0R723SXlUT108",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc67a8d5dadbfb:0x4fd713555ed26def",
+          "cid": "5753088306373094895",
+          "reviewsCount": 36,
+          "imagesCount": 10,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:47.940Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Thursday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Friday",
+              "hours": "8 AM to 5 PM"
+            },
+            {
+              "day": "Saturday",
+              "hours": "8 AM to 12 PM"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Closed"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=DJV%20Plumbing&query_place_id=ChIJ-9va1ahnzB0R723SXlUT108",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.90029660903998,18.38281269982437,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipPx7NZUQeCzhsh7057RYTq3pqJg0ScxjypGT1ne=w408-h306-k-no",
+          "kgmid": "/g/11vykbjkpz",
+          "domain": "djvplumbing.co.za",
+          "emails": [],
+          "phones": [],
+          "phonesUncertain": [],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      },
+      {
+        "json": {
+          "rank": 2,
+          "title": "PJ Plumbing and Electrical",
+          "price": null,
+          "categoryName": "Plumber",
+          "address": "233 Main Rd, Sea Point, Cape Town, 8005, South Africa",
+          "neighborhood": "Sea Point",
+          "street": "233 Main Rd",
+          "city": "Cape Town",
+          "postalCode": "8005",
+          "state": null,
+          "countryCode": "ZA",
+          "website": "https://www.pjplumbing.co.za/",
+          "phone": "+27 82 851 3066",
+          "phoneUnformatted": "+27828513066",
+          "claimThisBusiness": false,
+          "location": {
+            "lat": -33.9087982,
+            "lng": 18.39689
+          },
+          "totalScore": 3.8,
+          "permanentlyClosed": false,
+          "temporarilyClosed": false,
+          "placeId": "ChIJX7aVxSFnzB0Rd00-D_Rtlx4",
+          "categories": [
+            "Plumber"
+          ],
+          "fid": "0x1dcc6721c595b65f:0x1e976df40f3e4d77",
+          "cid": "2204351437616336247",
+          "reviewsCount": 46,
+          "imagesCount": 2,
+          "imageCategories": [],
+          "scrapedAt": "2025-03-05T07:31:47.940Z",
+          "googleFoodUrl": null,
+          "hotelAds": [],
+          "openingHours": [
+            {
+              "day": "Monday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Tuesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Wednesday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Thursday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Friday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Saturday",
+              "hours": "Open 24 hours"
+            },
+            {
+              "day": "Sunday",
+              "hours": "Open 24 hours"
+            }
+          ],
+          "peopleAlsoSearch": [],
+          "placesTags": [],
+          "reviewsTags": [],
+          "gasPrices": [],
+          "url": "https://www.google.com/maps/search/?api=1&query=PJ%20Plumbing%20and%20Electrical&query_place_id=ChIJX7aVxSFnzB0Rd00-D_Rtlx4",
+          "searchPageUrl": "https://www.google.com/maps/search/Plumber/@-33.90029660903998,18.38281269982437,16z?hl=en",
+          "searchString": "Plumber",
+          "language": "en",
+          "isAdvertisement": false,
+          "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipNWgiaWJqL_yG94jGmd9Bj_VPrksUo5nMhENUfA=w408-h271-k-no",
+          "kgmid": "/g/11b6dqb0r1",
+          "domain": "pjplumbing.co.za",
+          "emails": [
+            "admin@pjplumbing.co.za"
+          ],
+          "phones": [
+            "+27 82 851 3066"
+          ],
+          "phonesUncertain": [
+            "+27 82 851 3066",
+            "160784313725490",
+            "333333333333333"
+          ],
+          "linkedIns": [],
+          "twitters": [],
+          "instagrams": [],
+          "facebooks": [],
+          "youtubes": [],
+          "tiktoks": [],
+          "pinterests": [],
+          "discords": []
+        }
+      }
+    ],
+    "Process the items": [
+      {
+        "json": {
+          "Business Name": "Pipe Surgeon",
+          "Business Category": "Plumber",
+          "Address": "Pin: 7915, \nAddress: 37 Gympie St, Cape Town, 37 Gympie St, Woodstock, Cape Town, 7915, South Africa",
+          "Website": "pipesurgeon.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Pipe%20Surgeon&query_place_id=ChIJ_cZOPttdzB0RI7oOIzQ1c7o",
+          "email 1": "enquiries@pipesurgeon.co.za",
+          "email 2": null
+        }
+      },
+      {
+        "json": {
+          "Business Name": "The Drain Surgeon Cape Town Central and Atlantic Seaboard",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8000, \nAddress: 16 Keerom St, Cape Town, 16 Keerom St, Cape Town City Centre, Cape Town, 8000, South Africa",
+          "Website": "drainsurgeon.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=The%20Drain%20Surgeon%20Cape%20Town%20Central%20and%20Atlantic%20Seaboard&query_place_id=ChIJHYumGNm11CURLd1U5p0JFwI",
+          "email 1": "capetowncentral@drainsurgeon.co.za",
+          "email 2": "stellenbosch@drainsurgeon.co.za"
+        }
+      },
+      {
+        "json": {
+          "Business Name": "Plumbing It Fine",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8005, \nAddress: 67 Regent Rd, Cape Town, 67 Regent Rd, Sea Point, Cape Town, 8005, South Africa",
+          "Website": "plumbingitfine.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Plumbing%20It%20Fine&query_place_id=ChIJbfG6kKJnzB0RdcfYr9ytSTU",
+          "email 1": "info@plumbingitfine.co.za",
+          "email 2": "accounts@plumbingitfine.co.za"
+        }
+      },
+      {
+        "json": {
+          "Business Name": "TKZ01 Plumbing Services",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8001, \nAddress: 8 B Upland Ave, Cape Town, 8 B Upland Ave, Devil's Peak Estate, Cape Town, 8001, South Africa",
+          "Website": "tkz01.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=TKZ01%20Plumbing%20Services&query_place_id=ChIJr7dCdXxdzB0RmCsyWJV9Y74",
+          "email 1": "info@tkz01.co.za",
+          "email 2": null
+        }
+      },
+      {
+        "json": {
+          "Business Name": "Bob the Plumber",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8001, \nAddress: 2 Wesley St, Cape Town, 2 Wesley St, Gardens, Cape Town, 8001, South Africa",
+          "Website": "bobtheplumber.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Bob%20the%20Plumber&query_place_id=ChIJQ7QbzHtnzB0RAAP8rTBXNWY",
+          "email 1": "info@bobtheplumber.co.za",
+          "email 2": null
+        }
+      },
+      {
+        "json": {
+          "Business Name": "PJ Plumbing and Electrical",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8005, \nAddress: 233 Main Rd, Cape Town, 233 Main Rd, Sea Point, Cape Town, 8005, South Africa",
+          "Website": "pjplumbing.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=PJ%20Plumbing%20and%20Electrical&query_place_id=ChIJX7aVxSFnzB0Rd00-D_Rtlx4",
+          "email 1": "admin@pjplumbing.co.za",
+          "email 2": null
+        }
+      }
+    ],
+    "Create Ice breaker email": [
+      {
+        "json": {
+          "id": "chatcmpl-B4NMkbjfCQ1o5rWHMjabFPVZCJH3b",
+          "object": "chat.completion",
+          "created at": 1740382830,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "pipesurgeon.co.za",
+                "firstname": "Info",
+                "subject": "Quote Automation for Amazing Plumbing",
+                "emailBody": "<p>Amazing Plumbing excels in providing top-notch services throughout Cape Town, but what if you could enhance efficiency even further?</p><p>Our automated system streamlines quote requests, site scheduling, and follow-ups, allowing you to respond faster while maintaining the quality your customers trust.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 150,
+            "completion_tokens": 200,
+            "total_tokens": 350
+          }
+        }
+      },
+      {
+        "json": {
+          "id": "chatcmpl-B4NMmrDy23oMCmmqx8HR87g9023t3",
+          "object": "chat.completion",
+          "created at": 1740382832,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "drainsurgeon.co.za",
+                "firstname": "Support",
+                "subject": "Enhance Your Plumbing Business with AI",
+                "emailBody": "<p>Fast Drain Plumbing provides exceptional services, but imagine optimizing your workflow with AI.</p><p>Our intelligent tools automate customer interactions, booking management, and service follow-ups, reducing workload while increasing client satisfaction.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 180,
+            "completion_tokens": 220,
+            "total_tokens": 400
+          }
+        }
+      },
+      {
+        "json": {
+          "id": "chatcmpl-B4NMaEtx92McmmnQxER87kR9024z1",
+          "object": "chat.completion",
+          "created at": 1740382834,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "plumbingitfine.co.za",
+                "firstname": "Team",
+                "subject": "Boost Customer Engagement with Automation",
+                "emailBody": "<p>Cape Town Plumbing Pros stands out for reliability, but what if you could engage customers even better?</p><p>Our AI-driven system automates estimates, reminders, and customer support, ensuring a seamless experience while you focus on quality service.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 170,
+            "completion_tokens": 210,
+            "total_tokens": 380
+          }
+        }
+      },
+      {
+        "json": {
+          "id": "chatcmpl-B4NMpRf23AqLmmWxER90MnT9025y2",
+          "object": "chat.completion",
+          "created at": 1740382836,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "tkz01.co.za",
+                "firstname": "Admin",
+                "subject": "Streamline Your Plumbing Business Today",
+                "emailBody": "<p>Pro Plumbing Fix has built a solid reputation, but manual tasks can slow growth.</p><p>Our AI-powered solutions handle scheduling, quotes, and reminders, freeing up time for your team to focus on what truly matters—exceptional service.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 160,
+            "completion_tokens": 190,
+            "total_tokens": 350
+          }
+        }
+      },
+      {
+        "json": {
+          "id": "chatcmpl-B4NMvTyFQ13oMLWxYPV87R9026x3",
+          "object": "chat.completion",
+          "created at": 1740382838,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "bobtheplumber.co.za",
+                "firstname": "John",
+                "subject": "AI-Powered Efficiency for Your Plumbing Business",
+                "emailBody": "<p>Smart Drain Fixers provides excellent plumbing solutions—now it's time to take efficiency to the next level.</p><p>Our automation platform helps you manage inquiries, schedule jobs, and follow up with clients effortlessly.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 190,
+            "completion_tokens": 230,
+            "total_tokens": 420
+          }
+        }
+      },
+      {
+        "json": {
+          "id": "chatcmpl-B4NMxUzF92MoCLWxKPQ97R9027w4",
+          "object": "chat.completion",
+          "created at": 1740382840,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "pjplumbing.co.za",
+                "firstname": "Mike",
+                "subject": "Maximize Your Plumbing Business Potential",
+                "emailBody": "<p>Plumbers Elite has built a trusted name—now let’s maximize your potential with AI.</p><p>Automate your workflow, improve customer response times, and streamline service management with our cutting-edge solutions.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 200,
+            "completion_tokens": 250,
+            "total_tokens": 450
+          }
+        }
+      }
+    ],
+    "Merge email with lead": [
+      {
+        "json": {
+          "Website": "pipesurgeon.co.za",
+          "id": "chatcmpl-B4NMkbjfCQ1o5rWHMjabFPVZCJH3b",
+          "object": "chat.completion",
+          "created at": 1740382830,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "pipesurgeon.co.za",
+                "firstname": "Info",
+                "subject": "Quote Automation for Amazing Plumbing",
+                "emailBody": "<p>Amazing Plumbing excels in providing top-notch services throughout Cape Town, but what if you could enhance efficiency even further?</p><p>Our automated system streamlines quote requests, site scheduling, and follow-ups, allowing you to respond faster while maintaining the quality your customers trust.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 150,
+            "completion_tokens": 200,
+            "total_tokens": 350
+          }
+        }
+      },
+      {
+        "json": {
+          "Website": "drainsurgeon.co.za",
+          "id": "chatcmpl-B4NMmrDy23oMCmmqx8HR87g9023t3",
+          "object": "chat.completion",
+          "created at": 1740382832,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "drainsurgeon.co.za",
+                "firstname": "Support",
+                "subject": "Enhance Your Plumbing Business with AI",
+                "emailBody": "<p>Fast Drain Plumbing provides exceptional services, but imagine optimizing your workflow with AI.</p><p>Our intelligent tools automate customer interactions, booking management, and service follow-ups, reducing workload while increasing client satisfaction.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 180,
+            "completion_tokens": 220,
+            "total_tokens": 400
+          }
+        }
+      },
+      {
+        "json": {
+          "Website": "plumbingitfine.co.za",
+          "id": "chatcmpl-B4NMaEtx92McmmnQxER87kR9024z1",
+          "object": "chat.completion",
+          "created at": 1740382834,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "plumbingitfine.co.za",
+                "firstname": "Team",
+                "subject": "Boost Customer Engagement with Automation",
+                "emailBody": "<p>Cape Town Plumbing Pros stands out for reliability, but what if you could engage customers even better?</p><p>Our AI-driven system automates estimates, reminders, and customer support, ensuring a seamless experience while you focus on quality service.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 170,
+            "completion_tokens": 210,
+            "total_tokens": 380
+          }
+        }
+      },
+      {
+        "json": {
+          "Website": "tkz01.co.za",
+          "id": "chatcmpl-B4NMpRf23AqLmmWxER90MnT9025y2",
+          "object": "chat.completion",
+          "created at": 1740382836,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "tkz01.co.za",
+                "firstname": "Admin",
+                "subject": "Streamline Your Plumbing Business Today",
+                "emailBody": "<p>Pro Plumbing Fix has built a solid reputation, but manual tasks can slow growth.</p><p>Our AI-powered solutions handle scheduling, quotes, and reminders, freeing up time for your team to focus on what truly matters—exceptional service.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 160,
+            "completion_tokens": 190,
+            "total_tokens": 350
+          }
+        }
+      },
+      {
+        "json": {
+          "Website": "bobtheplumber.co.za",
+          "id": "chatcmpl-B4NMvTyFQ13oMLWxYPV87R9026x3",
+          "object": "chat.completion",
+          "created at": 1740382838,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "bobtheplumber.co.za",
+                "firstname": "John",
+                "subject": "AI-Powered Efficiency for Your Plumbing Business",
+                "emailBody": "<p>Smart Drain Fixers provides excellent plumbing solutions—now it's time to take efficiency to the next level.</p><p>Our automation platform helps you manage inquiries, schedule jobs, and follow up with clients effortlessly.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 190,
+            "completion_tokens": 230,
+            "total_tokens": 420
+          }
+        }
+      },
+      {
+        "json": {
+          "Website": "pjplumbing.co.za",
+          "id": "chatcmpl-B4NMxUzF92MoCLWxKPQ97R9027w4",
+          "object": "chat.completion",
+          "created at": 1740382840,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choice": {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": {
+                "Website": "pjplumbing.co.za",
+                "firstname": "Mike",
+                "subject": "Maximize Your Plumbing Business Potential",
+                "emailBody": "<p>Plumbers Elite has built a trusted name—now let’s maximize your potential with AI.</p><p>Automate your workflow, improve customer response times, and streamline service management with our cutting-edge solutions.</p>",
+                "refusal": null
+              }
+            }
+          },
+          "usage": {
+            "prompt_tokens": 200,
+            "completion_tokens": 250,
+            "total_tokens": 450
+          }
+        }
+      }
+    ],
+    "Get business name": [
+      {
+        "json": {
+          "row_number": 2,
+          "Search Phrase": "Plumber",
+          "Business Name": "Pipe Surgeon",
+          "Business Category": "Plumber",
+          "Address": "Pin: 7915, \nAddress: 37 Gympie St, Cape Town, 37 Gympie St, Woodstock, Cape Town, 7915, South Africa",
+          "Website": "pipesurgeon.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Pipe%20Surgeon&query_place_id=ChIJ_cZOPttdzB0RI7oOIzQ1c7o",
+          "Email 1": "enquiries@pipesurgeon.co.za",
+          "Email 2": "",
+          "Person Name": "Info",
+          "Subject Line": "Quote Automation for Amazing Plumbing",
+          "Ice Breaker Email": "<p>Amazing Plumbing excels in providing top-notch services throughout Cape Town, but what if you could enhance efficiency even further?</p><p>Our automated system streamlines quote requests, site scheduling, and follow-ups, allowing you to respond faster while maintaining the quality your customers trust.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 3,
+          "Search Phrase": "Plumber",
+          "Business Name": "The Drain Surgeon Cape Town Central and Atlantic Seaboard",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8000, \nAddress: 16 Keerom St, Cape Town, 16 Keerom St, Cape Town City Centre, Cape Town, 8000, South Africa",
+          "Website": "drainsurgeon.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=The%20Drain%20Surgeon%20Cape%20Town%20Central%20and%20Atlantic%20Seaboard&query_place_id=ChIJHYumGNm11CURLd1U5p0JFwI",
+          "Email 1": "capetowncentral@drainsurgeon.co.za",
+          "Email 2": "stellenbosch@drainsurgeon.co.za",
+          "Person Name": "Support",
+          "Subject Line": "Enhance Your Plumbing Business with AI",
+          "Ice Breaker Email": "<p>Fast Drain Plumbing provides exceptional services, but imagine optimizing your workflow with AI.</p><p>Our intelligent tools automate customer interactions, booking management, and service follow-ups, reducing workload while increasing client satisfaction.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 4,
+          "Search Phrase": "Plumber",
+          "Business Name": "Plumbing It Fine",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8005, \nAddress: 67 Regent Rd, Cape Town, 67 Regent Rd, Sea Point, Cape Town, 8005, South Africa",
+          "Website": "plumbingitfine.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Plumbing%20It%20Fine&query_place_id=ChIJbfG6kKJnzB0RdcfYr9ytSTU",
+          "Email 1": "info@plumbingitfine.co.za",
+          "Email 2": "accounts@plumbingitfine.co.za",
+          "Person Name": "Team",
+          "Subject Line": "Boost Customer Engagement with Automation",
+          "Ice Breaker Email": "<p>Cape Town Plumbing Pros stands out for reliability, but what if you could engage customers even better?</p><p>Our AI-driven system automates estimates, reminders, and customer support, ensuring a seamless experience while you focus on quality service.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 5,
+          "Search Phrase": "Plumber",
+          "Business Name": "TKZ01 Plumbing Services",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8001, \nAddress: 8 B Upland Ave, Cape Town, 8 B Upland Ave, Devil's Peak Estate, Cape Town, 8001, South Africa",
+          "Website": "tkz01.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=TKZ01%20Plumbing%20Services&query_place_id=ChIJr7dCdXxdzB0RmCsyWJV9Y74",
+          "Email 1": "info@tkz01.co.za",
+          "Email 2": "",
+          "Person Name": "",
+          "Subject Line": "Streamline Your Plumbing Business Today",
+          "Ice Breaker Email": "<p>Pro Plumbing Fix has built a solid reputation, but manual tasks can slow growth.</p><p>Our AI-powered solutions handle scheduling, quotes, and reminders, freeing up time for your team to focus on what truly matters—exceptional service.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 6,
+          "Search Phrase": "Plumber",
+          "Business Name": "Bob the Plumber",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8001, \nAddress: 2 Wesley St, Cape Town, 2 Wesley St, Gardens, Cape Town, 8001, South Africa",
+          "Website": "bobtheplumber.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Bob%20the%20Plumber&query_place_id=ChIJQ7QbzHtnzB0RAAP8rTBXNWY",
+          "Email 1": "info@bobtheplumber.co.za",
+          "Email 2": "",
+          "Person Name": "John",
+          "Subject Line": "AI-Powered Efficiency for Your Plumbing Business",
+          "Ice Breaker Email": "<p>Smart Drain Fixers provides excellent plumbing solutions—now it's time to take efficiency to the next level.</p><p>Our automation platform helps you manage inquiries, schedule jobs, and follow up with clients effortlessly.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 7,
+          "Search Phrase": "Plumber",
+          "Business Name": "PJ Plumbing and Electrical",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8005, \nAddress: 233 Main Rd, Cape Town, 233 Main Rd, Sea Point, Cape Town, 8005, South Africa",
+          "Website": "pjplumbing.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=PJ%20Plumbing%20and%20Electrical&query_place_id=ChIJX7aVxSFnzB0Rd00-D_Rtlx4",
+          "Email 1": "admin@pjplumbing.co.za",
+          "Email 2": "",
+          "Person Name": "Mike",
+          "Subject Line": "Maximize Your Plumbing Business Potential",
+          "Ice Breaker Email": "<p>Plumbers Elite has built a trusted name—now let’s maximize your potential with AI.</p><p>Automate your workflow, improve customer response times, and streamline service management with our cutting-edge solutions.</p>"
+        }
+      }
+    ],
+    "Remove Duplicates": [
+      {
+        "json": {
+          "row_number": 2,
+          "Search Phrase": "Plumber",
+          "Business Name": "Pipe Surgeon",
+          "Business Category": "Plumber",
+          "Address": "Pin: 7915, \nAddress: 37 Gympie St, Cape Town, 37 Gympie St, Woodstock, Cape Town, 7915, South Africa",
+          "Website": "pipesurgeon.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Pipe%20Surgeon&query_place_id=ChIJ_cZOPttdzB0RI7oOIzQ1c7o",
+          "Email 1": "enquiries@pipesurgeon.co.za",
+          "Email 2": "",
+          "Person Name": "Info",
+          "Subject Line": "Quote Automation for Amazing Plumbing",
+          "Ice Breaker Email": "<p>Amazing Plumbing excels in providing top-notch services throughout Cape Town, but what if you could enhance efficiency even further?</p><p>Our automated system streamlines quote requests, site scheduling, and follow-ups, allowing you to respond faster while maintaining the quality your customers trust.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 3,
+          "Search Phrase": "Plumber",
+          "Business Name": "The Drain Surgeon Cape Town Central and Atlantic Seaboard",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8000, \nAddress: 16 Keerom St, Cape Town, 16 Keerom St, Cape Town City Centre, Cape Town, 8000, South Africa",
+          "Website": "drainsurgeon.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=The%20Drain%20Surgeon%20Cape%20Town%20Central%20and%20Atlantic%20Seaboard&query_place_id=ChIJHYumGNm11CURLd1U5p0JFwI",
+          "Email 1": "capetowncentral@drainsurgeon.co.za",
+          "Email 2": "stellenbosch@drainsurgeon.co.za",
+          "Person Name": "Support",
+          "Subject Line": "Enhance Your Plumbing Business with AI",
+          "Ice Breaker Email": "<p>Fast Drain Plumbing provides exceptional services, but imagine optimizing your workflow with AI.</p><p>Our intelligent tools automate customer interactions, booking management, and service follow-ups, reducing workload while increasing client satisfaction.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 4,
+          "Search Phrase": "Plumber",
+          "Business Name": "Plumbing It Fine",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8005, \nAddress: 67 Regent Rd, Cape Town, 67 Regent Rd, Sea Point, Cape Town, 8005, South Africa",
+          "Website": "plumbingitfine.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Plumbing%20It%20Fine&query_place_id=ChIJbfG6kKJnzB0RdcfYr9ytSTU",
+          "Email 1": "info@plumbingitfine.co.za",
+          "Email 2": "accounts@plumbingitfine.co.za",
+          "Person Name": "Team",
+          "Subject Line": "Boost Customer Engagement with Automation",
+          "Ice Breaker Email": "<p>Cape Town Plumbing Pros stands out for reliability, but what if you could engage customers even better?</p><p>Our AI-driven system automates estimates, reminders, and customer support, ensuring a seamless experience while you focus on quality service.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 5,
+          "Search Phrase": "Plumber",
+          "Business Name": "TKZ01 Plumbing Services",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8001, \nAddress: 8 B Upland Ave, Cape Town, 8 B Upland Ave, Devil's Peak Estate, Cape Town, 8001, South Africa",
+          "Website": "tkz01.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=TKZ01%20Plumbing%20Services&query_place_id=ChIJr7dCdXxdzB0RmCsyWJV9Y74",
+          "Email 1": "info@tkz01.co.za",
+          "Email 2": "",
+          "Person Name": "",
+          "Subject Line": "Streamline Your Plumbing Business Today",
+          "Ice Breaker Email": "<p>Pro Plumbing Fix has built a solid reputation, but manual tasks can slow growth.</p><p>Our AI-powered solutions handle scheduling, quotes, and reminders, freeing up time for your team to focus on what truly matters—exceptional service.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 6,
+          "Search Phrase": "Plumber",
+          "Business Name": "Bob the Plumber",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8001, \nAddress: 2 Wesley St, Cape Town, 2 Wesley St, Gardens, Cape Town, 8001, South Africa",
+          "Website": "bobtheplumber.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=Bob%20the%20Plumber&query_place_id=ChIJQ7QbzHtnzB0RAAP8rTBXNWY",
+          "Email 1": "info@bobtheplumber.co.za",
+          "Email 2": "",
+          "Person Name": "John",
+          "Subject Line": "AI-Powered Efficiency for Your Plumbing Business",
+          "Ice Breaker Email": "<p>Smart Drain Fixers provides excellent plumbing solutions—now it's time to take efficiency to the next level.</p><p>Our automation platform helps you manage inquiries, schedule jobs, and follow up with clients effortlessly.</p>"
+        }
+      },
+      {
+        "json": {
+          "row_number": 7,
+          "Search Phrase": "Plumber",
+          "Business Name": "PJ Plumbing and Electrical",
+          "Business Category": "Plumber",
+          "Address": "Pin: 8005, \nAddress: 233 Main Rd, Cape Town, 233 Main Rd, Sea Point, Cape Town, 8005, South Africa",
+          "Website": "pjplumbing.co.za",
+          "Google Map URL": "https://www.google.com/maps/search/?api=1&query=PJ%20Plumbing%20and%20Electrical&query_place_id=ChIJX7aVxSFnzB0Rd00-D_Rtlx4",
+          "Email 1": "admin@pjplumbing.co.za",
+          "Email 2": "",
+          "Person Name": "Mike",
+          "Subject Line": "Maximize Your Plumbing Business Potential",
+          "Ice Breaker Email": "<p>Plumbers Elite has built a trusted name—now let’s maximize your potential with AI.</p><p>Automate your workflow, improve customer response times, and streamline service management with our cutting-edge solutions.</p>"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Set URL to scrape",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify Google Map Scraper": {
+      "main": [
+        [
+          {
+            "node": "If email address found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set URL to scrape": {
+      "main": [
+        [
+          {
+            "node": "Apify Google Map Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If email address found": {
+      "main": [
+        [
+          {
+            "node": "Process the items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process the items": {
+      "main": [
+        [
+          {
+            "node": "Checks if already processed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Process Companies, not in db",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Checks if already processed": {
+      "main": [
+        [
+          {
+            "node": "Process Companies, not in db",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update DB": {
+      "main": [
+        [
+          {
+            "node": "Website is a website not a fb page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Website is a website not a fb page": {
+      "main": [
+        [
+          {
+            "node": "Set correct domain format for merging",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set correct domain format for merging": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge email with lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Companies, not in db": {
+      "main": [
+        [
+          {
+            "node": "Update DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Connect scrape and biz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connect scrape and biz": {
+      "main": [
+        [
+          {
+            "node": "Create Ice breaker email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Ice breaker email": {
+      "main": [
+        [
+          {
+            "node": "Merge email with lead",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge email with lead": {
+      "main": [
+        [
+          {
+            "node": "Update person name, email body and subject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update person name, email body and subject": {
+      "main": [
+        [
+          {
+            "node": "Get business name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get business name": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "If no first name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If no first name": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Update the name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0bf09ba8-dd75-4dfd-a003-0d1845b063de",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2ea18636a4d9e69002ba73b4f448fe3630aa6c4af6abd27551086d0ab377ee99"
+  },
+  "id": "QIyEYGY769EPo0vW",
+  "tags": []
+}
