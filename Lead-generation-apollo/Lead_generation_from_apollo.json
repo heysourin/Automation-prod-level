@@ -1,0 +1,978 @@
+{
+  "name": "Lead gen & cold email: real estate",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        -280
+      ],
+      "id": "d82cd0f1-5e65-4f8f-a71c-9eb2cd9f6417",
+      "name": "When chat message received",
+      "webhookId": "23ecb89e-564a-4ecd-8b61-d4a10422d097"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "473c58bb-7848-48c1-aaa9-b5d106b57855",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "0aa9ccc3-c2da-48af-9d26-fc8773026ae6",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        -280
+      ],
+      "id": "4b373d04-391f-4898-8298-c0d805e2d497",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9b422437-75c3-49c2-9cfb-e021bc0804d0",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "b76195a6-2c63-4c3b-8c13-0f89a28b81d1",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        420,
+        -280
+      ],
+      "id": "b20c42c3-b382-4715-b017-38b44503a0de",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        740,
+        -80
+      ],
+      "id": "ebcc6b61-db7c-4d92-a6c4-cb6cb2fe854d",
+      "name": "Auto-fixing Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet').item.json.sheets[0].properties.sheetId }}",
+          "mode": "id"
+        },
+        "startIndex": 1
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2180,
+        0
+      ],
+      "id": "afefb3f4-f45f-424a-9f90-8d9189cb2177",
+      "name": "Delete the duplicate row, created as a bug",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "={{ $json.output.Query }} ~ Created at: {{ $now.toFormat('yyyy-MM-dd HH:mm') }}",
+        "sheetsUi": {
+          "sheetValues": [
+            {
+              "title": "Sheet 1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "4e882f2a-2206-4b02-a37c-eb02ffef4216",
+      "name": "Creating a sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Creating google sheet\n- New sheet is going to be created for every new search",
+        "height": 300,
+        "width": 1320,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        -100
+      ],
+      "id": "f99e8271-e04e-426f-aea9-c66ac7526cc3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0d2fb379-2233-4439-a345-b115ab0de18d",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1580,
+        640
+      ],
+      "id": "d643246e-722f-421c-952c-0463772a29f4",
+      "name": "Retry if failed"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1380,
+        660
+      ],
+      "id": "d33755c9-7029-4c04-981a-2746848c36c0",
+      "name": "Wait1",
+      "webhookId": "b4c451e1-bb01-4976-b1b5-b251e6033632"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 440,
+        "width": 1800,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        420
+      ],
+      "id": "0be135fc-4262-4d53-9f72-384e85e7be46",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Scraping\n",
+        "height": 80,
+        "width": 170,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        780
+      ],
+      "id": "74a7334a-d717-469b-8d50-735abeb781b9",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3aed36c6-3423-4e3b-82a8-8a27ce1cc585",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "6164f1aa-d771-4eb7-8492-4e33b4935c85",
+              "leftValue": "={{ $json.organization.phone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1900,
+        480
+      ],
+      "id": "ea11b913-185d-4818-923f-e32b1184e652",
+      "name": "Have email or phone_num or both"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet').item.json.sheets[0].properties.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.name }}",
+            "Email": "={{ $json.email }}",
+            "Phone_num": "='{{ $json.organization.primary_phone.number }}",
+            "Email_sent": "false"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone_num",
+              "displayName": "Phone_num",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email_sent",
+              "displayName": "Email_sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2200,
+        480
+      ],
+      "id": "af774c32-3f50-421b-9fd9-fdda61e6116f",
+      "name": "Saving data in google sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=To generate a direct link for a specific search in Apollo, follow this format:\n\n---\n\n### **Steps to Create a Direct Link**\n\n1. **Email Status**:\n  - Set to **Verified* to include only contacts with verified email addresses.\n  - Use: `contactEmailStatusV2 []]=verified`\n\n2. **Job Titles**:\n  - Specify the job title(s) you want to include. For example: **Owner**, **Manager**,\nor **CEO**\n  - Use: \" personTitles (l=job_title\" (replace Job title with the desired estle).\n\n3. **Location**:\n  - Specify the location(s) you want to target. For example: **United States**,\n**United Kingdom**, or **Germany**.\n  - Use: `personLocations[]=location` (replace 'Location' with the desired Location).\n\n4. **Industry & Keywords**:\n  - Specify the industry or industries you want to include. For example: **Marketing &\nAdvertising**, **Construction**, or **Hospitality**.\n  - Use: `organizationIndustryTagIds[]=industry_code` (replace `industry_code` with\nthe desired code).\n\n5. **Number of Employees**:\n  - Specify the employee range for the organization. For example: **Minimum: 997,\nMaxinum: 999997**.\n  - Use: `organizationNumEmployeesRanges[]=997%2C999997`\n\n6.**Pagination**：\n  - Start with the first page of results.\n  - Use: `page=1`\n\n7. **Sorting**:\n  - Use default sorting (no specific sorting field).\n  - Use: `sortAscending=false&sortByField=&5Bnone&5D`\n\n---\n\n### **Industry Codes**\n\nHere are some common industry codes you can use:\n- **Marketing & Advertising**: `5567cd467369644d39040000`\n- **Construction**: `5567cd4773696439dd350000`\n- **Hospitality**: `5567ce9d7369643bc19c0800`\n- **Computer Software**: `5567cd4e7369643b70010000`\n- **Professional Training & Coaching**: `5567cd49736964541d010000`\n- **Staffing & Recruiting**: `5567e09973696410db020800`\n- **Financial Services**: `5567cdd67369643e64020000`\n- **Entertainment**: `5567cdd37369643b80510000`\n- **Investment banking**: `5567e1ab7369641f6d660100`\n\n---\n\n### **Examples**\n#### **Example 1: Owners of Marketing Agencies in the USA with Employee Range**\nTo find owners of marketing agencies in the USA with 997 to 999997 employees**, use this Link:\n\nhttps://app.apollo.lo/#/people?contactEmailStatusV2[]=verified&personTitles[]=owner&personLocations[]=United%20States&organizationIndustryTagIds[]=5567cd467369644d3904000&organizationNumEmployeesRanges[]=997%2C9999976&page=1&sortAscending=false&sortByField=%5Bnone%5D\n\n\n\n#### **Example 2: Managers in the Construction Industry in Germany with Employee Range**\nTo find managers in the construction industry in Germany with 997 to 999997 employees**, use this link:\n\nhttps://app.apollo.io/#/people?contactEmailStatusV2[]=verified&personTitles[]=manager&personLocations[]=Germany&organizationIndustryTagIds[]=5567cd4773696439dd350000&organizationNumEmployeesRanges[]=997%2C999997&page=1&sortAscending=false&sortByField=%5Bnone%5D\n\n\n\n### **Example 3: CEOs in the Hospitality Industry in the United Kingdom with Employee Range**\nTo find **CEOs in the hospitality industry in the United Kingdom with 997 to 999997 employees**, use this link:\n\nhttps://app.apollo.io/#/people?contactEmailStatusV2[]=verified&personTitles[]=CEO&personLocations[J=United%20Kingdom&organizationIndustryTagIds[]=5567ce9d7369643bc19c0800&organizationNumEmployeesRanges[]=997%2C999997&page=1&sortAscending=false&sortByField=%5Bnone%5D\n\n\n\n### **Example 4: Students in the Computer Software Industry in the United Arab Emirates with Employee Range**\nTo find **students in the computer software industry in the United Arab Emirates with 997 to 999997 employees**, use this link:\n\nhttps:://app.apollo.io/#/people?contactEmailStatusV2[]=verified&personTitles[]=student&personLocations[]=United%20Arab%20Emirates&organizationIndustryTagIds[]=5567cd4e7369643b70010000&organizationNumEmployeesRanges[]=997%2C999997&page=1&sortAscending=false&sortByField=%5Bnone%5D\n\n\n\n##****Example 5: Owners in Multiple Industries in the USA with Employee Range**\nTo find **owners in multiple industries (Marketing & Advertising, Construction, Hospitality) in the USA with 997 to 999997 employees**, use this link:\n\nhttps://app-apollo.io/#/people?contactEmailStatusV2[]=verified&personTitles[]=owner&personLocations[]=United%20States&organizationIndustryTagIds[]=5567cd467369644d39040000&organizationNumEmployeesRanges[]=997%2C999997&page=1&sortAscending=false&sortByField=%5Bnone%5D\n\n---\n\n### **How to Customize the Link**\n1. Replace `job_title` with the desired job title(s).\n2. Replace `location` with the desired location(s).\n3. Replace `industry_code` with the desired industry code(s).\n4.Replace `997%2C999997` with your desired employee range.\n5. Add or remove filters as needed.\n---\n\n#RULES:\n- Only output the link, my job depends on it\n\n#Notes:\n- if not specified limit is 100\n- if not specified by the user do not include Number of Employees\n- I also want you to include \"query this is basicly the name of the search\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        660,
+        -280
+      ],
+      "id": "795d62e5-855b-48ab-aaeb-af41b81651f8",
+      "name": "AI Agent for creating apollo link"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        660,
+        40
+      ],
+      "id": "52e69646-766c-4cb5-b45c-4c588ef92b59",
+      "name": "LLM",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "90wR5hQqNSWaeHg5",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"URL\": \"https://app.apollo.io/#/people?page=1&contactEmailStatusV2%5B%5D=verified&personTitles%5B%5D=CEO&personLocations%5B%5D=United%20Arab%20Emirates&organizationIndustryTagIds%5B%5D=5567cdde7369643b70010080&sortAscending=false&sortByField=%5Bnone%5D&contactEmailExcludeCatchAll=true\",\n  \"Query\": \"Owner of the marketing agency in the USA\",\n  \"Limit\": 100\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        40
+      ],
+      "id": "e2f03bab-13f2-448c-bd64-db977ecf991f",
+      "name": "Parser"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1uZTP3D__U5bvQnaPKfXBNIaasY89cwYHFN-criYMM9c",
+          "mode": "list",
+          "cachedResultName": "Lead_template2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uZTP3D__U5bvQnaPKfXBNIaasY89cwYHFN-criYMM9c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uZTP3D__U5bvQnaPKfXBNIaasY89cwYHFN-criYMM9c/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange",
+              "firstDataRow": 1
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1360,
+        0
+      ],
+      "id": "7885e9c6-8d6c-4894-a487-6a5bb2cbd7c2",
+      "name": "Getting column names from a template sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1640,
+        0
+      ],
+      "id": "f9e486a9-c5b7-49c3-b83e-135410acf961",
+      "name": "Wait for 10 sec",
+      "webhookId": "79a79576-e773-49b2-9ea5-c4684214bf2a"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet').item.json.sheets[0].properties.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone_num",
+              "displayName": "Phone_num",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email_sent",
+              "displayName": "Email_sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1880,
+        0
+      ],
+      "id": "f940e55b-d24d-49b7-baf0-8aadb33783b7",
+      "name": "Putting the template header to the working sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "30b86bc1-c7ef-4628-9262-db2c3b5dc4f1",
+              "name": "output.URL",
+              "value": "={{ $('AI Agent for creating apollo link').item.json.output.URL }}",
+              "type": "string"
+            },
+            {
+              "id": "5a89c1b0-1b68-44c9-8dbf-e7ad226df029",
+              "name": "output.Limit",
+              "value": "={{ $('AI Agent for creating apollo link').item.json.output.Limit }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        20,
+        460
+      ],
+      "id": "aa9124f2-0993-48be-8209-c962cbc67b87",
+      "name": "Apollo link & scraping limit"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d43d72d-69e0-451f-9597-5a6eda6aa7e9",
+              "name": "API",
+              "value": "apify_api_9TXahLrjlZPL8Ax98GQpAH4MlrvZcH3bjnQK",
+              "type": "string"
+            },
+            {
+              "id": "05e74e29-5497-4166-a87c-555c0051b121",
+              "name": "actor_id",
+              "value": "gKvEpKx3i3zlRj2G9",
+              "type": "string"
+            },
+            {
+              "id": "7fa445f2-ed6e-41ba-a128-180ee6da2d08",
+              "name": "json",
+              "value": "={\"getPersonalEmails\": true, \"getWorkEmails\": true, \"totalRecords\": {{ $json.output.Limit }},\"url\": \"{{ $json.output.URL }}\"}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        460
+      ],
+      "id": "3e6bb215-b7df-46cc-9532-6ca783f74d77",
+      "name": "Apify Credentials: API + Actor id + json file"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.apify.com/v2/acts/{{ $json.actor_id }}/runs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer  {{ $json.API }}"
+            },
+            {
+              "name": "memory",
+              "value": "8192"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        460
+      ],
+      "id": "5aa954a9-e548-4d93-8ee7-8dc1201e359b",
+      "name": "Running the scrapper"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.apify.com/v2/actor-runs/{{ $json.data.id }}/?waitForFinish=1000",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Apify Credentials: API + Actor id + json file').item.json.API }}"
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        460
+      ],
+      "id": "73081b85-0373-4cc4-ba32-bc67e54e1f89",
+      "name": "check if scraping completed"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a68617ac-36ad-4dfb-8bbd-d71a3f1e45aa",
+              "name": "data.defaultDatasetId",
+              "value": "={{ $json.data.defaultDatasetId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1320,
+        460
+      ],
+      "id": "3c4b4d04-11e6-4310-81ca-fdb5c3bf98dc",
+      "name": "setting output data ID"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.apify.com/v2/datasets/{{ $json.data.defaultDatasetId }}/items?format=json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Apify Credentials: API + Actor id + json file').item.json.API }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1580,
+        460
+      ],
+      "id": "642f746c-e482-4498-bbad-8a34562e3999",
+      "name": "Getting the output data"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent for creating apollo link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-fixing Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent for creating apollo link",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Creating a sheet": {
+      "main": [
+        [
+          {
+            "node": "Getting column names from a template sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Apollo link & scraping limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry if failed": {
+      "main": [
+        [
+          {
+            "node": "Have email or phone_num or both",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "setting output data ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Have email or phone_num or both": {
+      "main": [
+        [
+          {
+            "node": "Saving data in google sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent for creating apollo link": {
+      "main": [
+        [
+          {
+            "node": "Creating a sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent for creating apollo link",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting column names from a template sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait for 10 sec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for 10 sec": {
+      "main": [
+        [
+          {
+            "node": "Putting the template header to the working sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Putting the template header to the working sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete the duplicate row, created as a bug",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apollo link & scraping limit": {
+      "main": [
+        [
+          {
+            "node": "Apify Credentials: API + Actor id + json file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify Credentials: API + Actor id + json file": {
+      "main": [
+        [
+          {
+            "node": "Running the scrapper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Running the scrapper": {
+      "main": [
+        [
+          {
+            "node": "check if scraping completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check if scraping completed": {
+      "main": [
+        [
+          {
+            "node": "setting output data ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setting output data ID": {
+      "main": [
+        [
+          {
+            "node": "Getting the output data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting the output data": {
+      "main": [
+        [
+          {
+            "node": "Retry if failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0ef39fe5-8bfb-4174-af30-01e22fbb9eea",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aaa915597b634da2d64c00ba9509f99de3c235cc75984f5024e405f577c3d1e4"
+  },
+  "id": "aZiAPnfVtCv8DNgK",
+  "tags": []
+}
