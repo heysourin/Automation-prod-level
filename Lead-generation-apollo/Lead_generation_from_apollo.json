@@ -1,5 +1,4 @@
 {
-  "name": "Lead gen & cold email: real estate",
   "nodes": [
     {
       "parameters": {
@@ -188,7 +187,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1580,
+        1800,
         640
       ],
       "id": "d643246e-722f-421c-952c-0463772a29f4",
@@ -196,23 +195,9 @@
     },
     {
       "parameters": {
-        "amount": 10
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        1380,
-        660
-      ],
-      "id": "d33755c9-7029-4c04-981a-2746848c36c0",
-      "name": "Wait1",
-      "webhookId": "b4c451e1-bb01-4976-b1b5-b251e6033632"
-    },
-    {
-      "parameters": {
         "content": "",
         "height": 440,
-        "width": 1800,
+        "width": 2020,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -278,7 +263,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        1900,
+        2120,
         480
       ],
       "id": "ea11b913-185d-4818-923f-e32b1184e652",
@@ -352,7 +337,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        2200,
+        2420,
         480
       ],
       "id": "af774c32-3f50-421b-9fd9-fdda61e6116f",
@@ -452,20 +437,6 @@
           "name": "Google Sheets account"
         }
       }
-    },
-    {
-      "parameters": {
-        "amount": 10
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        1640,
-        0
-      ],
-      "id": "f9e486a9-c5b7-49c3-b83e-135410acf961",
-      "name": "Wait for 10 sec",
-      "webhookId": "79a79576-e773-49b2-9ea5-c4684214bf2a"
     },
     {
       "parameters": {
@@ -667,7 +638,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        980,
+        1200,
         460
       ],
       "id": "73081b85-0373-4cc4-ba32-bc67e54e1f89",
@@ -690,7 +661,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1320,
+        1540,
         460
       ],
       "id": "3c4b4d04-11e6-4310-81ca-fdb5c3bf98dc",
@@ -717,14 +688,55 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1580,
+        1800,
         460
       ],
       "id": "642f746c-e482-4498-bbad-8a34562e3999",
       "name": "Getting the output data"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        660
+      ],
+      "id": "d33755c9-7029-4c04-981a-2746848c36c0",
+      "name": "10 sec wait",
+      "webhookId": "b4c451e1-bb01-4976-b1b5-b251e6033632"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1640,
+        0
+      ],
+      "id": "f9e486a9-c5b7-49c3-b83e-135410acf961",
+      "name": "Wait 10 sec",
+      "webhookId": "79a79576-e773-49b2-9ea5-c4684214bf2a"
+    },
+    {
+      "parameters": {
+        "amount": 300
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        460
+      ],
+      "id": "fa787dca-2dc1-477b-a47b-659a1b9c6ff0",
+      "name": "Wait 5 mins",
+      "webhookId": "eaafec08-39aa-432c-8bbc-4da5ada373f1"
     }
   ],
-  "pinData": {},
   "connections": {
     "When chat message received": {
       "main": [
@@ -797,18 +809,7 @@
         ],
         [
           {
-            "node": "Wait1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait1": {
-      "main": [
-        [
-          {
-            "node": "setting output data ID",
+            "node": "10 sec wait",
             "type": "main",
             "index": 0
           }
@@ -868,18 +869,7 @@
       "main": [
         [
           {
-            "node": "Wait for 10 sec",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait for 10 sec": {
-      "main": [
-        [
-          {
-            "node": "Putting the template header to the working sheet",
+            "node": "Wait 10 sec",
             "type": "main",
             "index": 0
           }
@@ -923,7 +913,7 @@
       "main": [
         [
           {
-            "node": "check if scraping completed",
+            "node": "Wait 5 mins",
             "type": "main",
             "index": 0
           }
@@ -962,17 +952,44 @@
           }
         ]
       ]
+    },
+    "10 sec wait": {
+      "main": [
+        [
+          {
+            "node": "setting output data ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10 sec": {
+      "main": [
+        [
+          {
+            "node": "Putting the template header to the working sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5 mins": {
+      "main": [
+        [
+          {
+            "node": "check if scraping completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": true,
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "versionId": "0ef39fe5-8bfb-4174-af30-01e22fbb9eea",
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "aaa915597b634da2d64c00ba9509f99de3c235cc75984f5024e405f577c3d1e4"
-  },
-  "id": "aZiAPnfVtCv8DNgK",
-  "tags": []
+  }
 }
