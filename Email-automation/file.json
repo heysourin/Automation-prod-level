@@ -1,0 +1,2562 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d617e349-f926-447a-8dcb-596166a2666c",
+              "leftValue": "={{ $json.Email_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "dd0f72ae-7fd3-4065-911b-6e9770a90f81",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "error",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "81ad8030-2a20-42ee-90de-a42f54800a64",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "lead-engaged",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "25745b3a-2ce0-4c31-b1a7-de8ae510e9da",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        580,
+        0
+      ],
+      "id": "dc92259b-4103-4956-a695-156a343579d3",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a21e83a0-0999-49d0-8912-c611581968f4",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "none",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "57c5f4b7-9e6a-44c9-9e6f-1f1f437f6a9f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "76f84e0e-6b8f-4bf6-a666-bd448a423b11",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-one-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "one email already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "74de430f-d35e-470b-98c3-99954628b1c5",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-two-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "two emails already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b67eb66c-04c3-4845-b726-113459ecbc8b",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-three-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "three emails already sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1020,
+        -40
+      ],
+      "id": "2303cbd4-eff0-4a4a-9b2f-833fecf2470c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a personalized sales email in JSON format only to encourage the recipient to book a call using the provided link: https://cynestia.com/calender. The email should be concise, persuasive, and professional while maintaining a friendly tone.\n\nSender-Details:\nSender Name: Sourin\nSender Company Name: Airon AI\n\nLead-Details:\nFull Name: {{ $json.Name }}\nCompany Name: {{ $json.CompanyName }}\n\nEmail Guidelines:\n\nSubject Line:\nKeep it engaging and relevant (e.g., \"Unlock AI Growth for <Company Name> – Let's Talk!\").\nEmail Body Structure:\n\nPersonalized Greeting: \"Hey <Full Name>,\"\nOpening Line: Mention their company and make it relevant.\nValue Proposition: Briefly explain how Cynestia helps AI companies improve efficiency.\nCall to Action: Directly ask them to book a call using https://cynestia.com/calender.\nClosing: Keep it warm and open-ended (e.g., \"Looking forward to connecting!\").\n\nMust provide output in this particular JSON Format: {\"email_subject\": \"<Generated Email Subject>\",\"email_body\": \"<Generated Email Body>\"}. Ensure the JSON is valid with no additional text, comments, or explanations.",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1660,
+        -100
+      ],
+      "id": "cd4c3889-d8ed-4462-a84a-f963c41135ab",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        40
+      ],
+      "id": "e9ed18da-5ab2-497f-aa36-d4aefaa93b5a",
+      "name": "LLM",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "90wR5hQqNSWaeHg5",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Google Sheets').item.json.Email_id }}",
+        "subject": "={{ $json.Subject }}",
+        "emailType": "text",
+        "message": "={{ $json.Body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2260,
+        -100
+      ],
+      "id": "3ecd305b-1065-403b-897e-545202e92b5d",
+      "name": "Gmail3",
+      "webhookId": "3401a4ff-6b53-40a5-b9e0-32f9af3ae031",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KomXHxxH4yR4IyBY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "95f39fb2-a521-4dc3-93d7-34e19bfa9973",
+              "name": "Subject",
+              "value": "={{ $json.output.email_subject }}",
+              "type": "string"
+            },
+            {
+              "id": "7ea6c660-b324-4e19-9349-960e6aac73d7",
+              "name": "Body",
+              "value": "={{ $json.output.email_body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2040,
+        -100
+      ],
+      "id": "686c7691-3935-4cdc-9e8a-c94deea79abd",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"email_subject\": \"<Generated Email Subject>\",\n  \"email_body\": \"<Generated Email Body>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1820,
+        40
+      ],
+      "id": "64f749da-f6cc-47ca-87f8-bdabd0996278",
+      "name": "Parser"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Switch').item.json.row_number }}",
+            "Email-Subject": "={{ $('Edit Fields4').item.json.Subject }}",
+            "Email-One": "={{ $('Edit Fields4').item.json.Body }}",
+            "Message-ID": "={{ $json.threadId }}",
+            "Status": "EMAIL-ONE-SENT"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email_id",
+              "displayName": "Email_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CompanyName",
+              "displayName": "CompanyName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Subject",
+              "displayName": "Email-Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-One",
+              "displayName": "Email-One",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Two",
+              "displayName": "Email-Two",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Three",
+              "displayName": "Email-Three",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message-ID",
+              "displayName": "Message-ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2480,
+        -100
+      ],
+      "id": "ac31fde1-d521-4e01-b731-17129137ad0f",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email_id",
+              "displayName": "Email_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CompanyName",
+              "displayName": "CompanyName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Subject",
+              "displayName": "Email-Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-One",
+              "displayName": "Email-One",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Two",
+              "displayName": "Email-Two",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Three",
+              "displayName": "Email-Three",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message-ID",
+              "displayName": "Message-ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        400
+      ],
+      "id": "e05aa2d5-7591-452a-84c7-9143b61cea8f",
+      "name": "Google Sheets2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        -20
+      ],
+      "id": "8221372d-39d4-4b06-a275-280924c79175",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        -80
+      ],
+      "id": "b7049280-ec39-4cb0-b51c-be57ed0956fc",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "content": "# Trigger this for First time email\n",
+        "height": 820,
+        "width": 2500,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -220
+      ],
+      "id": "86436c3c-9892-45d3-a8ec-6d6cc7b024ba",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        160
+      ],
+      "id": "c64488e6-1fa5-42a0-8d0c-e3e27c0109a9",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        -100
+      ],
+      "id": "fbfce562-50db-44ab-b866-d4a1f8ba717d",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d617e349-f926-447a-8dcb-596166a2666c",
+              "leftValue": "={{ $json.Email_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "dd0f72ae-7fd3-4065-911b-6e9770a90f81",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "error",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "81ad8030-2a20-42ee-90de-a42f54800a64",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "lead-engaged",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        820,
+        900
+      ],
+      "id": "7de8c8c7-016c-41a2-9d81-4aeb37bacedc",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        600,
+        900
+      ],
+      "id": "72eadb40-0683-4f11-b968-309fea9e1335",
+      "name": "Google Sheets5",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a21e83a0-0999-49d0-8912-c611581968f4",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "none",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "57c5f4b7-9e6a-44c9-9e6f-1f1f437f6a9f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "76f84e0e-6b8f-4bf6-a666-bd448a423b11",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-one-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "one email already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "74de430f-d35e-470b-98c3-99954628b1c5",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-two-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "two emails already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b67eb66c-04c3-4845-b726-113459ecbc8b",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-three-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "three emails already sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1040,
+        860
+      ],
+      "id": "1c2860d7-4b55-4880-a077-d3f176a19125",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a personalized follow-up sales email in JSON format only to re-engage the recipient and encourage them to book a call using the provided link: https://cynestia.com/calender. The follow-up should be polite, engaging, and professional while maintaining a friendly tone.\n\nSender-Details:\nSender Name: Sourin\nSender Company Name: Airon AI\n\nLead-Details:\nFull Name: {{ $json.Name }}\nCompany Name: {{ $json.CompanyName }}\n\nPrevious Email:\nLast Email Sent:\n{\"email_body\": \"{{ $json['Email-One'] }}\"}\n\nFollow-Up Email Guidelines:\n\nEmail Body Structure:\n\n- Personalized Greeting: \"Hey ,\"\n- Acknowledgment: Briefly reference the last email and keep it light (e.g., \"Just wanted to follow up on my last email...\").\n\n- Restate the Value Proposition: Remind them why Cynestia's AI services can help.\n\n- New Angle or Added Benefit: Include a slight variation from the previous email to add value.\n\n- Call to Action: Encourage them to book a call again: https://cynestia.com/calender.\n\n- Closing: Keep it friendly and open-ended (e.g., \"Let me know if you're interested—would love to connect!\").\n\nOutput Format (Strict JSON):\n{\"email_body\": \"<Generated Email Body>\"}\n\nEnsure the JSON is valid with no additional text, comments, or explanations. The email body must be in plain text format, not HTML.",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1540,
+        860
+      ],
+      "id": "1d231621-8225-4a84-88d1-a778b2e8a88a",
+      "name": "Basic LLM Chain4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "95f39fb2-a521-4dc3-93d7-34e19bfa9973",
+              "name": "subject",
+              "value": "={{ $json.output.email_subject }}",
+              "type": "string"
+            },
+            {
+              "id": "fec37153-30e8-4943-b107-3502bb26d01d",
+              "name": "body",
+              "value": "={{ $json.output.email_body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1920,
+        860
+      ],
+      "id": "739ad601-63dc-4451-a3e1-f70582cd3a61",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Switch1').item.json['Message-ID'] }}",
+        "emailType": "text",
+        "message": "={{ $json.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2140,
+        860
+      ],
+      "id": "1c37733f-ae0c-4080-95f0-4ee1a4358698",
+      "name": "Gmail6",
+      "webhookId": "f5274ca0-9929-4301-91e4-de934cde9e26",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KomXHxxH4yR4IyBY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Switch1').item.json.row_number }}",
+            "Message-ID": "={{ $json.threadId }}",
+            "Status": "EMAIL-TWO-SENT",
+            "Email-Two": "={{ $('Edit Fields').item.json.body }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email_id",
+              "displayName": "Email_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CompanyName",
+              "displayName": "CompanyName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-Subject",
+              "displayName": "Email-Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-One",
+              "displayName": "Email-One",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-Two",
+              "displayName": "Email-Two",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Three",
+              "displayName": "Email-Three",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message-ID",
+              "displayName": "Message-ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2360,
+        860
+      ],
+      "id": "5dc639d5-587b-4059-bfd0-10c36bec62c6",
+      "name": "Google Sheets7",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        980
+      ],
+      "id": "ec5f482a-3899-421f-8063-b13c5f7d27fe",
+      "name": "LLM4",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "90wR5hQqNSWaeHg5",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"email_subject\": \"<Generated Email Subject>\",\n  \"email_body\": \"<Generated Email Body>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1700,
+        980
+      ],
+      "id": "80eeda19-775d-4629-a688-975e3b8f75d7",
+      "name": "Parser4"
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        860
+      ],
+      "id": "16a58100-0676-49be-92b1-13cb79ff5a7a",
+      "name": "Limit6"
+    },
+    {
+      "parameters": {
+        "content": "# Trigger this for second time email or first follow-up\n",
+        "height": 440,
+        "width": 2280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        700
+      ],
+      "id": "1b97626b-cbbe-4752-8d06-442ebeee57ec",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        300,
+        900
+      ],
+      "id": "3a06c09f-6023-48f5-a734-f869c6aedce6",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d617e349-f926-447a-8dcb-596166a2666c",
+              "leftValue": "={{ $json.Email_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "dd0f72ae-7fd3-4065-911b-6e9770a90f81",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "error",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "81ad8030-2a20-42ee-90de-a42f54800a64",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "lead-engaged",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        760,
+        1380
+      ],
+      "id": "1ae68fc2-cad7-4e41-8ed8-bf2f5b5b5927",
+      "name": "Filter2"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        540,
+        1380
+      ],
+      "id": "2f76bb1f-ac7f-405b-a708-ea8c8688a4e0",
+      "name": "Google Sheets10",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a21e83a0-0999-49d0-8912-c611581968f4",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "none",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "57c5f4b7-9e6a-44c9-9e6f-1f1f437f6a9f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "76f84e0e-6b8f-4bf6-a666-bd448a423b11",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-one-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "one email already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "74de430f-d35e-470b-98c3-99954628b1c5",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-two-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "two emails already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b67eb66c-04c3-4845-b726-113459ecbc8b",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-three-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "three emails already sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        980,
+        1340
+      ],
+      "id": "55a62af9-1b90-4a3e-a90c-9ee66663ada0",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a personalized follow-up sales email in JSON format only to re-engage the recipient and encourage them to book a call using the provided link: https://cynestia.com/calender. The follow-up should be polite, engaging, and professional while maintaining a friendly tone.\n\nSender-Details:\nSender Name: Sourin\nSender Company Name: Airon AI\n\nLead-Details:\nFull Name: {{ $json.Name }}\nCompany Name: {{ $json.CompanyName }}\n\nPrevious Email:\nLast Email Sent:\n{\"email_body\": \"{{ $json['Email-One'] }}\"}\n\nFollow-Up Email Guidelines:\n\nEmail Body Structure:\n\n- Personalized Greeting: \"Hey ,\"\n- Acknowledgment: Briefly reference the last email and keep it light (e.g., \"Just wanted to follow up on my last email...\").\n\n- Restate the Value Proposition: Remind them why Cynestia's AI services can help.\n\n- New Angle or Added Benefit: Include a slight variation from the previous email to add value.\n\n- Call to Action: Encourage them to book a call again: https://cynestia.com/calender.\n\n- Closing: Keep it friendly and open-ended (e.g., \"Let me know if you're interested—would love to connect!\").\n\nOutput Format (Strict JSON):\n{\"email_body\": \"<Generated Email Body>\"}\n\nEnsure the JSON is valid with no additional text, comments, or explanations. The email body must be in plain text format, not HTML.",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1500,
+        1360
+      ],
+      "id": "ccaabd25-08d3-4f16-9bc5-c886e0b9cb57",
+      "name": "Basic LLM Chain8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "95f39fb2-a521-4dc3-93d7-34e19bfa9973",
+              "name": "text",
+              "value": "={{ $json.output.email_body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1880,
+        1360
+      ],
+      "id": "af20510a-ab3f-4b4a-95ef-fad14bf58de8",
+      "name": "Edit Fields10"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Switch2').item.json['Message-ID'] }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2100,
+        1360
+      ],
+      "id": "8cc35d36-2674-4d94-8727-9654b6cfede5",
+      "name": "Gmail10",
+      "webhookId": "f5274ca0-9929-4301-91e4-de934cde9e26",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KomXHxxH4yR4IyBY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Switch2').item.json.row_number }}",
+            "Message-ID": "={{ $json.threadId }}",
+            "Status": "EMAIL-THREE-SENT",
+            "Email-Three": "={{ $('Edit Fields10').item.json.text }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email_id",
+              "displayName": "Email_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CompanyName",
+              "displayName": "CompanyName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-Subject",
+              "displayName": "Email-Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-One",
+              "displayName": "Email-One",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-Two",
+              "displayName": "Email-Two",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-Three",
+              "displayName": "Email-Three",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message-ID",
+              "displayName": "Message-ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2320,
+        1360
+      ],
+      "id": "1ec4745f-8efc-412a-92da-b505b5a3fedf",
+      "name": "Google Sheets13",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        1500
+      ],
+      "id": "3665152b-2402-4b78-aac8-5c12ce2f44f6",
+      "name": "LLM8",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "90wR5hQqNSWaeHg5",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"email_subject\": \"<Generated Email Subject>\",\n  \"email_body\": \"<Generated Email Body>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1660,
+        1500
+      ],
+      "id": "7dfe3ec7-38ee-4b82-933e-73119977de5b",
+      "name": "Parser8"
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        1360
+      ],
+      "id": "41bb0fe2-b640-4f77-979f-9870cca9ca50",
+      "name": "Limit11"
+    },
+    {
+      "parameters": {
+        "content": "# Trigger this for third time email or second follow-up\n",
+        "height": 420,
+        "width": 2300,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        1240
+      ],
+      "id": "27c98dc7-8dfe-43ab-99e8-87188a8e3ccc",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        280,
+        1380
+      ],
+      "id": "385200cc-24fa-41ab-84e2-4cd0f8a8ebaa",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d617e349-f926-447a-8dcb-596166a2666c",
+              "leftValue": "={{ $json.Email_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "dd0f72ae-7fd3-4065-911b-6e9770a90f81",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "error",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "81ad8030-2a20-42ee-90de-a42f54800a64",
+              "leftValue": "={{ $json.Status.toLowerCase() }}",
+              "rightValue": "lead-engaged",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        3040,
+        800
+      ],
+      "id": "a851fc07-97f4-41a7-985c-8657b786dcd2",
+      "name": "Filter3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3040,
+        540
+      ],
+      "id": "98c51c58-4c91-44bf-a7b0-2a843e2261c4",
+      "name": "Google Sheets11",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a21e83a0-0999-49d0-8912-c611581968f4",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "none",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "57c5f4b7-9e6a-44c9-9e6f-1f1f437f6a9f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "76f84e0e-6b8f-4bf6-a666-bd448a423b11",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-one-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "one email already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "74de430f-d35e-470b-98c3-99954628b1c5",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-two-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "two emails already sent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b67eb66c-04c3-4845-b726-113459ecbc8b",
+                    "leftValue": "={{ $json.Status.toLowerCase() }}",
+                    "rightValue": "email-three-sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "three emails already sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        3040,
+        1080
+      ],
+      "id": "b619df87-ff58-4f96-a435-584414348991",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM",
+          "mode": "list",
+          "cachedResultName": "email automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bXr3mDA00rv1_itj_0iPMqPNxJRdV6a23qvmN3rzQnM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email_id",
+              "displayName": "Email_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CompanyName",
+              "displayName": "CompanyName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Subject",
+              "displayName": "Email-Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-One",
+              "displayName": "Email-One",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Two",
+              "displayName": "Email-Two",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email-Three",
+              "displayName": "Email-Three",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message-ID",
+              "displayName": "Message-ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3040,
+        1480
+      ],
+      "id": "f0971325-2ffc-4a13-be79-8fedae419687",
+      "name": "Google Sheets16",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        3020,
+        260
+      ],
+      "id": "04fd80a9-c1a4-4a30-83e2-55994695cc95",
+      "name": "Schedule Trigger3"
+    },
+    {
+      "parameters": {
+        "content": "# Trigger this for final update in your sheet",
+        "height": 1580,
+        "width": 480,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2860,
+        80
+      ],
+      "id": "15cb1eac-10ad-4a2d-b7f5-0f98424e6c59",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [],
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail3": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets5": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [],
+        [],
+        [
+          {
+            "node": "Limit6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    "Basic LLM Chain4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Gmail6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail6": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser4": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit6": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets10": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [],
+        [],
+        [],
+        [
+          {
+            "node": "Limit11",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Basic LLM Chain8": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields10": {
+      "main": [
+        [
+          {
+            "node": "Gmail10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail10": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM8": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain8",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser8": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain8",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit11": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter3": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets11": {
+      "main": [
+        [
+          {
+            "node": "Filter3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [],
+        [],
+        [],
+        [],
+        [
+          {
+            "node": "Google Sheets16",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger3": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aaa915597b634da2d64c00ba9509f99de3c235cc75984f5024e405f577c3d1e4"
+  }
+}
