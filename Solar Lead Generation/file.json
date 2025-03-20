@@ -1,0 +1,1006 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "I want 1000 leads of Solar in the USA"
+            },
+            {
+              "message": "=You are an AI agent that converts user queries into a structured JSON format. When a user enters a request like \"I want 1000 leads of Solar in the USA\", follow these steps:\n1. Set \"language\" to \"en\".\n2. Extract the number (1000) from the query and set \"maxCrawledPlacesPerSearch\" to that number.\n3. For \"locationQuery\", even though the query says \"in the USA\", output the default value \"New York, USA\".\n4. For \"searchStringsArray\", regardless of the industry mentioned (Solar), use the fixed value [\"restaurant\"].\n5. Set \"skipClosedPlaces\" to false.\n\nWhen user is saying:\"I want 1000 leads of Solar in Delhi, India\"\nYour output should be:\n```\n{\n    \"language\": \"en\",\n    \"locationQuery\": \"Delhi, India\",\n    \"maxCrawledPlacesPerSearch\": 1000,\n    \"searchStringsArray\": [\n        \"Solar\"\n    ],\n    \"skipClosedPlaces\": false\n}\n```\n\nWhen user is saying:\"I want 500 leads of Plumber in Cape Town, South Africa\"\nYour output should be:\n```\n{\n    \"language\": \"en\",\n    \"locationQuery\": \"Cape Town, South Africa\",\n    \"maxCrawledPlacesPerSearch\": 500,\n    \"searchStringsArray\": [\n        \"Plumber\"\n    ],\n    \"skipClosedPlaces\": false\n}\n```"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        360,
+        60
+      ],
+      "id": "e4458a40-db35-4e3d-923d-a3bd08b15936",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {
+          "prompt": "Instructions:\n--------------\n{instructions}\n--------------\nCompletion:\n--------------\n{completion}\n--------------\n\nAbove, the Completion did not satisfy the constraints given in the Instructions.\nError:\n--------------\n{error}\n--------------\n\nPlease try again. Please only respond with an answer that satisfies the constraints laid out in the Instructions:"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        420,
+        180
+      ],
+      "id": "4b623c5a-59cf-4080-9390-efc26d020111",
+      "name": "Auto-fixing Output Parser1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        100,
+        60
+      ],
+      "id": "00a54e2d-69a8-437e-a849-5c1e8ab40028",
+      "name": "When chat message received",
+      "webhookId": "23ecb89e-564a-4ecd-8b61-d4a10422d097"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet1').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet1').item.json.sheets[0].properties.sheetId }}",
+          "mode": "id"
+        },
+        "startIndex": 1
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1860,
+        220
+      ],
+      "id": "2f15b701-8fa0-4ac3-9c81-3028449587c0",
+      "name": "Delete the duplicate row, created as a bug1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "={{ $json.output.Query }} -- Created at: {{ $now.toFormat('yyyy-MM-dd HH:mm') }}",
+        "sheetsUi": {
+          "sheetValues": [
+            {
+              "title": "Sheet 1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        940,
+        220
+      ],
+      "id": "2763e98c-4dd4-432e-9fee-361ed110f46f",
+      "name": "Creating a sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Creating google sheet\n- New sheet is going to be created for every new search",
+        "height": 300,
+        "width": 1160,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        900,
+        120
+      ],
+      "id": "c6729282-c73d-4662-8820-2e5c65003e1f",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        320,
+        220
+      ],
+      "id": "fd49e424-da61-4931-8f6e-cd27ff6838a7",
+      "name": "LLM",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "90wR5hQqNSWaeHg5",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"language\": \"en\",\n    \"locationQuery\": \"New York, USA\",\n    \"maxCrawledPlacesPerSearch\": 1000,\n    \"searchStringsArray\": [\n        \"restaurant\"\n    ],\n    \"skipClosedPlaces\": false,\n    \"Query\": \"1000 real estate leads form usa in software industry\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        280
+      ],
+      "id": "84fcca96-2000-4ee9-9725-9132890771e5",
+      "name": "Parser"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet1').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet1').item.json.sheets[0].properties.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone_num",
+              "displayName": "Phone_num",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email_sent",
+              "displayName": "Email_sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1620,
+        220
+      ],
+      "id": "f89bf863-40c0-4b6b-85fb-500193e89557",
+      "name": "Putting the template header to the working sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1omnGs6_R5jp6ToGPh0N8_KQ4MXBydHzjOAwzj3g4TRE",
+          "mode": "list",
+          "cachedResultName": "email_automation_template",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1omnGs6_R5jp6ToGPh0N8_KQ4MXBydHzjOAwzj3g4TRE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1omnGs6_R5jp6ToGPh0N8_KQ4MXBydHzjOAwzj3g4TRE/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange",
+              "firstDataRow": 1
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1200,
+        220
+      ],
+      "id": "cd176efd-b8e8-4a69-840b-2c23c5bdb236",
+      "name": "Getting column names from a template sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1420,
+        220
+      ],
+      "id": "b49fb1c4-e825-4ac3-99a4-e5a2febc0aa3",
+      "name": "Wait",
+      "webhookId": "b7d2a14c-5db1-466c-8d94-01f2653fba37"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0d2fb379-2233-4439-a345-b115ab0de18d",
+              "leftValue": "={{ $('setting output data ID').item.json.data.defaultDatasetId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1660,
+        800
+      ],
+      "id": "1ab64603-1f44-4ac1-8ec0-03823d9f6990",
+      "name": "Retry if failed"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 440,
+        "width": 1780,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        580
+      ],
+      "id": "27c48eef-1487-4552-88a3-da83938e4d17",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Scraping\n",
+        "height": 80,
+        "width": 170,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        940
+      ],
+      "id": "dda8fd90-73d6-444b-a8f9-931b695f4508",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe427b70-0e85-437b-b9e7-c8554791ef37",
+              "name": "output.language",
+              "value": "={{ $('Basic LLM Chain').item.json.output.language }}",
+              "type": "string"
+            },
+            {
+              "id": "731cfc87-1dbf-435e-b44a-c47cb6aa3b27",
+              "name": "output.locationQuery",
+              "value": "={{ $('Basic LLM Chain').item.json.output.locationQuery }}",
+              "type": "string"
+            },
+            {
+              "id": "26a76dc8-aacd-4a27-885a-2355d0eaea93",
+              "name": "output.maxCrawledPlacesPerSearch",
+              "value": "={{ $('Basic LLM Chain').item.json.output.maxCrawledPlacesPerSearch }}",
+              "type": "number"
+            },
+            {
+              "id": "7d11eaab-7dba-428b-b23d-5ce64fe27954",
+              "name": "output.searchStringsArray[0]",
+              "value": "={{ $('Basic LLM Chain').item.json.output.searchStringsArray[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "f4a577a7-12f9-4d1a-bcca-00304386d624",
+              "name": "output.skipClosedPlaces",
+              "value": "={{ $('Basic LLM Chain').item.json.output.skipClosedPlaces }}",
+              "type": "boolean"
+            },
+            {
+              "id": "170cc05d-7fdd-49b3-8016-27a9315d784e",
+              "name": "output.Query",
+              "value": "={{ $('Basic LLM Chain').item.json.output.Query }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        620
+      ],
+      "id": "180c5d60-8325-4f93-bbb9-c7bf48cf6fcf",
+      "name": "Apollo link & scraping limit"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d43d72d-69e0-451f-9597-5a6eda6aa7e9",
+              "name": "API",
+              "value": "apify_api_XMbeWUAcyKEmdIsEOPr41cnZtQfysW140qHy",
+              "type": "string"
+            },
+            {
+              "id": "05e74e29-5497-4166-a87c-555c0051b121",
+              "name": "actor_id",
+              "value": "WnMxbsRLNbPeYL6ge",
+              "type": "string"
+            },
+            {
+              "id": "7fa445f2-ed6e-41ba-a128-180ee6da2d08",
+              "name": "json",
+              "value": "={\n    \"language\": \"en\",\n    \"locationQuery\": \"{{ $json.output.locationQuery }}\",\n    \"maxCrawledPlacesPerSearch\": {{ $json.output.maxCrawledPlacesPerSearch }},\n    \"searchStringsArray\": [\n        \"{{ $json.output.searchStringsArray[0] }}\"\n    ],\n    \"skipClosedPlaces\": false\n}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        620
+      ],
+      "id": "70fe6196-e935-46ea-b373-e49d34fbdcd5",
+      "name": "Apify Credentials: API + Actor id + json file"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.apify.com/v2/acts/{{ $json.actor_id }}/runs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer  {{ $json.API }}"
+            },
+            {
+              "name": "memory",
+              "value": "8192"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        620
+      ],
+      "id": "b365df61-ce6b-4bf0-b2fb-2ec0cdd4d14c",
+      "name": "Running the scrapper"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.apify.com/v2/actor-runs/{{ $json.data.id }}/?waitForFinish=1000",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Apify Credentials: API + Actor id + json file').item.json.API }}"
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        620
+      ],
+      "id": "ce064210-80e4-4954-b66f-4b75097eba02",
+      "name": "check if scraping completed"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a68617ac-36ad-4dfb-8bbd-d71a3f1e45aa",
+              "name": "data.defaultDatasetId",
+              "value": "={{ $json.data.defaultDatasetId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1400,
+        620
+      ],
+      "id": "5d6e537f-3dbd-44e5-a179-5ea40f50f379",
+      "name": "setting output data ID"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.apify.com/v2/datasets/{{ $json.data.defaultDatasetId }}/items?format=json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Apify Credentials: API + Actor id + json file').item.json.API }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        620
+      ],
+      "id": "78290265-743b-4b96-a0c6-d5526c8570d5",
+      "name": "Getting the output data"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1460,
+        820
+      ],
+      "id": "d9aed1be-2894-4a5c-bd2c-69033b0a350d",
+      "name": "10 sec wait",
+      "webhookId": "b4c451e1-bb01-4976-b1b5-b251e6033632"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet1').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Creating a sheet1').item.json.sheets[0].properties.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.title }}",
+            "Address": "={{ $json.address }}",
+            "Phone_num": "='{{ $json.phoneUnformatted }}",
+            "Email_id": "={{ $json.emails[0]}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone_num",
+              "displayName": "Phone_num",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email_id",
+              "displayName": "Email_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ComanyName",
+              "displayName": "ComanyName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-subject",
+              "displayName": "Email-subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-One",
+              "displayName": "Email-One",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-Two",
+              "displayName": "Email-Two",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email-Three",
+              "displayName": "Email-Three",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message-ID",
+              "displayName": "Message-ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1960,
+        840
+      ],
+      "id": "fe857929-c109-4097-9c99-826e0b591729",
+      "name": "Saving data in google sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khdJqr435WvTyp9K",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 300
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        620
+      ],
+      "id": "056ec6de-d596-4c80-9258-4a939346bff2",
+      "name": "Wait 5 mins",
+      "webhookId": "eaafec08-39aa-432c-8bbc-4da5ada373f1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6164f1aa-d771-4eb7-8492-4e33b4935c85",
+              "leftValue": "={{ $json.emails[0]}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1960,
+        600
+      ],
+      "id": "416dbdb7-5755-4196-992a-021829bf4842",
+      "name": "Have email"
+    }
+  ],
+  "connections": {
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Creating a sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-fixing Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Creating a sheet1": {
+      "main": [
+        [
+          {
+            "node": "Getting column names from a template sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Apollo link & scraping limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Auto-fixing Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auto-fixing Output Parser1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Putting the template header to the working sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete the duplicate row, created as a bug1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting column names from a template sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Putting the template header to the working sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry if failed": {
+      "main": [
+        [],
+        [
+          {
+            "node": "10 sec wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apollo link & scraping limit": {
+      "main": [
+        [
+          {
+            "node": "Apify Credentials: API + Actor id + json file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify Credentials: API + Actor id + json file": {
+      "main": [
+        [
+          {
+            "node": "Running the scrapper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Running the scrapper": {
+      "main": [
+        [
+          {
+            "node": "Wait 5 mins",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check if scraping completed": {
+      "main": [
+        [
+          {
+            "node": "setting output data ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setting output data ID": {
+      "main": [
+        [
+          {
+            "node": "Getting the output data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting the output data": {
+      "main": [
+        [
+          {
+            "node": "Retry if failed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Have email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10 sec wait": {
+      "main": [
+        [
+          {
+            "node": "setting output data ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5 mins": {
+      "main": [
+        [
+          {
+            "node": "check if scraping completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Have email": {
+      "main": [
+        [
+          {
+            "node": "Saving data in google sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aaa915597b634da2d64c00ba9509f99de3c235cc75984f5024e405f577c3d1e4"
+  }
+}
