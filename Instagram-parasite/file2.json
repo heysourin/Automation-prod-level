@@ -5,10 +5,10 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        1140,
-        320
+        680,
+        100
       ],
-      "id": "5ed527c6-8100-499c-bfaa-0c3e668e797f",
+      "id": "f5827aab-321a-4d03-b990-84877c75a819",
       "name": "Limit"
     },
     {
@@ -19,10 +19,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        440,
-        620
+        -20,
+        400
       ],
-      "id": "1e82a1ca-cea1-4606-87c0-0828697d8d04",
+      "id": "aa243447-4223-4d7d-af8c-cdf390d5e1cb",
       "name": "Download Video"
     },
     {
@@ -40,10 +40,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        720,
-        620
+        260,
+        400
       ],
-      "id": "6a2a3854-27a7-4d46-9c81-aff5c1956c1f",
+      "id": "bc66aad5-e90c-498a-9e94-1a0e0cd475bf",
       "name": "upload file to assemblyAI"
     },
     {
@@ -66,10 +66,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        440,
-        880
+        -20,
+        660
       ],
-      "id": "e4c379c0-e7b2-46ab-bbb7-660f9928c9fd",
+      "id": "ea37b922-af0e-486b-8501-fcdc9c83f9cb",
       "name": "Filter & Generate Suggestions"
     },
     {
@@ -80,17 +80,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        440,
-        980
+        -20,
+        760
       ],
-      "id": "e24894e2-e4fb-4a99-8f66-b327efad6421",
-      "name": "LLM",
-      "credentials": {
-        "mistralCloudApi": {
-          "id": "NF0NirWKdOJ6jOrF",
-          "name": "Mistral Cloud account"
-        }
-      }
+      "id": "d4ca4a39-38f0-4982-ba83-ec76b5c3e6c5",
+      "name": "LLM"
     },
     {
       "parameters": {
@@ -99,10 +93,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        600,
-        980
+        140,
+        760
       ],
-      "id": "0a98c5a8-1d23-4b5f-a7bd-a398b2ad1525",
+      "id": "1773bd7d-1f66-4cd1-8988-04c71c4d8dc3",
       "name": "Parser"
     },
     {
@@ -126,10 +120,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        880,
-        880
+        420,
+        660
       ],
-      "id": "0c8e351d-65f2-4fd4-a91e-3a306d4160aa",
+      "id": "9015d912-ecc1-440e-b2f6-9a31a916fc41",
       "name": "Searching Gaps using LLM Search Engine"
     },
     {
@@ -140,17 +134,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        1120,
-        980
+        660,
+        760
       ],
-      "id": "49e91550-0acc-4895-9993-862d8fb4728d",
-      "name": "LLM1",
-      "credentials": {
-        "mistralCloudApi": {
-          "id": "NF0NirWKdOJ6jOrF",
-          "name": "Mistral Cloud account"
-        }
-      }
+      "id": "f79bba33-f10e-4732-b4a3-d717768d5ae1",
+      "name": "LLM1"
     },
     {
       "parameters": {
@@ -159,10 +147,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        1280,
-        980
+        820,
+        760
       ],
-      "id": "f4448d63-0c3f-4c12-a732-e7ffb98ae768",
+      "id": "93d40f16-225e-4c62-a908-96ec8911cdbd",
       "name": "Parser1"
     },
     {
@@ -175,10 +163,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        400,
-        580
+        -60,
+        360
       ],
-      "id": "22697733-31e4-47f6-af92-652d870e187a",
+      "id": "9b543175-3f60-4ea2-a684-176c4265b786",
       "name": "Sticky Note"
     },
     {
@@ -197,10 +185,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        1120,
-        880
+        660,
+        660
       ],
-      "id": "3a4cf2c6-a411-4539-b195-2e193f9f3279",
+      "id": "898608ad-7c2f-48dd-9ff9-430b125274a6",
       "name": "write new script"
     },
     {
@@ -416,17 +404,11 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1500,
-        320
+        1040,
+        100
       ],
-      "id": "54c35457-b9b8-474b-9276-7e13627bd01b",
-      "name": "Google Sheets1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "7aGUxZcVSqm559Ww",
-          "name": "Google Sheets account"
-        }
-      }
+      "id": "ca81d928-b7bd-41e0-b96d-8fc3e40d1ef2",
+      "name": "Google Sheets1"
     },
     {
       "parameters": {
@@ -439,10 +421,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1520,
-        620
+        1060,
+        400
       ],
-      "id": "7ef2d44e-3677-4e62-b4c6-5268702bbad5",
+      "id": "e3d1fdf6-724a-462a-9163-ecac4d13b5a4",
       "name": "Get the transcript"
     },
     {
@@ -670,17 +652,11 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1520,
-        880
+        1060,
+        660
       ],
-      "id": "bfd62910-3135-43b6-8f49-245b2013906d",
-      "name": "Google Sheets",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "7aGUxZcVSqm559Ww",
-          "name": "Google Sheets account"
-        }
-      }
+      "id": "fa32e974-db61-4dc5-8dd4-be79a31f4a58",
+      "name": "Google Sheets"
     },
     {
       "parameters": {
@@ -692,10 +668,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1080,
-        820
+        620,
+        600
       ],
-      "id": "ab39aace-7dc3-4a2c-83ac-d0d90fb11f34",
+      "id": "995be6fd-8fb4-4ba4-9063-0b45ccaebd4d",
       "name": "Sticky Note1"
     },
     {
@@ -713,10 +689,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1000,
-        620
+        540,
+        400
       ],
-      "id": "b061527a-b224-401e-9926-fe846329a7c4",
+      "id": "449f8828-219c-4c72-9b6c-46c3c4de79b0",
       "name": "assemblyAI starts"
     },
     {
@@ -732,10 +708,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        440,
-        320
+        -20,
+        100
       ],
-      "id": "9f94860e-4544-40a0-89ec-c80a1be207dd",
+      "id": "46142c50-ff56-4300-9067-e5555af5c21d",
       "name": "Trigger"
     },
     {
@@ -767,10 +743,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        800,
-        320
+        340,
+        100
       ],
-      "id": "a794b825-6259-4a94-baf3-f12cbf3a1798",
+      "id": "9cca6ba5-4ff3-43bb-9554-a6bb9347e1d4",
       "name": "Scraping"
     },
     {
@@ -781,10 +757,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        580,
-        1240
+        120,
+        1020
       ],
-      "id": "384f8962-20ba-4230-a836-d91f1e221fd2",
+      "id": "8658af66-1ba1-4823-a81b-88a24bf94d17",
       "name": "Download Video1"
     },
     {
@@ -802,10 +778,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        860,
-        1240
+        400,
+        1020
       ],
-      "id": "4130f04c-aea1-45d8-9d70-5bc501218b54",
+      "id": "390c60a9-ff16-4ca9-99ce-70fd957f6f7a",
       "name": "upload file to assemblyAI1"
     },
     {
@@ -828,10 +804,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        360,
-        1500
+        -100,
+        1280
       ],
-      "id": "e07fa727-6d16-4773-be78-cf229393861a",
+      "id": "1028d5d5-07ec-4c34-ac2c-139add81b767",
       "name": "Filter & Generate Suggestions1"
     },
     {
@@ -842,17 +818,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        360,
-        1600
+        -100,
+        1380
       ],
-      "id": "5b1e9e3d-2f8a-4518-b4ae-d5c9e05c1776",
-      "name": "LLM2",
-      "credentials": {
-        "mistralCloudApi": {
-          "id": "NF0NirWKdOJ6jOrF",
-          "name": "Mistral Cloud account"
-        }
-      }
+      "id": "2308ac42-9e25-40b6-88b2-54ec412516de",
+      "name": "LLM2"
     },
     {
       "parameters": {
@@ -861,10 +831,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        520,
-        1600
+        60,
+        1380
       ],
-      "id": "efb6b27c-3378-4a49-9a98-3bc1760132af",
+      "id": "9d17c747-1caf-42e1-b85a-887a3706b9b8",
       "name": "Parser2"
     },
     {
@@ -888,10 +858,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        860,
-        1500
+        400,
+        1280
       ],
-      "id": "2166768a-5aaf-4e1d-8905-6446d7a535d0",
+      "id": "161e54bf-2066-443d-9653-bd1422625327",
       "name": "Searching Gaps using LLM Search Engine1"
     },
     {
@@ -902,17 +872,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        1220,
-        1600
+        760,
+        1380
       ],
-      "id": "8ed1f429-d0da-4d24-b6f0-5ea91072b235",
-      "name": "LLM3",
-      "credentials": {
-        "mistralCloudApi": {
-          "id": "NF0NirWKdOJ6jOrF",
-          "name": "Mistral Cloud account"
-        }
-      }
+      "id": "6ee73583-7653-497a-9c17-b90550e82d3c",
+      "name": "LLM3"
     },
     {
       "parameters": {
@@ -921,10 +885,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        1380,
-        1600
+        920,
+        1380
       ],
-      "id": "03b7583d-1d21-4b2c-87c8-b7db80a791b7",
+      "id": "62d60f7a-44b3-4ee3-a84f-ff29939b69fb",
       "name": "Parser3"
     },
     {
@@ -943,10 +907,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        1220,
-        1500
+        760,
+        1280
       ],
-      "id": "2ab74a1a-6d2d-4c56-9959-9b15a0297251",
+      "id": "78062c6d-4cae-49ef-8069-2c75efc38008",
       "name": "write new script1"
     },
     {
@@ -960,10 +924,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1660,
-        1240
+        1200,
+        1020
       ],
-      "id": "0f060083-f571-41d9-bca6-c589df938aa9",
+      "id": "9e9cdf7f-5071-4ff4-959a-55ec1d09f06c",
       "name": "Get the transcript1"
     },
     {
@@ -1191,17 +1155,11 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1660,
-        1500
+        1200,
+        1280
       ],
-      "id": "699db000-7433-4dc9-8a28-84f323214b4b",
-      "name": "Google Sheets2",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "7aGUxZcVSqm559Ww",
-          "name": "Google Sheets account"
-        }
-      }
+      "id": "88a2e2e0-82b4-4edd-ada3-008c4baa5952",
+      "name": "Google Sheets2"
     },
     {
       "parameters": {
@@ -1213,10 +1171,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1180,
-        1440
+        720,
+        1220
       ],
-      "id": "b57e08b9-7b0a-42b2-be37-9a309bece9d6",
+      "id": "d1eef359-711b-4100-bea0-6c0523df687c",
       "name": "Sticky Note2"
     },
     {
@@ -1234,10 +1192,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1140,
-        1240
+        680,
+        1020
       ],
-      "id": "5045d067-cef7-4f1d-9601-db68c0790911",
+      "id": "f2a20f76-01d2-4a2b-bacc-d9a975c97a85",
       "name": "assemblyAI starts1"
     },
     {
@@ -1247,10 +1205,10 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        340,
-        1240
+        -120,
+        1020
       ],
-      "id": "60163b0d-e6a0-4703-9a40-e039f11d25a1",
+      "id": "6067705d-97b4-4e75-be44-f64c751c4a39",
       "name": "Input Viral Video Link",
       "webhookId": "ea8e4f4a-d6f4-4378-b240-536d98d35dad"
     },
@@ -1263,10 +1221,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        280,
-        1180
+        -180,
+        960
       ],
-      "id": "b8df2482-deeb-4e1c-9b5b-55d96cae26fb",
+      "id": "99a661ac-e7dc-46e4-82a2-1eb0878fc5f3",
       "name": "Sticky Note3"
     },
     {
@@ -1278,10 +1236,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        360,
-        240
+        -100,
+        20
       ],
-      "id": "50229963-6dc9-4d73-a6ae-d2e7533be7e9",
+      "id": "aa004f26-0324-407b-92c5-26564c2bdf7c",
       "name": "Sticky Note4"
     },
     {
@@ -1291,10 +1249,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1260,
-        620
+        800,
+        400
       ],
-      "id": "1e32c54b-93a7-422d-8360-4d2dd40f5dfe",
+      "id": "a9993d9a-9135-4c23-948f-41252172d930",
       "name": "Wait 300 sec",
       "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
     },
@@ -1305,12 +1263,28 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1400,
-        1240
+        940,
+        1020
       ],
-      "id": "699425f5-42fd-44dd-99c2-5f75bd4fdb1c",
+      "id": "74895cce-1c33-4ef7-ba31-bfbd6e0bfadc",
       "name": "Wait 30 sec",
       "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
+    },
+    {
+      "parameters": {
+        "content": "## Setting Up\n1. Set up apify api key in 'Scraping' node\n2. Set up AssemblyAI API key in 'upload file to assemblyAI', 'assemblyAI starts' and 'Get the transcript' node.\n3. Set up Tavily (LLM Search engine) API key in 'Searching Gaps using LLM Search Engine' node",
+        "height": 180,
+        "width": 420,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        20
+      ],
+      "id": "004e0f2f-b670-4453-bf19-0d220cbc3f44",
+      "name": "Sticky Note5"
     }
   ],
   "connections": {
@@ -1636,7 +1610,6 @@
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "cfd79f712257d5d9a47b307970064b4dee841839d998d30db6c12782d75d2522"
+    "instanceId": "925d2c95f62cfe740dcce5e902826eff2193546c4f62d35ece41e361aedd85f5"
   }
 }
