@@ -5,10 +5,10 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        680,
-        100
+        700,
+        240
       ],
-      "id": "f5827aab-321a-4d03-b990-84877c75a819",
+      "id": "b525b07b-0af6-421b-938e-fe0f516ed7f7",
       "name": "Limit"
     },
     {
@@ -19,10 +19,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -20,
-        400
+        0,
+        540
       ],
-      "id": "aa243447-4223-4d7d-af8c-cdf390d5e1cb",
+      "id": "8c68c4c2-21c2-4859-aa2f-1f78e74f4ce2",
       "name": "Download Video"
     },
     {
@@ -40,10 +40,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        260,
-        400
+        280,
+        540
       ],
-      "id": "bc66aad5-e90c-498a-9e94-1a0e0cd475bf",
+      "id": "3b8a8449-0d9d-46bf-8754-c7c9f02ea627",
       "name": "upload file to assemblyAI"
     },
     {
@@ -66,10 +66,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        -20,
-        660
+        0,
+        800
       ],
-      "id": "ea37b922-af0e-486b-8501-fcdc9c83f9cb",
+      "id": "a748aaaf-cf42-417c-b7b1-3dd96ff50a2d",
       "name": "Filter & Generate Suggestions"
     },
     {
@@ -80,10 +80,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        -20,
-        760
+        0,
+        900
       ],
-      "id": "d4ca4a39-38f0-4982-ba83-ec76b5c3e6c5",
+      "id": "173707db-77c5-4ca2-b23c-4aa28b3414cc",
       "name": "LLM"
     },
     {
@@ -93,10 +93,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        140,
-        760
+        160,
+        900
       ],
-      "id": "1773bd7d-1f66-4cd1-8988-04c71c4d8dc3",
+      "id": "9cb4d5b3-0b70-4759-9c79-6dda388724db",
       "name": "Parser"
     },
     {
@@ -120,10 +120,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        420,
-        660
+        440,
+        800
       ],
-      "id": "9015d912-ecc1-440e-b2f6-9a31a916fc41",
+      "id": "6d5e9fab-ba61-4196-985c-0a04c8901647",
       "name": "Searching Gaps using LLM Search Engine"
     },
     {
@@ -134,10 +134,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        660,
-        760
+        680,
+        900
       ],
-      "id": "f79bba33-f10e-4732-b4a3-d717768d5ae1",
+      "id": "299c0b50-07c0-4ab9-9577-3ae079ccefb8",
       "name": "LLM1"
     },
     {
@@ -147,10 +147,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        820,
-        760
+        840,
+        900
       ],
-      "id": "93d40f16-225e-4c62-a908-96ec8911cdbd",
+      "id": "83cc485e-ba75-46a7-9487-aaecb954313a",
       "name": "Parser1"
     },
     {
@@ -163,10 +163,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -60,
-        360
+        -20,
+        480
       ],
-      "id": "9b543175-3f60-4ea2-a684-176c4265b786",
+      "id": "63e37356-298e-48b7-8302-e94c58b59391",
       "name": "Sticky Note"
     },
     {
@@ -185,10 +185,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        660,
-        660
+        680,
+        800
       ],
-      "id": "898608ad-7c2f-48dd-9ff9-430b125274a6",
+      "id": "64968a17-a25f-4ffe-8cdd-535fb2af3437",
       "name": "write new script"
     },
     {
@@ -404,10 +404,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1040,
-        100
+        1060,
+        240
       ],
-      "id": "ca81d928-b7bd-41e0-b96d-8fc3e40d1ef2",
+      "id": "2b1807cd-4ee8-465d-9a6b-b89ec8c2bfcd",
       "name": "Google Sheets1"
     },
     {
@@ -421,10 +421,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1060,
-        400
+        1080,
+        540
       ],
-      "id": "e3d1fdf6-724a-462a-9163-ecac4d13b5a4",
+      "id": "2d2eaaed-f4a5-4032-92e9-a84b94adf8bb",
       "name": "Get the transcript"
     },
     {
@@ -652,10 +652,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1060,
-        660
+        1080,
+        800
       ],
-      "id": "fa32e974-db61-4dc5-8dd4-be79a31f4a58",
+      "id": "326b9f5c-99d6-4e05-b632-8bf1a2462bc6",
       "name": "Google Sheets"
     },
     {
@@ -668,10 +668,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        620,
-        600
+        640,
+        740
       ],
-      "id": "995be6fd-8fb4-4ba4-9063-0b45ccaebd4d",
+      "id": "63cd4ca0-a74f-4ae0-9847-955f39b1d4e1",
       "name": "Sticky Note1"
     },
     {
@@ -689,10 +689,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        540,
-        400
+        560,
+        540
       ],
-      "id": "449f8828-219c-4c72-9b6c-46c3c4de79b0",
+      "id": "12e2e0f2-dfb6-4fcf-bdaa-b4c1b8792b58",
       "name": "assemblyAI starts"
     },
     {
@@ -708,10 +708,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -20,
-        100
+        0,
+        240
       ],
-      "id": "46142c50-ff56-4300-9067-e5555af5c21d",
+      "id": "83bac4fd-5321-40f5-934e-55a9661528bd",
       "name": "Trigger"
     },
     {
@@ -743,24 +743,24 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        340,
-        100
+        360,
+        240
       ],
-      "id": "9cca6ba5-4ff3-43bb-9554-a6bb9347e1d4",
+      "id": "3dbdbb9c-2ea5-4147-b895-2bab0065f6db",
       "name": "Scraping"
     },
     {
       "parameters": {
-        "url": "={{ $json.chatInput }}",
+        "url": "={{ $('ScrapingX').item.json.video_url }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        120,
-        1020
+        880,
+        1160
       ],
-      "id": "8658af66-1ba1-4823-a81b-88a24bf94d17",
+      "id": "f3e51a67-9c83-456b-8a2f-45a4d1a720b1",
       "name": "Download Video1"
     },
     {
@@ -769,7 +769,7 @@
         "url": "https://api.assemblyai.com/v2/upload",
         "sendHeaders": true,
         "specifyHeaders": "json",
-        "jsonHeaders": "{\n  \"Authorization\": \"44b64c1735fc4209a57b3078b4aa9e1c\"\n}",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\"\n}",
         "sendBody": true,
         "contentType": "binaryData",
         "inputDataFieldName": "data",
@@ -778,11 +778,269 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        400,
-        1020
+        1260,
+        1160
       ],
-      "id": "390c60a9-ff16-4ca9-99ce-70fd957f6f7a",
+      "id": "af956f24-b1f0-4e6d-9831-7ea7512cfd36",
       "name": "upload file to assemblyAI1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        500,
+        1520
+      ],
+      "id": "34490c7f-b523-4b6d-9e72-df823eb06511",
+      "name": "LLM2",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"verdict\":\"true or false\",\n  \"tools\":[\"list\",\"of\",\"tools\",\"or\",\"resources\"],\n  \"stepByStep\":\"Detailed instructions on how to use the tool(s).\",\n  \"suggestion\":\"Comprehensive, in-depth suggestions on how to make this content more interesting and palatable to my audience (AI automation).\",\n  \"searchPrompt\":\"A short search prompt we'll use to look up the service. Write it like '{toolName}, the {typeOfTool}'\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        1520
+      ],
+      "id": "2a2aee9f-de1e-41dc-a07f-b6b767a5fb42",
+      "name": "Parser2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"Tell me 10 interesting (peculiar) things about {{ $json.output.searchPrompt }}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 1,\n  \"time_range\": null,\n  \"days\": 7,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": []\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        1420
+      ],
+      "id": "3a9a3883-f704-4e0b-a3ea-3a9a0fd162e9",
+      "name": "Searching Gaps using LLM Search Engine1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        1540
+      ],
+      "id": "3d72cae4-6f38-4243-8a01-5af150db4233",
+      "name": "LLM3",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"script\":\"<Your script goes here (~100 words)>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1400,
+        1540
+      ],
+      "id": "e5a80d05-67fb-4eca-b592-75a4669512f5",
+      "name": "Parser3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I have a transcript of a content from an influencer:\n\"\"\"\n{{ $('Get the transcript1').item.json.text }}\n\"\"\",\n\nHow to make this content more interesting:\n\"\"\"\n{{ $('Filter & Generate Suggestions1').item.json.output.stepByStep }}\n\"\"\",\n\nand I have researched data from the internet:\n\"\"\"\n{{ $json.answer }}\n\"\"\"\n\n\nNow I want you to create an a new script for me for my new instagram reel, with the help of the above data given to you.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful script writing assistant."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1240,
+        1420
+      ],
+      "id": "b38151dc-cd05-48df-b2a9-04a9fd36a752",
+      "name": "write new script1"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.assemblyai.com/v2/transcript/{{$json.id}}",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        1420
+      ],
+      "id": "b7a1a7fa-dfeb-47d9-b9c7-94b649bfc082",
+      "name": "Get the transcript1"
+    },
+    {
+      "parameters": {
+        "content": "### Creating new script\n",
+        "height": 280,
+        "width": 340,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1380
+      ],
+      "id": "7fde2e4b-e9f9-4ed0-99e7-f34f538dada4",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.assemblyai.com/v2/transcript",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\",\n  \"Content-Type\": \"application/json\"\n}\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"audio_url\": \"{{ $json.upload_url }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        1160
+      ],
+      "id": "19bffb78-611b-48d2-88ae-5e5cf2cbf563",
+      "name": "assemblyAI starts1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        1160
+      ],
+      "id": "f6596264-0f4c-483a-81cf-8c78815d5aae",
+      "name": "Input Viral Video Link",
+      "webhookId": "ea8e4f4a-d6f4-4378-b240-536d98d35dad"
+    },
+    {
+      "parameters": {
+        "content": "## Extract one specific video\n",
+        "height": 600,
+        "width": 1960,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        1080
+      ],
+      "id": "0d94aead-bf61-4f08-99d6-7c15a7a692da",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Extract from top creators",
+        "height": 880,
+        "width": 1360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        160
+      ],
+      "id": "18fd58a5-4778-4071-95d6-a57f9eb520b2",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "amount": 300
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        820,
+        540
+      ],
+      "id": "5d2f3ca4-26ab-4a5e-8ebb-b515fbf71199",
+      "name": "Wait 300 sec",
+      "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        1420
+      ],
+      "id": "a83cfa44-25b6-490d-8169-069943cdcbd1",
+      "name": "Wait 30 sec",
+      "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
+    },
+    {
+      "parameters": {
+        "content": "## Setting Up\n1. Set up apify api key in 'Scraping' node\n2. Set up AssemblyAI API key in 'upload file to assemblyAI', 'assemblyAI starts' and 'Get the transcript' node.\n3. Set up Tavily (LLM Search engine) API key in 'Searching Gaps using LLM Search Engine' node",
+        "height": 180,
+        "width": 420,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        160
+      ],
+      "id": "c5dbdbfb-3afc-42d8-8ed0-82916dffb7b8",
+      "name": "Sticky Note5"
     },
     {
       "parameters": {
@@ -804,131 +1062,46 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        -100,
-        1280
+        480,
+        1420
       ],
-      "id": "1028d5d5-07ec-4c34-ac2c-139add81b767",
+      "id": "c1d38713-78aa-4413-b858-faf08cd4958a",
       "name": "Filter & Generate Suggestions1"
     },
     {
       "parameters": {
-        "model": "mistral-large-latest",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
-      "typeVersion": 1,
-      "position": [
-        -100,
-        1380
-      ],
-      "id": "2308ac42-9e25-40b6-88b2-54ec412516de",
-      "name": "LLM2"
-    },
-    {
-      "parameters": {
-        "jsonSchemaExample": "{\n  \"verdict\":\"true or false\",\n  \"tools\":[\"list\",\"of\",\"tools\",\"or\",\"resources\"],\n  \"stepByStep\":\"Detailed instructions on how to use the tool(s).\",\n  \"suggestion\":\"Comprehensive, in-depth suggestions on how to make this content more interesting and palatable to my audience (AI automation).\",\n  \"searchPrompt\":\"A short search prompt we'll use to look up the service. Write it like '{toolName}, the {typeOfTool}'\"\n}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.2,
-      "position": [
-        60,
-        1380
-      ],
-      "id": "9d17c747-1caf-42e1-b85a-887a3706b9b8",
-      "name": "Parser2"
-    },
-    {
-      "parameters": {
         "method": "POST",
-        "url": "https://api.tavily.com/search",
+        "url": "https://api.apify.com/v2/acts/8yz4aO3qlqckRu3nu/run-sync-get-dataset-items",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
               "name": "Authorization",
-              "value": "Bearer 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"
+              "value": "Bearer apify_api_1tZuKtLuAWWJymkvo27qJaRQbZly1o0Ek7bC"
             }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"query\": \"Tell me 10 interesting (peculiar) things about {{ $json.output.searchPrompt }}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 1,\n  \"time_range\": null,\n  \"days\": 7,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": []\n} ",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        400,
-        1280
-      ],
-      "id": "161e54bf-2066-443d-9653-bd1422625327",
-      "name": "Searching Gaps using LLM Search Engine1"
-    },
-    {
-      "parameters": {
-        "model": "mistral-large-latest",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
-      "typeVersion": 1,
-      "position": [
-        760,
-        1380
-      ],
-      "id": "6ee73583-7653-497a-9c17-b90550e82d3c",
-      "name": "LLM3"
-    },
-    {
-      "parameters": {
-        "jsonSchemaExample": "{\n  \"script\":\"<Your script goes here (~100 words)>\"\n}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.2,
-      "position": [
-        920,
-        1380
-      ],
-      "id": "62d60f7a-44b3-4ee3-a84f-ff29939b69fb",
-      "name": "Parser3"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=I have a transcript of a content from an influencer:\n\"\"\"\n{{ $('Get the transcript1').item.json.text }}\n\"\"\",\n\nHow to make this content more interesting:\n\"\"\"\n{{ $('Filter & Generate Suggestions1').item.json.output.stepByStep }}\n\"\"\",\n\nand I have researched data from the internet:\n\"\"\"\n{{ $json.answer }}\n\"\"\"\n\n\nNow I want you to create an a new script for me for my new instagram reel, with the help of the above data given to you.",
-        "hasOutputParser": true,
-        "messages": {
-          "messageValues": [
-            {
-              "message": "You are a helpful script writing assistant."
-            }
-          ]
+        "jsonBody": "={\n    \"url\": \"{{ $json.chatInput }}\",\n    \"use_cache\": false\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.5,
-      "position": [
-        760,
-        1280
-      ],
-      "id": "78062c6d-4cae-49ef-8069-2c75efc38008",
-      "name": "write new script1"
-    },
-    {
-      "parameters": {
-        "url": "=https://api.assemblyai.com/v2/transcript/{{$json.id}}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "{\n  \"Authorization\": \"44b64c1735fc4209a57b3078b4aa9e1c\"\n}\n",
-        "options": {}
-      },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1200,
-        1020
+        200,
+        1160
       ],
-      "id": "9e9cdf7f-5071-4ff4-959a-55ec1d09f06c",
-      "name": "Get the transcript1"
+      "id": "1bd19f0c-1960-4034-b879-972dff7694ad",
+      "name": "ScrapingX"
     },
     {
       "parameters": {
@@ -950,7 +1123,241 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $('Google Sheets1').item.json.id }}",
+            "id": "={{ $json.post_id }}",
+            "timestamp": "={{ $json.date_posted }}",
+            "shortCode": "={{ $json.shortcode }}",
+            "caption": "={{ $json.description }}",
+            "hashtags": "={{ $json.hashtags }}",
+            "url": "={{ $json.url }}",
+            "commentsCount": "={{ $json.num_comments }}",
+            "likesCount": "={{ $json.likes }}",
+            "firstComment": "={{ $json.firstComment }}",
+            "displayUrl": "={{ $json.video_url }}",
+            "videoUrl": "={{ $json.video_url }}",
+            "videoViewCount": "={{ $json.views }}",
+            "videoPlayCount": "={{ $json.video_play_count }}",
+            "username": "={{ $json.user_posted }}",
+            "videoDuration": "={{ $json.length }}",
+            "isSponsored": "={{ $json.isSponsored }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "shortCode",
+              "displayName": "shortCode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "commentsCount",
+              "displayName": "commentsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firstComment",
+              "displayName": "firstComment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "displayUrl",
+              "displayName": "displayUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "likesCount",
+              "displayName": "likesCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoViewCount",
+              "displayName": "videoViewCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoPlayCount",
+              "displayName": "videoPlayCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoDuration",
+              "displayName": "videoDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "isSponsored",
+              "displayName": "isSponsored",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "scrapedTranscript",
+              "displayName": "scrapedTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "newTranscript",
+              "displayName": "newTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        520,
+        1160
+      ],
+      "id": "5cafdcb6-7418-41fd-8d08-bf07e27c6184",
+      "name": "Google SheetsX",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rXFxluRJ5i9txrsS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1yNgtJyxQA4qVMR0So3h0r79r1ZtwWszJ3FafnUY54Uw",
+          "mode": "list",
+          "cachedResultName": "IG_Reel_Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yNgtJyxQA4qVMR0So3h0r79r1ZtwWszJ3FafnUY54Uw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yNgtJyxQA4qVMR0So3h0r79r1ZtwWszJ3FafnUY54Uw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Google SheetsX').item.json.id }}",
             "scrapedTranscript": "={{ $('Get the transcript1').item.json.text }}",
             "newTranscript": "={{ $json.output.script }}",
             "Instructions": "={{ $('Filter & Generate Suggestions1').item.json.output.stepByStep }}"
@@ -1155,136 +1562,17 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1200,
-        1280
+        1660,
+        1420
       ],
-      "id": "88a2e2e0-82b4-4edd-ada3-008c4baa5952",
-      "name": "Google Sheets2"
-    },
-    {
-      "parameters": {
-        "content": "### Creating new script\n",
-        "height": 280,
-        "width": 340,
-        "color": 5
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        720,
-        1220
-      ],
-      "id": "d1eef359-711b-4100-bea0-6c0523df687c",
-      "name": "Sticky Note2"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.assemblyai.com/v2/transcript",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "{\n  \"Authorization\": \"44b64c1735fc4209a57b3078b4aa9e1c\",\n  \"Content-Type\": \"application/json\"\n}\n",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"audio_url\": \"{{ $json.upload_url }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        680,
-        1020
-      ],
-      "id": "f2a20f76-01d2-4a2b-bacc-d9a975c97a85",
-      "name": "assemblyAI starts1"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        -120,
-        1020
-      ],
-      "id": "6067705d-97b4-4e75-be44-f64c751c4a39",
-      "name": "Input Viral Video Link",
-      "webhookId": "ea8e4f4a-d6f4-4378-b240-536d98d35dad"
-    },
-    {
-      "parameters": {
-        "content": "## Extract one specific video\n",
-        "height": 560,
-        "width": 1580
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        -180,
-        960
-      ],
-      "id": "99a661ac-e7dc-46e4-82a2-1eb0878fc5f3",
-      "name": "Sticky Note3"
-    },
-    {
-      "parameters": {
-        "content": "## Extract from top creators",
-        "height": 880,
-        "width": 1360
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        -100,
-        20
-      ],
-      "id": "aa004f26-0324-407b-92c5-26564c2bdf7c",
-      "name": "Sticky Note4"
-    },
-    {
-      "parameters": {
-        "amount": 300
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        800,
-        400
-      ],
-      "id": "a9993d9a-9135-4c23-948f-41252172d930",
-      "name": "Wait 300 sec",
-      "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
-    },
-    {
-      "parameters": {
-        "amount": 30
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        940,
-        1020
-      ],
-      "id": "74895cce-1c33-4ef7-ba31-bfbd6e0bfadc",
-      "name": "Wait 30 sec",
-      "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
-    },
-    {
-      "parameters": {
-        "content": "## Setting Up\n1. Set up apify api key in 'Scraping' node\n2. Set up AssemblyAI API key in 'upload file to assemblyAI', 'assemblyAI starts' and 'Get the transcript' node.\n3. Set up Tavily (LLM Search engine) API key in 'Searching Gaps using LLM Search Engine' node",
-        "height": 180,
-        "width": 420,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        1340,
-        20
-      ],
-      "id": "004e0f2f-b670-4453-bf19-0d220cbc3f44",
-      "name": "Sticky Note5"
+      "id": "cc668e57-8915-46cc-b24c-f53d1a16df54",
+      "name": "Google SheetsY",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rXFxluRJ5i9txrsS",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "connections": {
@@ -1475,17 +1763,6 @@
         ]
       ]
     },
-    "Filter & Generate Suggestions1": {
-      "main": [
-        [
-          {
-            "node": "Searching Gaps using LLM Search Engine1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "LLM2": {
       "ai_languageModel": [
         [
@@ -1545,7 +1822,7 @@
       "main": [
         [
           {
-            "node": "Google Sheets2",
+            "node": "Google SheetsY",
             "type": "main",
             "index": 0
           }
@@ -1578,7 +1855,7 @@
       "main": [
         [
           {
-            "node": "Download Video1",
+            "node": "ScrapingX",
             "type": "main",
             "index": 0
           }
@@ -1606,9 +1883,1498 @@
           }
         ]
       ]
+    },
+    "Filter & Generate Suggestions1": {
+      "main": [
+        [
+          {
+            "node": "Searching Gaps using LLM Search Engine1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ScrapingX": {
+      "main": [
+        [
+          {
+            "node": "Google SheetsX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google SheetsX": {
+      "main": [
+        [
+          {
+            "node": "Download Video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "pinData": {},
+  "pinData": {
+    "Get the transcript1": [
+      {
+        "id": "0ca6d385-acea-4654-a7cc-9f728a590e24",
+        "language_model": "assemblyai_default",
+        "acoustic_model": "assemblyai_default",
+        "language_code": "en_us",
+        "status": "completed",
+        "audio_url": "https://cdn.assemblyai.com/upload/e27e0fd4-62e5-464e-bbfe-10a7288c68c6",
+        "text": "Scientists just de extincted the dire wolf if you're a Game of Thrones fan, this sounds like fantasy becoming reality. And it is. Colossal Biosciences, a company dedicated to genetic engineering and de extinction projects, has successfully brought back dire wolves after being extinct for over 10,000 years. Now, these ancient predators were reconstructed using DNA from fossils dating back 11,572,00. Technically, Colossal used CRISPR gene editing to recreate the genome, bridging the gap between ancient samples and modern wolves. The project has already resulted in three dire wolves with distinctive, thick white fur that showcases characteristics scientists couldn't determine from fossils alone. Colossal's mission goes beyond reviving extinct species. It's about taking responsibility for Earth's biodiversity. As the company's CEO, Ben Lamb, explained on Joe Rogan's podcast, they're not just focused on dire wolves. They're also working on woolly mammoths, Tasmanian tigers, and the dodo. They even created woolly mice as a proof of concept, which went viral online because they were unexpectedly adorable. But this raises fascinating questions about de extinction. Which species should we bring back? Could this technology help wildlife conservation? And where does the line between science and playing God ultimately fall?",
+        "words": [
+          {
+            "text": "Scientists",
+            "start": 320,
+            "end": 928,
+            "confidence": 0.9947,
+            "speaker": null
+          },
+          {
+            "text": "just",
+            "start": 984,
+            "end": 1288,
+            "confidence": 0.9977,
+            "speaker": null
+          },
+          {
+            "text": "de",
+            "start": 1344,
+            "end": 1560,
+            "confidence": 0.99888,
+            "speaker": null
+          },
+          {
+            "text": "extincted",
+            "start": 1600,
+            "end": 2248,
+            "confidence": 0.57331,
+            "speaker": null
+          },
+          {
+            "text": "the",
+            "start": 2264,
+            "end": 2392,
+            "confidence": 0.99672,
+            "speaker": null
+          },
+          {
+            "text": "dire",
+            "start": 2416,
+            "end": 2664,
+            "confidence": 0.97322,
+            "speaker": null
+          },
+          {
+            "text": "wolf",
+            "start": 2712,
+            "end": 3064,
+            "confidence": 0.79703,
+            "speaker": null
+          },
+          {
+            "text": "if",
+            "start": 3112,
+            "end": 3272,
+            "confidence": 0.99805,
+            "speaker": null
+          },
+          {
+            "text": "you're",
+            "start": 3296,
+            "end": 3448,
+            "confidence": 0.93367,
+            "speaker": null
+          },
+          {
+            "text": "a",
+            "start": 3464,
+            "end": 3544,
+            "confidence": 0.99773,
+            "speaker": null
+          },
+          {
+            "text": "Game",
+            "start": 3552,
+            "end": 3672,
+            "confidence": 0.9924,
+            "speaker": null
+          },
+          {
+            "text": "of",
+            "start": 3696,
+            "end": 3832,
+            "confidence": 0.99948,
+            "speaker": null
+          },
+          {
+            "text": "Thrones",
+            "start": 3856,
+            "end": 4152,
+            "confidence": 0.98304,
+            "speaker": null
+          },
+          {
+            "text": "fan,",
+            "start": 4216,
+            "end": 4504,
+            "confidence": 0.99625,
+            "speaker": null
+          },
+          {
+            "text": "this",
+            "start": 4552,
+            "end": 4760,
+            "confidence": 0.99786,
+            "speaker": null
+          },
+          {
+            "text": "sounds",
+            "start": 4800,
+            "end": 5016,
+            "confidence": 0.99196,
+            "speaker": null
+          },
+          {
+            "text": "like",
+            "start": 5048,
+            "end": 5192,
+            "confidence": 0.99916,
+            "speaker": null
+          },
+          {
+            "text": "fantasy",
+            "start": 5216,
+            "end": 5656,
+            "confidence": 0.99788,
+            "speaker": null
+          },
+          {
+            "text": "becoming",
+            "start": 5688,
+            "end": 5944,
+            "confidence": 0.99877,
+            "speaker": null
+          },
+          {
+            "text": "reality.",
+            "start": 5992,
+            "end": 6472,
+            "confidence": 0.99823,
+            "speaker": null
+          },
+          {
+            "text": "And",
+            "start": 6536,
+            "end": 6712,
+            "confidence": 0.9845,
+            "speaker": null
+          },
+          {
+            "text": "it",
+            "start": 6736,
+            "end": 6824,
+            "confidence": 0.99763,
+            "speaker": null
+          },
+          {
+            "text": "is.",
+            "start": 6832,
+            "end": 7096,
+            "confidence": 0.9918,
+            "speaker": null
+          },
+          {
+            "text": "Colossal",
+            "start": 7168,
+            "end": 7656,
+            "confidence": 0.99848,
+            "speaker": null
+          },
+          {
+            "text": "Biosciences,",
+            "start": 7688,
+            "end": 8552,
+            "confidence": 0.8715,
+            "speaker": null
+          },
+          {
+            "text": "a",
+            "start": 8616,
+            "end": 8792,
+            "confidence": 0.99788,
+            "speaker": null
+          },
+          {
+            "text": "company",
+            "start": 8816,
+            "end": 9048,
+            "confidence": 0.99901,
+            "speaker": null
+          },
+          {
+            "text": "dedicated",
+            "start": 9104,
+            "end": 9496,
+            "confidence": 0.99974,
+            "speaker": null
+          },
+          {
+            "text": "to",
+            "start": 9528,
+            "end": 9672,
+            "confidence": 0.99935,
+            "speaker": null
+          },
+          {
+            "text": "genetic",
+            "start": 9696,
+            "end": 10056,
+            "confidence": 0.99797,
+            "speaker": null
+          },
+          {
+            "text": "engineering",
+            "start": 10088,
+            "end": 10504,
+            "confidence": 0.81695,
+            "speaker": null
+          },
+          {
+            "text": "and",
+            "start": 10552,
+            "end": 10712,
+            "confidence": 0.9955,
+            "speaker": null
+          },
+          {
+            "text": "de",
+            "start": 10736,
+            "end": 10872,
+            "confidence": 0.99783,
+            "speaker": null
+          },
+          {
+            "text": "extinction",
+            "start": 10896,
+            "end": 11416,
+            "confidence": 0.91399,
+            "speaker": null
+          },
+          {
+            "text": "projects,",
+            "start": 11448,
+            "end": 11912,
+            "confidence": 0.99481,
+            "speaker": null
+          },
+          {
+            "text": "has",
+            "start": 11976,
+            "end": 12200,
+            "confidence": 0.98603,
+            "speaker": null
+          },
+          {
+            "text": "successfully",
+            "start": 12240,
+            "end": 12696,
+            "confidence": 0.98946,
+            "speaker": null
+          },
+          {
+            "text": "brought",
+            "start": 12728,
+            "end": 12936,
+            "confidence": 0.99703,
+            "speaker": null
+          },
+          {
+            "text": "back",
+            "start": 12968,
+            "end": 13208,
+            "confidence": 0.99769,
+            "speaker": null
+          },
+          {
+            "text": "dire",
+            "start": 13264,
+            "end": 13640,
+            "confidence": 0.70468,
+            "speaker": null
+          },
+          {
+            "text": "wolves",
+            "start": 13720,
+            "end": 14168,
+            "confidence": 0.58652,
+            "speaker": null
+          },
+          {
+            "text": "after",
+            "start": 14264,
+            "end": 14472,
+            "confidence": 0.99888,
+            "speaker": null
+          },
+          {
+            "text": "being",
+            "start": 14496,
+            "end": 14632,
+            "confidence": 0.99699,
+            "speaker": null
+          },
+          {
+            "text": "extinct",
+            "start": 14656,
+            "end": 15016,
+            "confidence": 0.95814,
+            "speaker": null
+          },
+          {
+            "text": "for",
+            "start": 15048,
+            "end": 15192,
+            "confidence": 0.99505,
+            "speaker": null
+          },
+          {
+            "text": "over",
+            "start": 15216,
+            "end": 15400,
+            "confidence": 0.99653,
+            "speaker": null
+          },
+          {
+            "text": "10,000",
+            "start": 15440,
+            "end": 15944,
+            "confidence": 0.98272,
+            "speaker": null
+          },
+          {
+            "text": "years.",
+            "start": 16032,
+            "end": 16660,
+            "confidence": 0.99777,
+            "speaker": null
+          },
+          {
+            "text": "Now,",
+            "start": 25120,
+            "end": 25432,
+            "confidence": 0.97655,
+            "speaker": null
+          },
+          {
+            "text": "these",
+            "start": 25456,
+            "end": 25592,
+            "confidence": 0.99612,
+            "speaker": null
+          },
+          {
+            "text": "ancient",
+            "start": 25616,
+            "end": 25944,
+            "confidence": 0.99649,
+            "speaker": null
+          },
+          {
+            "text": "predators",
+            "start": 25992,
+            "end": 26392,
+            "confidence": 0.99474,
+            "speaker": null
+          },
+          {
+            "text": "were",
+            "start": 26456,
+            "end": 26632,
+            "confidence": 0.99668,
+            "speaker": null
+          },
+          {
+            "text": "reconstructed",
+            "start": 26656,
+            "end": 27256,
+            "confidence": 0.58734,
+            "speaker": null
+          },
+          {
+            "text": "using",
+            "start": 27288,
+            "end": 27480,
+            "confidence": 0.99814,
+            "speaker": null
+          },
+          {
+            "text": "DNA",
+            "start": 27520,
+            "end": 27944,
+            "confidence": 0.96473,
+            "speaker": null
+          },
+          {
+            "text": "from",
+            "start": 27992,
+            "end": 28152,
+            "confidence": 0.9985,
+            "speaker": null
+          },
+          {
+            "text": "fossils",
+            "start": 28176,
+            "end": 28712,
+            "confidence": 0.89038,
+            "speaker": null
+          },
+          {
+            "text": "dating",
+            "start": 28776,
+            "end": 29016,
+            "confidence": 0.9969,
+            "speaker": null
+          },
+          {
+            "text": "back",
+            "start": 29048,
+            "end": 29288,
+            "confidence": 0.99699,
+            "speaker": null
+          },
+          {
+            "text": "11,572,00.",
+            "start": 29344,
+            "end": 31932,
+            "confidence": 0.90433,
+            "speaker": null
+          },
+          {
+            "text": "Technically,",
+            "start": 32096,
+            "end": 32612,
+            "confidence": 0.99869,
+            "speaker": null
+          },
+          {
+            "text": "Colossal",
+            "start": 32676,
+            "end": 33284,
+            "confidence": 0.90629,
+            "speaker": null
+          },
+          {
+            "text": "used",
+            "start": 33332,
+            "end": 33492,
+            "confidence": 0.99569,
+            "speaker": null
+          },
+          {
+            "text": "CRISPR",
+            "start": 33516,
+            "end": 33844,
+            "confidence": 0.99693,
+            "speaker": null
+          },
+          {
+            "text": "gene",
+            "start": 33892,
+            "end": 34116,
+            "confidence": 0.94596,
+            "speaker": null
+          },
+          {
+            "text": "editing",
+            "start": 34148,
+            "end": 34452,
+            "confidence": 0.9991,
+            "speaker": null
+          },
+          {
+            "text": "to",
+            "start": 34516,
+            "end": 34692,
+            "confidence": 0.99741,
+            "speaker": null
+          },
+          {
+            "text": "recreate",
+            "start": 34716,
+            "end": 35108,
+            "confidence": 0.96446,
+            "speaker": null
+          },
+          {
+            "text": "the",
+            "start": 35124,
+            "end": 35252,
+            "confidence": 0.99242,
+            "speaker": null
+          },
+          {
+            "text": "genome,",
+            "start": 35276,
+            "end": 35700,
+            "confidence": 0.99717,
+            "speaker": null
+          },
+          {
+            "text": "bridging",
+            "start": 35780,
+            "end": 36116,
+            "confidence": 0.99784,
+            "speaker": null
+          },
+          {
+            "text": "the",
+            "start": 36148,
+            "end": 36292,
+            "confidence": 0.99804,
+            "speaker": null
+          },
+          {
+            "text": "gap",
+            "start": 36316,
+            "end": 36516,
+            "confidence": 0.99831,
+            "speaker": null
+          },
+          {
+            "text": "between",
+            "start": 36548,
+            "end": 36788,
+            "confidence": 0.9999,
+            "speaker": null
+          },
+          {
+            "text": "ancient",
+            "start": 36844,
+            "end": 37204,
+            "confidence": 0.99784,
+            "speaker": null
+          },
+          {
+            "text": "samples",
+            "start": 37252,
+            "end": 37700,
+            "confidence": 0.99677,
+            "speaker": null
+          },
+          {
+            "text": "and",
+            "start": 37780,
+            "end": 37972,
+            "confidence": 0.99616,
+            "speaker": null
+          },
+          {
+            "text": "modern",
+            "start": 37996,
+            "end": 38244,
+            "confidence": 0.85084,
+            "speaker": null
+          },
+          {
+            "text": "wolves.",
+            "start": 38292,
+            "end": 38660,
+            "confidence": 0.94286,
+            "speaker": null
+          },
+          {
+            "text": "The",
+            "start": 38740,
+            "end": 38932,
+            "confidence": 0.977,
+            "speaker": null
+          },
+          {
+            "text": "project",
+            "start": 38956,
+            "end": 39236,
+            "confidence": 0.99922,
+            "speaker": null
+          },
+          {
+            "text": "has",
+            "start": 39308,
+            "end": 39492,
+            "confidence": 0.98002,
+            "speaker": null
+          },
+          {
+            "text": "already",
+            "start": 39516,
+            "end": 39796,
+            "confidence": 0.99349,
+            "speaker": null
+          },
+          {
+            "text": "resulted",
+            "start": 39868,
+            "end": 40228,
+            "confidence": 0.99975,
+            "speaker": null
+          },
+          {
+            "text": "in",
+            "start": 40244,
+            "end": 40420,
+            "confidence": 0.99891,
+            "speaker": null
+          },
+          {
+            "text": "three",
+            "start": 40460,
+            "end": 40660,
+            "confidence": 0.99941,
+            "speaker": null
+          },
+          {
+            "text": "dire",
+            "start": 40700,
+            "end": 41012,
+            "confidence": 0.95652,
+            "speaker": null
+          },
+          {
+            "text": "wolves",
+            "start": 41076,
+            "end": 41412,
+            "confidence": 0.95453,
+            "speaker": null
+          },
+          {
+            "text": "with",
+            "start": 41476,
+            "end": 41700,
+            "confidence": 0.99636,
+            "speaker": null
+          },
+          {
+            "text": "distinctive,",
+            "start": 41740,
+            "end": 42244,
+            "confidence": 0.41634,
+            "speaker": null
+          },
+          {
+            "text": "thick",
+            "start": 42292,
+            "end": 42516,
+            "confidence": 0.99269,
+            "speaker": null
+          },
+          {
+            "text": "white",
+            "start": 42548,
+            "end": 42788,
+            "confidence": 0.99752,
+            "speaker": null
+          },
+          {
+            "text": "fur",
+            "start": 42844,
+            "end": 43156,
+            "confidence": 0.99941,
+            "speaker": null
+          },
+          {
+            "text": "that",
+            "start": 43228,
+            "end": 43460,
+            "confidence": 0.99704,
+            "speaker": null
+          },
+          {
+            "text": "showcases",
+            "start": 43500,
+            "end": 43940,
+            "confidence": 0.84487,
+            "speaker": null
+          },
+          {
+            "text": "characteristics",
+            "start": 44020,
+            "end": 44868,
+            "confidence": 0.997,
+            "speaker": null
+          },
+          {
+            "text": "scientists",
+            "start": 44964,
+            "end": 45412,
+            "confidence": 0.75364,
+            "speaker": null
+          },
+          {
+            "text": "couldn't",
+            "start": 45476,
+            "end": 45876,
+            "confidence": 0.99076,
+            "speaker": null
+          },
+          {
+            "text": "determine",
+            "start": 45908,
+            "end": 46324,
+            "confidence": 0.99645,
+            "speaker": null
+          },
+          {
+            "text": "from",
+            "start": 46372,
+            "end": 46580,
+            "confidence": 0.99857,
+            "speaker": null
+          },
+          {
+            "text": "fossils",
+            "start": 46620,
+            "end": 46996,
+            "confidence": 0.99749,
+            "speaker": null
+          },
+          {
+            "text": "alone.",
+            "start": 47028,
+            "end": 47332,
+            "confidence": 0.9885,
+            "speaker": null
+          },
+          {
+            "text": "Colossal's",
+            "start": 47396,
+            "end": 48116,
+            "confidence": 0.73939,
+            "speaker": null
+          },
+          {
+            "text": "mission",
+            "start": 48148,
+            "end": 48452,
+            "confidence": 0.99883,
+            "speaker": null
+          },
+          {
+            "text": "goes",
+            "start": 48516,
+            "end": 48756,
+            "confidence": 0.99726,
+            "speaker": null
+          },
+          {
+            "text": "beyond",
+            "start": 48788,
+            "end": 49092,
+            "confidence": 0.95722,
+            "speaker": null
+          },
+          {
+            "text": "reviving",
+            "start": 49156,
+            "end": 49572,
+            "confidence": 0.57551,
+            "speaker": null
+          },
+          {
+            "text": "extinct",
+            "start": 49636,
+            "end": 50084,
+            "confidence": 0.62198,
+            "speaker": null
+          },
+          {
+            "text": "species.",
+            "start": 50132,
+            "end": 50548,
+            "confidence": 0.85001,
+            "speaker": null
+          },
+          {
+            "text": "It's",
+            "start": 50644,
+            "end": 50916,
+            "confidence": 0.60256,
+            "speaker": null
+          },
+          {
+            "text": "about",
+            "start": 50948,
+            "end": 51140,
+            "confidence": 0.99968,
+            "speaker": null
+          },
+          {
+            "text": "taking",
+            "start": 51180,
+            "end": 51476,
+            "confidence": 0.9996,
+            "speaker": null
+          },
+          {
+            "text": "responsibility",
+            "start": 51548,
+            "end": 52180,
+            "confidence": 0.99925,
+            "speaker": null
+          },
+          {
+            "text": "for",
+            "start": 52260,
+            "end": 52500,
+            "confidence": 0.99766,
+            "speaker": null
+          },
+          {
+            "text": "Earth's",
+            "start": 52540,
+            "end": 52836,
+            "confidence": 0.98208,
+            "speaker": null
+          },
+          {
+            "text": "biodiversity.",
+            "start": 52868,
+            "end": 53620,
+            "confidence": 0.91193,
+            "speaker": null
+          },
+          {
+            "text": "As",
+            "start": 53700,
+            "end": 53892,
+            "confidence": 0.99758,
+            "speaker": null
+          },
+          {
+            "text": "the",
+            "start": 53916,
+            "end": 54052,
+            "confidence": 0.99785,
+            "speaker": null
+          },
+          {
+            "text": "company's",
+            "start": 54076,
+            "end": 54516,
+            "confidence": 0.90798,
+            "speaker": null
+          },
+          {
+            "text": "CEO,",
+            "start": 54548,
+            "end": 54980,
+            "confidence": 0.88049,
+            "speaker": null
+          },
+          {
+            "text": "Ben",
+            "start": 55060,
+            "end": 55364,
+            "confidence": 0.99901,
+            "speaker": null
+          },
+          {
+            "text": "Lamb,",
+            "start": 55412,
+            "end": 55812,
+            "confidence": 0.60673,
+            "speaker": null
+          },
+          {
+            "text": "explained",
+            "start": 55876,
+            "end": 56196,
+            "confidence": 0.99772,
+            "speaker": null
+          },
+          {
+            "text": "on",
+            "start": 56228,
+            "end": 56372,
+            "confidence": 0.98789,
+            "speaker": null
+          },
+          {
+            "text": "Joe",
+            "start": 56396,
+            "end": 56596,
+            "confidence": 0.96624,
+            "speaker": null
+          },
+          {
+            "text": "Rogan's",
+            "start": 56628,
+            "end": 57108,
+            "confidence": 0.97102,
+            "speaker": null
+          },
+          {
+            "text": "podcast,",
+            "start": 57124,
+            "end": 57620,
+            "confidence": 0.86567,
+            "speaker": null
+          },
+          {
+            "text": "they're",
+            "start": 57700,
+            "end": 57956,
+            "confidence": 0.52183,
+            "speaker": null
+          },
+          {
+            "text": "not",
+            "start": 57988,
+            "end": 58132,
+            "confidence": 0.9976,
+            "speaker": null
+          },
+          {
+            "text": "just",
+            "start": 58156,
+            "end": 58340,
+            "confidence": 0.99719,
+            "speaker": null
+          },
+          {
+            "text": "focused",
+            "start": 58380,
+            "end": 58676,
+            "confidence": 0.98607,
+            "speaker": null
+          },
+          {
+            "text": "on",
+            "start": 58708,
+            "end": 58852,
+            "confidence": 0.99936,
+            "speaker": null
+          },
+          {
+            "text": "dire",
+            "start": 58876,
+            "end": 59124,
+            "confidence": 0.99193,
+            "speaker": null
+          },
+          {
+            "text": "wolves.",
+            "start": 59172,
+            "end": 59492,
+            "confidence": 0.77055,
+            "speaker": null
+          },
+          {
+            "text": "They're",
+            "start": 59556,
+            "end": 59828,
+            "confidence": 0.95993,
+            "speaker": null
+          },
+          {
+            "text": "also",
+            "start": 59844,
+            "end": 60020,
+            "confidence": 0.99705,
+            "speaker": null
+          },
+          {
+            "text": "working",
+            "start": 60060,
+            "end": 60260,
+            "confidence": 0.99857,
+            "speaker": null
+          },
+          {
+            "text": "on",
+            "start": 60300,
+            "end": 60452,
+            "confidence": 0.99765,
+            "speaker": null
+          },
+          {
+            "text": "woolly",
+            "start": 60476,
+            "end": 60788,
+            "confidence": 0.94987,
+            "speaker": null
+          },
+          {
+            "text": "mammoths,",
+            "start": 60804,
+            "end": 61294,
+            "confidence": 0.86488,
+            "speaker": null
+          },
+          {
+            "text": "Tasmanian",
+            "start": 61372,
+            "end": 61946,
+            "confidence": 0.99727,
+            "speaker": null
+          },
+          {
+            "text": "tigers,",
+            "start": 61978,
+            "end": 62426,
+            "confidence": 0.99461,
+            "speaker": null
+          },
+          {
+            "text": "and",
+            "start": 62458,
+            "end": 62554,
+            "confidence": 0.99151,
+            "speaker": null
+          },
+          {
+            "text": "the",
+            "start": 62562,
+            "end": 62682,
+            "confidence": 0.97174,
+            "speaker": null
+          },
+          {
+            "text": "dodo.",
+            "start": 62706,
+            "end": 63194,
+            "confidence": 0.98608,
+            "speaker": null
+          },
+          {
+            "text": "They",
+            "start": 63242,
+            "end": 63402,
+            "confidence": 0.98999,
+            "speaker": null
+          },
+          {
+            "text": "even",
+            "start": 63426,
+            "end": 63562,
+            "confidence": 0.99415,
+            "speaker": null
+          },
+          {
+            "text": "created",
+            "start": 63586,
+            "end": 63914,
+            "confidence": 0.99551,
+            "speaker": null
+          },
+          {
+            "text": "woolly",
+            "start": 63962,
+            "end": 64346,
+            "confidence": 0.76268,
+            "speaker": null
+          },
+          {
+            "text": "mice",
+            "start": 64378,
+            "end": 64634,
+            "confidence": 0.99944,
+            "speaker": null
+          },
+          {
+            "text": "as",
+            "start": 64682,
+            "end": 64842,
+            "confidence": 0.99648,
+            "speaker": null
+          },
+          {
+            "text": "a",
+            "start": 64866,
+            "end": 64954,
+            "confidence": 0.93815,
+            "speaker": null
+          },
+          {
+            "text": "proof",
+            "start": 64962,
+            "end": 65098,
+            "confidence": 0.99828,
+            "speaker": null
+          },
+          {
+            "text": "of",
+            "start": 65114,
+            "end": 65242,
+            "confidence": 0.99781,
+            "speaker": null
+          },
+          {
+            "text": "concept,",
+            "start": 65266,
+            "end": 65594,
+            "confidence": 0.99779,
+            "speaker": null
+          },
+          {
+            "text": "which",
+            "start": 65642,
+            "end": 65802,
+            "confidence": 0.98876,
+            "speaker": null
+          },
+          {
+            "text": "went",
+            "start": 65826,
+            "end": 65962,
+            "confidence": 0.99749,
+            "speaker": null
+          },
+          {
+            "text": "viral",
+            "start": 65986,
+            "end": 66282,
+            "confidence": 0.99984,
+            "speaker": null
+          },
+          {
+            "text": "online",
+            "start": 66346,
+            "end": 66714,
+            "confidence": 0.98972,
+            "speaker": null
+          },
+          {
+            "text": "because",
+            "start": 66802,
+            "end": 67002,
+            "confidence": 0.98804,
+            "speaker": null
+          },
+          {
+            "text": "they",
+            "start": 67026,
+            "end": 67162,
+            "confidence": 0.99302,
+            "speaker": null
+          },
+          {
+            "text": "were",
+            "start": 67186,
+            "end": 67370,
+            "confidence": 0.99229,
+            "speaker": null
+          },
+          {
+            "text": "unexpectedly",
+            "start": 67410,
+            "end": 68106,
+            "confidence": 0.98018,
+            "speaker": null
+          },
+          {
+            "text": "adorable.",
+            "start": 68138,
+            "end": 68634,
+            "confidence": 0.99918,
+            "speaker": null
+          },
+          {
+            "text": "But",
+            "start": 68682,
+            "end": 68842,
+            "confidence": 0.98879,
+            "speaker": null
+          },
+          {
+            "text": "this",
+            "start": 68866,
+            "end": 69050,
+            "confidence": 0.99611,
+            "speaker": null
+          },
+          {
+            "text": "raises",
+            "start": 69090,
+            "end": 69450,
+            "confidence": 0.98447,
+            "speaker": null
+          },
+          {
+            "text": "fascinating",
+            "start": 69530,
+            "end": 70074,
+            "confidence": 0.9633,
+            "speaker": null
+          },
+          {
+            "text": "questions",
+            "start": 70122,
+            "end": 70458,
+            "confidence": 0.99393,
+            "speaker": null
+          },
+          {
+            "text": "about",
+            "start": 70474,
+            "end": 70698,
+            "confidence": 0.99265,
+            "speaker": null
+          },
+          {
+            "text": "de",
+            "start": 70754,
+            "end": 70874,
+            "confidence": 0.96484,
+            "speaker": null
+          },
+          {
+            "text": "extinction.",
+            "start": 70882,
+            "end": 71514,
+            "confidence": 0.67685,
+            "speaker": null
+          },
+          {
+            "text": "Which",
+            "start": 71562,
+            "end": 71722,
+            "confidence": 0.99637,
+            "speaker": null
+          },
+          {
+            "text": "species",
+            "start": 71746,
+            "end": 71994,
+            "confidence": 0.62176,
+            "speaker": null
+          },
+          {
+            "text": "should",
+            "start": 72042,
+            "end": 72202,
+            "confidence": 0.99584,
+            "speaker": null
+          },
+          {
+            "text": "we",
+            "start": 72226,
+            "end": 72362,
+            "confidence": 0.99287,
+            "speaker": null
+          },
+          {
+            "text": "bring",
+            "start": 72386,
+            "end": 72570,
+            "confidence": 0.99973,
+            "speaker": null
+          },
+          {
+            "text": "back?",
+            "start": 72610,
+            "end": 72858,
+            "confidence": 0.99848,
+            "speaker": null
+          },
+          {
+            "text": "Could",
+            "start": 72914,
+            "end": 73082,
+            "confidence": 0.99681,
+            "speaker": null
+          },
+          {
+            "text": "this",
+            "start": 73106,
+            "end": 73290,
+            "confidence": 0.99146,
+            "speaker": null
+          },
+          {
+            "text": "technology",
+            "start": 73330,
+            "end": 73674,
+            "confidence": 0.99423,
+            "speaker": null
+          },
+          {
+            "text": "help",
+            "start": 73762,
+            "end": 74010,
+            "confidence": 0.99901,
+            "speaker": null
+          },
+          {
+            "text": "wildlife",
+            "start": 74050,
+            "end": 74474,
+            "confidence": 0.66397,
+            "speaker": null
+          },
+          {
+            "text": "conservation?",
+            "start": 74522,
+            "end": 75050,
+            "confidence": 0.99856,
+            "speaker": null
+          },
+          {
+            "text": "And",
+            "start": 75130,
+            "end": 75322,
+            "confidence": 0.96953,
+            "speaker": null
+          },
+          {
+            "text": "where",
+            "start": 75346,
+            "end": 75530,
+            "confidence": 0.99847,
+            "speaker": null
+          },
+          {
+            "text": "does",
+            "start": 75570,
+            "end": 75722,
+            "confidence": 0.9985,
+            "speaker": null
+          },
+          {
+            "text": "the",
+            "start": 75746,
+            "end": 75882,
+            "confidence": 0.98588,
+            "speaker": null
+          },
+          {
+            "text": "line",
+            "start": 75906,
+            "end": 76138,
+            "confidence": 0.99811,
+            "speaker": null
+          },
+          {
+            "text": "between",
+            "start": 76194,
+            "end": 76458,
+            "confidence": 0.99841,
+            "speaker": null
+          },
+          {
+            "text": "science",
+            "start": 76514,
+            "end": 76794,
+            "confidence": 0.99658,
+            "speaker": null
+          },
+          {
+            "text": "and",
+            "start": 76842,
+            "end": 77002,
+            "confidence": 0.99506,
+            "speaker": null
+          },
+          {
+            "text": "playing",
+            "start": 77026,
+            "end": 77306,
+            "confidence": 0.96175,
+            "speaker": null
+          },
+          {
+            "text": "God",
+            "start": 77378,
+            "end": 77722,
+            "confidence": 0.99464,
+            "speaker": null
+          },
+          {
+            "text": "ultimately",
+            "start": 77786,
+            "end": 78266,
+            "confidence": 0.9832,
+            "speaker": null
+          },
+          {
+            "text": "fall?",
+            "start": 78298,
+            "end": 78370,
+            "confidence": 0.98841,
+            "speaker": null
+          }
+        ],
+        "utterances": null,
+        "confidence": 0.9508565,
+        "audio_duration": 79,
+        "punctuate": true,
+        "format_text": true,
+        "dual_channel": null,
+        "webhook_url": null,
+        "webhook_status_code": null,
+        "webhook_auth": false,
+        "webhook_auth_header_name": null,
+        "speed_boost": false,
+        "auto_highlights_result": null,
+        "auto_highlights": false,
+        "audio_start_from": null,
+        "audio_end_at": null,
+        "word_boost": [],
+        "boost_param": null,
+        "prompt": null,
+        "filter_profanity": false,
+        "redact_pii": false,
+        "redact_pii_audio": false,
+        "redact_pii_audio_quality": null,
+        "redact_pii_policies": null,
+        "redact_pii_sub": null,
+        "speaker_labels": false,
+        "content_safety": false,
+        "iab_categories": false,
+        "content_safety_labels": {
+          "status": "unavailable",
+          "results": [],
+          "summary": {}
+        },
+        "iab_categories_result": {
+          "status": "unavailable",
+          "results": [],
+          "summary": {}
+        },
+        "language_detection": false,
+        "language_confidence_threshold": null,
+        "language_confidence": null,
+        "custom_spelling": null,
+        "throttled": false,
+        "auto_chapters": false,
+        "summarization": false,
+        "summary_type": null,
+        "summary_model": null,
+        "custom_topics": false,
+        "topics": [],
+        "speech_threshold": null,
+        "speech_model": null,
+        "chapters": null,
+        "disfluencies": false,
+        "entity_detection": false,
+        "sentiment_analysis": false,
+        "sentiment_analysis_results": null,
+        "entities": null,
+        "speakers_expected": null,
+        "summary": null,
+        "custom_topics_results": null,
+        "is_deleted": null,
+        "multichannel": null,
+        "project_id": 527866,
+        "token_id": 530674
+      }
+    ]
+  },
   "meta": {
     "instanceId": "925d2c95f62cfe740dcce5e902826eff2193546c4f62d35ece41e361aedd85f5"
   }
