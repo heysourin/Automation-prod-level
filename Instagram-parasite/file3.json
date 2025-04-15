@@ -1,0 +1,2399 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        760,
+        720
+      ],
+      "id": "7e581b0a-8e78-416c-8f6a-b08c77ae3b7f",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I am a medical doctor, I create health related content on Instagram. I am looking through new archives to recreate/ re-purpose contents for my Instagram page.\n\nYou are a medical Infotainment content creation expert. Your task is to take as input a transcript of a news archive, and then determine if the transcription is about on a specific tool, health techniques, personal-care, treatment, or procedure that can be taught to my audience. \n\n\nIf so, you'll identify the above topics, then write a list of step-by-step instructions on how to create the Instagram reel (Like what scene should come, what graphics/ visuals should I show etc) and one suggestion on exactly how to make this content more palatable to a general health-conscious audiences or and healthcare fact nerds.\n\n\nReturn your output in JSON using this format:\n\n{\n  \"verdict\": \"true or false\",\n  \"fact\": [\"list\",\"of\",\"actual\",\"facts\",\"in the script\"],\n  \"stepByStep\": \"Detailed storyboard-style instructions on how to visually present the topic in an engaging Instagram Reel. Include scene transitions, visuals/graphics, and any narration or overlays.\",\n  \"suggestion\": \"Creative tips to make this content more engaging for health-conscious individuals or fact-loving healthcare audiences (e.g., use of hooks, humor, analogies, animations).\",\n  \"searchPrompt\": \"Write it like '{topicName}, the {typeOfHealthTopic}' — e.g., 'Intermittent Fasting, the metabolic reset approach'\"\n}\n\nIf verdict is \"false\", leave the rest of the fields empty.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful, intelligent admin assistant."
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "={\"transcript\":\"{{ $json.text }}\"}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        2300,
+        720
+      ],
+      "id": "a38c602f-4a8c-42f2-a958-463411fa7bad",
+      "name": "Filter & Generate Suggestions"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2300,
+        820
+      ],
+      "id": "5052897f-1dec-450b-af76-4f3e00644a4e",
+      "name": "LLM",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"verdict\": \"true or false\",\n  \"fact\": [\"list\", \"of\", \"actual\", \"health-related\", \"facts\", \"or\", \"insights\"],\n  \"stepByStep\": \"Detailed storyboard-style instructions on how to visually present the topic in an engaging Instagram Reel. Include scene transitions, suggested visuals/graphics, voiceovers or overlays.\",\n  \"suggestion\": \"Creative tips to make this content more engaging for health-conscious individuals or healthcare fact nerds (e.g., use of hooks, humor, analogies, trending formats).\",\n  \"searchPrompt\": \"A short search prompt to look up the topic for more context. Format: '{topicName}, the {typeOfHealthTopic}'\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2460,
+        820
+      ],
+      "id": "a99803a8-abde-4fe3-a4a5-073cd0ab9e94",
+      "name": "Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"Tell me 10 interesting (peculiar) things about {{ $json.output.searchPrompt }}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 1,\n  \"time_range\": null,\n  \"days\": 7,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": []\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2676,
+        720
+      ],
+      "id": "32df4835-ff79-44d7-9ed8-95568f7dfd44",
+      "name": "Searching Gaps using LLM Search Engine"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2900,
+        820
+      ],
+      "id": "72862552-9bb1-47a9-af38-01f5b351928a",
+      "name": "LLM1",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"script\":\"<Your script goes here (~100 words)>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3060,
+        820
+      ],
+      "id": "95c01dfa-993c-4b7c-ae3c-c11a2d200947",
+      "name": "Parser1"
+    },
+    {
+      "parameters": {
+        "content": "### Download the video and get video transcript\n",
+        "height": 220,
+        "width": 1080,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1150,
+        660
+      ],
+      "id": "6ed0a173-7430-419e-ab2e-a2e4d6f2ecf1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I have a transcript of a content from an influencer:\n\"\"\"\n{{ $('Get the transcript').item.json.text }}\n\"\"\",\n\nHow to make this content more interesting:\n\"\"\"\n{{ $('Filter & Generate Suggestions').item.json.output.stepByStep }}\n\"\"\",\n\nand I have researched data from the internet:\n\"\"\"\n{{ $json.answer }}\n\"\"\"\n\n\nNow I want you to create an a new script for me for my new instagram reel, with the help of the above data given to you.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful script writing assistant for a medical doctor creator."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        2896,
+        720
+      ],
+      "id": "c609980d-1be5-43ef-984c-1905ef84f590",
+      "name": "write new script"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "=1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "timestamp": "={{ $json.latestComments[1].timestamp }}",
+            "shortCode": "={{ $json.shortCode }}",
+            "caption": "={{ $json.caption }}",
+            "hashtags": "={{ $json.hashtags }}",
+            "url": "={{ $json.url }}",
+            "commentsCount": "={{ $json.commentsCount }}",
+            "firstComment": "={{ $json.firstComment }}",
+            "displayUrl": "={{ $json.displayUrl }}",
+            "videoUrl": "={{ $json.videoUrl }}",
+            "likesCount": "={{ $json.latestComments[0].likesCount }}",
+            "videoViewCount": "={{ $json.videoViewCount }}",
+            "videoPlayCount": "={{ $json.videoPlayCount }}",
+            "username": "={{ $json.ownerUsername }}",
+            "videoDuration": "={{ $json.videoDuration }}",
+            "isSponsored": "={{ $json.isSponsored }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "shortCode",
+              "displayName": "shortCode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "commentsCount",
+              "displayName": "commentsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firstComment",
+              "displayName": "firstComment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "displayUrl",
+              "displayName": "displayUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "likesCount",
+              "displayName": "likesCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoViewCount",
+              "displayName": "videoViewCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoPlayCount",
+              "displayName": "videoPlayCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoDuration",
+              "displayName": "videoDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "isSponsored",
+              "displayName": "isSponsored",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "scrapedTranscript",
+              "displayName": "scrapedTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "newTranscript",
+              "displayName": "newTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "newTranscript_Italian",
+              "displayName": "newTranscript_Italian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        980,
+        720
+      ],
+      "id": "a127f3ca-2e2d-442b-9be8-d570d3bf084c",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rXFxluRJ5i9txrsS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.assemblyai.com/v2/transcript/{{$json.id}}",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2080,
+        720
+      ],
+      "id": "23adc8e5-c504-4fe2-9253-0fa92d096467",
+      "name": "Get the transcript"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8",
+          "mode": "list",
+          "cachedResultName": "ig_parasite_dentist",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Google Sheets1').item.json.id }}",
+            "scrapedTranscript": "={{ $('Get the transcript').item.json.text }}",
+            "newTranscript": "={{ $json.output.script }}",
+            "Instructions": "={{ $('Filter & Generate Suggestions').item.json.output.stepByStep }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "shortCode",
+              "displayName": "shortCode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "commentsCount",
+              "displayName": "commentsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "firstComment",
+              "displayName": "firstComment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "displayUrl",
+              "displayName": "displayUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "likesCount",
+              "displayName": "likesCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoViewCount",
+              "displayName": "videoViewCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoPlayCount",
+              "displayName": "videoPlayCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoDuration",
+              "displayName": "videoDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "isSponsored",
+              "displayName": "isSponsored",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "scrapedTranscript",
+              "displayName": "scrapedTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "newTranscript",
+              "displayName": "newTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "newTranscript_Italian",
+              "displayName": "newTranscript_Italian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3272,
+        720
+      ],
+      "id": "9ac313e8-7321-43d6-b8f0-2dd10cd6d4e9",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rXFxluRJ5i9txrsS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Creating new script\n",
+        "height": 280,
+        "width": 320,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2860,
+        660
+      ],
+      "id": "c4d31000-457e-447b-b774-590f1ba8a900",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.assemblyai.com/v2/transcript",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\",\n  \"Content-Type\": \"application/json\"\n}\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"audio_url\": \"{{ $json.upload_url }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        720
+      ],
+      "id": "afa5183e-adce-4b8a-8ece-d3d2fcc5068a",
+      "name": "assemblyAI starts"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        720
+      ],
+      "id": "7fdd9787-973b-46c0-a515-d2202356ff78",
+      "name": "Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/xMc5Ga1oCONPmWJIa/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer apify_api_1tZuKtLuAWWJymkvo27qJaRQbZly1o0Ek7bC"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"resultsLimit\": 1,\n  \"username\": [\n    \"dr.giulio\",\n    \"drgarynyc\",\n    \"doc.zara\",\n    \"dramirkaram\",\n    \"lipsandlattes\"\n  ]\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        720
+      ],
+      "id": "849cf4a1-469e-4a17-baeb-476930903259",
+      "name": "Scraping"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Scraping1').item.json.video_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        1400
+      ],
+      "id": "69f55653-b180-40f9-8f69-4452825e3f77",
+      "name": "Download Video1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.assemblyai.com/v2/upload",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\"\n}",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        1400
+      ],
+      "id": "1cedf0e2-f7d2-4a2a-b921-38a9a01452e8",
+      "name": "upload file to assemblyAI1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I am a medical doctor, I create health related content on Instagram. I am looking through new archives to recreate/ re-purpose contents for my Instagram page.\n\nYou are a medical Infotainment content creation expert. Your task is to take as input a transcript of a news archive, and then determine if the transcription is about on a specific tool, health techniques, personal-care, treatment, or procedure that can be taught to my audience. \n\n\nIf so, you'll identify the above topics, then write a list of step-by-step instructions on how to create the Instagram reel (Like what scene should come, what graphics/ visuals should I show etc) and one suggestion on exactly how to make this content more palatable to a general health-conscious audiences or and healthcare fact nerds.\n\n\nReturn your output in JSON using this format:\n\n{\n  \"verdict\": \"true or false\",\n  \"fact\": [\"list\",\"of\",\"actual\",\"facts\",\"in the script\"],\n  \"stepByStep\": \"Detailed storyboard-style instructions on how to visually present the topic in an engaging Instagram Reel. Include scene transitions, visuals/graphics, and any narration or overlays.\",\n  \"suggestion\": \"Creative tips to make this content more engaging for health-conscious individuals or fact-loving healthcare audiences (e.g., use of hooks, humor, analogies, animations).\",\n  \"searchPrompt\": \"Write it like '{topicName}, the {typeOfHealthTopic}' — e.g., 'Intermittent Fasting, the metabolic reset approach'\"\n}\n\nIf verdict is \"false\", leave the rest of the fields empty.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful, intelligent admin assistant."
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "={\"transcript\":\"{{ $json.text }}\"}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        2080,
+        1400
+      ],
+      "id": "4c359247-82ae-467c-8740-b5b1f8a74a3c",
+      "name": "Filter & Generate Suggestions1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        1500
+      ],
+      "id": "e114b8c4-8570-4a63-ad54-435913f2de04",
+      "name": "LLM2",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"verdict\": \"true or false\",\n  \"fact\": [\"list\", \"of\", \"actual\", \"health-related\", \"facts\", \"or\", \"insights\"],\n  \"stepByStep\": \"Detailed storyboard-style instructions on how to visually present the topic in an engaging Instagram Reel. Include scene transitions, suggested visuals/graphics, voiceovers or overlays.\",\n  \"suggestion\": \"Creative tips to make this content more engaging for health-conscious individuals or healthcare fact nerds (e.g., use of hooks, humor, analogies, trending formats).\",\n  \"searchPrompt\": \"A short search prompt to look up the topic for more context. Format: '{topicName}, the {typeOfHealthTopic}'\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2220,
+        1500
+      ],
+      "id": "ee2e374f-42ba-497a-9528-b4346e626c88",
+      "name": "Parser2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"Tell me 10 interesting (peculiar) things about {{ $json.output.searchPrompt }}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 1,\n  \"time_range\": null,\n  \"days\": 7,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": []\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2460,
+        1400
+      ],
+      "id": "c0f76298-cb3f-4c1b-937a-117184408f3f",
+      "name": "Searching Gaps using LLM Search Engine1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2700,
+        1500
+      ],
+      "id": "4bc5bd29-528f-4db7-88ce-5355bba9a028",
+      "name": "LLM3",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I have a transcript of a content from an influencer:\n\"\"\"\n{{ $('Get the transcript1').item.json.text }}\n\"\"\",\n\nHow to make this content more interesting:\n\"\"\"\n{{ $('Filter & Generate Suggestions1').item.json.output.stepByStep }}\n\"\"\",\n\nand I have researched data from the internet:\n\"\"\"\n{{ $json.answer }}\n\"\"\"\n\n\nNow I want you to create an a new script for me for my new instagram reel, with the help of the above data given to you.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful script writing assistant for a medical doctor creator."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        2680,
+        1400
+      ],
+      "id": "33bcd9be-3a49-4e03-9744-a8eb7abd1b0f",
+      "name": "write new script1"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.assemblyai.com/v2/transcript/{{$json.id}}",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1860,
+        1400
+      ],
+      "id": "62d6d916-fafd-4c2a-992a-43eefc5a7f85",
+      "name": "Get the transcript1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.assemblyai.com/v2/transcript",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\",\n  \"Content-Type\": \"application/json\"\n}\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"audio_url\": \"{{ $json.upload_url }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1420,
+        1400
+      ],
+      "id": "60795ba9-5b29-4e75-ab1e-665eff14ab4c",
+      "name": "assemblyAI starts1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        1400
+      ],
+      "id": "f9d7d424-5e14-4170-85f2-fa6ea761aac3",
+      "name": "Input Viral Video Link",
+      "webhookId": "ea8e4f4a-d6f4-4378-b240-536d98d35dad"
+    },
+    {
+      "parameters": {
+        "content": "## Extract one specific viral video",
+        "height": 340,
+        "width": 3520,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        280,
+        1280
+      ],
+      "id": "e3880908-bb95-47a6-8825-7e6c1f5d1a4d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Extract from top creators",
+        "height": 380,
+        "width": 3780
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        280,
+        620
+      ],
+      "id": "e7ab0e98-a2ec-42dd-a91e-ca233b5167c2",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1640,
+        1400
+      ],
+      "id": "cc12b50a-d668-4f8d-8800-28c2f93f4856",
+      "name": "Wait 30 sec",
+      "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.videoUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        720
+      ],
+      "id": "2215c1d0-d5f4-43ff-a1d5-8a141331093e",
+      "name": "Download Video(s)"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.assemblyai.com/v2/upload",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"03619a4c64024cafbd40ea77fb5127f3\"\n}",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1420,
+        720
+      ],
+      "id": "243a3f7a-9472-45b4-9bad-a8afe310d532",
+      "name": "upload to assemblyAI"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1860,
+        720
+      ],
+      "id": "d750006f-a346-4ae2-ad47-8661c48c9211",
+      "name": "Wait ~ adjust",
+      "webhookId": "42081c7b-f628-448c-a589-2487c07d9d03"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        3500,
+        820
+      ],
+      "id": "fdcdb706-fd4f-4720-8b5b-2ce6f3ed128c",
+      "name": "LLM4",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"script\":\"<Your script goes here (~100 words)>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3660,
+        820
+      ],
+      "id": "8cec86d2-5a2d-43c1-a455-d537a1b172b3",
+      "name": "Parser4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I have a transcript of Instagram reel in English:\n```\n{{ $json.newTranscript }}\n```. The reel is yet to be created.\n\nI want you to translate the transcript into Italian.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful Italian script writing assistant, who translates from English to Italian, for a medical doctor Instagram creator."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        3492,
+        720
+      ],
+      "id": "cb29ed7e-429c-4e2e-a0fb-e084eb3e33ef",
+      "name": "Translating to Italian"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8",
+          "mode": "list",
+          "cachedResultName": "ig_parasite_dentist",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Google Sheets1').item.json.id }}",
+            "newTranscript_Italian": "={{ $json.output.script }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "shortCode",
+              "displayName": "shortCode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "commentsCount",
+              "displayName": "commentsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "firstComment",
+              "displayName": "firstComment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "displayUrl",
+              "displayName": "displayUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "likesCount",
+              "displayName": "likesCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoViewCount",
+              "displayName": "videoViewCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoPlayCount",
+              "displayName": "videoPlayCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoDuration",
+              "displayName": "videoDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "isSponsored",
+              "displayName": "isSponsored",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "scrapedTranscript",
+              "displayName": "scrapedTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "newTranscript",
+              "displayName": "newTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "newTranscript_Italian",
+              "displayName": "newTranscript_Italian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3868,
+        720
+      ],
+      "id": "92903246-9a7f-4a2e-b82b-0179d6285243",
+      "name": "Google Sheets3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rXFxluRJ5i9txrsS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/8yz4aO3qlqckRu3nu/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer apify_api_1tZuKtLuAWWJymkvo27qJaRQbZly1o0Ek7bC"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"url\": \"{{ $json.chatInput }}\",\n    \"use_cache\": false\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        1400
+      ],
+      "id": "028f145f-bccd-4d8e-afb5-efb8620085c1",
+      "name": "Scraping1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "=1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.post_id }}",
+            "timestamp": "={{ $json.latestComments[1].timestamp }}",
+            "shortCode": "={{ $json.shortcode }}",
+            "caption": "={{ $json.description }}",
+            "hashtags": "={{ $json.hashtags }}",
+            "url": "={{ $json.url }}",
+            "commentsCount": "={{ $json.num_comments }}",
+            "firstComment": "={{ $json.firstComment }}",
+            "displayUrl": "={{ $json.video_url }}",
+            "videoUrl": "={{ $json.video_url }}",
+            "likesCount": "={{ $json.likes }}",
+            "videoViewCount": "={{ $json.views }}",
+            "videoPlayCount": "={{ $json.video_play_count }}",
+            "username": "={{ $json.user_posted }}",
+            "videoDuration": "={{ $json.length }}",
+            "isSponsored": "={{ $json.isSponsored }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "shortCode",
+              "displayName": "shortCode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "commentsCount",
+              "displayName": "commentsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firstComment",
+              "displayName": "firstComment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "displayUrl",
+              "displayName": "displayUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "likesCount",
+              "displayName": "likesCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoViewCount",
+              "displayName": "videoViewCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoPlayCount",
+              "displayName": "videoPlayCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoDuration",
+              "displayName": "videoDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "isSponsored",
+              "displayName": "isSponsored",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "scrapedTranscript",
+              "displayName": "scrapedTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "newTranscript",
+              "displayName": "newTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "newTranscript_Italian",
+              "displayName": "newTranscript_Italian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        760,
+        1400
+      ],
+      "id": "a3628e57-9a0a-4e86-8f13-f33e47da7f2d",
+      "name": "Google Sheets4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rXFxluRJ5i9txrsS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        3120,
+        1500
+      ],
+      "id": "ec9cdf54-b1ca-4d9e-b51c-1975f8e71fc1",
+      "name": "LLM5",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fz9B9GNoDgdF9Y0G",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"script\":\"<Your script goes here (~100-200 words)>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3280,
+        1500
+      ],
+      "id": "5522547c-e2f0-4db7-8786-1cd2711c9e3c",
+      "name": "Parser5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I have a transcript of Instagram reel in English:\n```\n{{ $json.newTranscript }}\n```. The reel is yet to be created.\n\nI want you to translate the transcript into Italian.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful Italian script writing assistant, who translates from English to Italian, for a medical doctor Instagram creator."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        3120,
+        1400
+      ],
+      "id": "96413b04-a80b-4a7d-aca1-06f54af27a0f",
+      "name": "Translating to Italian1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8",
+          "mode": "list",
+          "cachedResultName": "ig_parasite_dentist",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M-yEd7Z3h-axZSJgq-D8p483Ke3bEpKG9QEB07J1Bg8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Google Sheets4').item.json.id }}",
+            "newTranscript_Italian": "={{ $json.output.script }}",
+            "scrapedTranscript": "={{ $('Get the transcript1').item.json.text }}",
+            "newTranscript": "={{ $('write new script1').item.json.output.script }}",
+            "Instructions": "={{ $('Filter & Generate Suggestions1').item.json.output.stepByStep }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "shortCode",
+              "displayName": "shortCode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "commentsCount",
+              "displayName": "commentsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "firstComment",
+              "displayName": "firstComment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "displayUrl",
+              "displayName": "displayUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "likesCount",
+              "displayName": "likesCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoViewCount",
+              "displayName": "videoViewCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoPlayCount",
+              "displayName": "videoPlayCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "videoDuration",
+              "displayName": "videoDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "isSponsored",
+              "displayName": "isSponsored",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "scrapedTranscript",
+              "displayName": "scrapedTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "newTranscript",
+              "displayName": "newTranscript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "newTranscript_Italian",
+              "displayName": "newTranscript_Italian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3540,
+        1400
+      ],
+      "id": "b4a5e21f-be7a-4638-9e7f-ff64d64be127",
+      "name": "Google Sheets5",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rXFxluRJ5i9txrsS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"script\":\"<Your script goes here (~100 words)>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2840,
+        1500
+      ],
+      "id": "c06e69a5-53b0-4c81-be4f-140c5f35a4e3",
+      "name": "Parser3"
+    }
+  ],
+  "connections": {
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter & Generate Suggestions": {
+      "main": [
+        [
+          {
+            "node": "Searching Gaps using LLM Search Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Filter & Generate Suggestions",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Filter & Generate Suggestions",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Searching Gaps using LLM Search Engine": {
+      "main": [
+        [
+          {
+            "node": "write new script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "write new script",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "write new script",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "write new script": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Download Video(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get the transcript": {
+      "main": [
+        [
+          {
+            "node": "Filter & Generate Suggestions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Translating to Italian",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "assemblyAI starts": {
+      "main": [
+        [
+          {
+            "node": "Wait ~ adjust",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger": {
+      "main": [
+        [
+          {
+            "node": "Scraping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scraping": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video1": {
+      "main": [
+        [
+          {
+            "node": "upload file to assemblyAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload file to assemblyAI1": {
+      "main": [
+        [
+          {
+            "node": "assemblyAI starts1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter & Generate Suggestions1": {
+      "main": [
+        [
+          {
+            "node": "Searching Gaps using LLM Search Engine1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Filter & Generate Suggestions1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Filter & Generate Suggestions1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Searching Gaps using LLM Search Engine1": {
+      "main": [
+        [
+          {
+            "node": "write new script1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "write new script1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "write new script1": {
+      "main": [
+        [
+          {
+            "node": "Translating to Italian1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get the transcript1": {
+      "main": [
+        [
+          {
+            "node": "Filter & Generate Suggestions1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "assemblyAI starts1": {
+      "main": [
+        [
+          {
+            "node": "Wait 30 sec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Viral Video Link": {
+      "main": [
+        [
+          {
+            "node": "Scraping1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 30 sec": {
+      "main": [
+        [
+          {
+            "node": "Get the transcript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video(s)": {
+      "main": [
+        [
+          {
+            "node": "upload to assemblyAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload to assemblyAI": {
+      "main": [
+        [
+          {
+            "node": "assemblyAI starts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait ~ adjust": {
+      "main": [
+        [
+          {
+            "node": "Get the transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Translating to Italian",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser4": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Translating to Italian",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Translating to Italian": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scraping1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets4": {
+      "main": [
+        [
+          {
+            "node": "Download Video1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Translating to Italian1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser5": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Translating to Italian1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Translating to Italian1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "write new script1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "925d2c95f62cfe740dcce5e902826eff2193546c4f62d35ece41e361aedd85f5"
+  }
+}
