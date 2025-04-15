@@ -1430,7 +1430,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "id": "={{ $json.post_id }}",
-            "timestamp": "={{ $json.latestComments[1].timestamp }}",
+            "timestamp": "={{ $json.date_posted }}",
             "shortCode": "={{ $json.shortcode }}",
             "caption": "={{ $json.description }}",
             "hashtags": "={{ $json.hashtags }}",
