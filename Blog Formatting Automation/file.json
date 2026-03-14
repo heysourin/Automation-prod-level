@@ -1,0 +1,596 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "title"
+            },
+            {
+              "name": "text"
+            },
+            {
+              "name": "drive_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1568,
+        192
+      ],
+      "id": "081c142c-f3ca-47dc-8afb-3aa6c9b843b1",
+      "name": "Landmark"
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $('Landmark').item.json.text }}",
+        "options": {
+          "requireSpaceBeforeHeadingText": true,
+          "noHeaderId": true,
+          "tables": true
+        }
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        96,
+        -32
+      ],
+      "id": "a406d1e3-495b-49cb-9d1e-321107ecafb0",
+      "name": "Markdown2"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "binaryPropertyName": "file",
+        "options": {
+          "fileName": "={{ $('Landmark').item.json.title }}.html{{ $('Landmark').item.json.text }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        64
+      ],
+      "id": "22ec12ca-d6ae-41c2-ac18-4a5f418cf279",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "createFromText",
+        "content": "file content",
+        "name": "={{ $('Landmark').item.json.title }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=11aloz7zM7dbfBQNX5jJ2AO0fXA3gEDCq",
+          "mode": "id"
+        },
+        "options": {
+          "convertToGoogleDocument": true
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        544,
+        320
+      ],
+      "id": "f86a154a-0716-4166-bb2d-e6169252a4bb",
+      "name": "Create file from text1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "4gLEfNPWIVgPZBfj",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        768,
+        160
+      ],
+      "id": "6dc5c2cb-4ad8-4aa3-9375-f75801922510",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "changeFileContent": true,
+        "inputDataFieldName": "file",
+        "options": {
+          "fields": [
+            "id",
+            "webViewLink"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        992,
+        160
+      ],
+      "id": "6171bbf0-0960-4a7b-85ae-192bb85d456b",
+      "name": "Update file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "jSuPzdDTUOEGqepn",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item;\n\nif (item.binary && item.binary.file) {\n  item.binary.file.mimeType = 'text/html';\n}\n\nreturn item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        64
+      ],
+      "id": "7348fa3f-dd87-43ed-afd0-2e73e02e78cc",
+      "name": "Set to text/html1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detect if text is Markdown, HTML, or plain text\nfunction detectType(text) {\n  const htmlPattern = /<\\s*([a-z0-9]+)(\\s+[^>]*)?>.*?<\\s*\\/\\1>/is;\n  const htmlSelfClosing = /<\\s*([a-z0-9]+)(\\s+[^>]*)?\\/>/i;\n\n  // Common Markdown patterns\n  const markdownPatterns = [\n    /^\\s{0,3}#/m,                        // headings\n    /\\*\\*.*\\*\\*/, /__.*__/,              // bold\n    /\\*[^*]+\\*/, /_[^_]+_/,              // italic\n    /\\[[^\\]]+\\]\\([^)]+\\)/,               // links\n    /^\\s{0,3}- /m, /^\\s{0,3}\\* /m,       // lists\n    /```[\\s\\S]*?```/,                    // code block\n    /^\\s{4,}/m,\n    \n    // indented code block\n  ];\n\n  // HTML detection\n  if (htmlPattern.test(text) || htmlSelfClosing.test(text)) {\n    return { type: 'html', confidence: 0.98 };\n  }\n\n  // Markdown detection\n  let markdownMatches = 0;\n  markdownPatterns.forEach((re) => { if (re.test(text)) markdownMatches++; });\n  if (markdownMatches > 1) {\n    return { type: 'markdown', confidence: 0.95 + 0.01 * markdownMatches };\n  }\n\n  // Fallback to plain text\n  return { type: 'plain_text', confidence: 0.80 };\n}\n\n// n8n code node: passthrough all JSON fields\nconst text = $json.text || '';\n\nreturn items.map(item => {\n  const result = detectType(text);\n  return {\n    json: {\n      ...item.json,\n      detectedType: result.type,\n      confidence: result.confidence,\n      analysedText: text // Optional: include the analysed text for traceability\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        144
+      ],
+      "id": "1425aad4-2e0a-4012-9a98-08ee3d86e6a7",
+      "name": "Check type1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6c7409b2-9f50-45d6-9ccd-afba184c6ea0",
+              "leftValue": "={{ $json.detectedType.toLowerCase() }}",
+              "rightValue": "markdown",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -352,
+        160
+      ],
+      "id": "ebbf187a-cdf6-4692-bb0d-996b2ba6d1b1",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7fff7bd2-37ab-4b77-8bfe-1abf7ca33795",
+              "name": "data",
+              "value": "={{ $json.post_html_body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        160
+      ],
+      "id": "309a0543-1275-4795-88f8-d4b00107f7f1",
+      "name": "Set HTML Data1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  let htmlString = item.json.data || item.json.text || '';\n\n  if (typeof htmlString === 'string' && htmlString.startsWith('\"') && htmlString.endsWith('\"')) {\n    try {\n      htmlString = JSON.parse(htmlString);\n    } catch(e) {\n      htmlString = htmlString\n        .replace(/^\"/, '').replace(/\"$/, '')\n        .replace(/\\\\\"/g, '\"')\n        .replace(/\\\\n/g, '\\n');\n    }\n  }\n\n  htmlString = htmlString.trim();\n\n  return {\n    json: {\n      ...item.json,\n      data: htmlString\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        160
+      ],
+      "id": "28f9d3d4-1480-437b-834c-d5f8cb777294",
+      "name": "Make html1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1fbc801c-02b1-49b3-b9f6-3640e3488e24",
+              "name": "=text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1344,
+        192
+      ],
+      "id": "7a5e8e1d-35d3-4791-88cc-c723dd72993f",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-32b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        848
+      ],
+      "id": "3fb96a78-58d8-44aa-a572-537c56f6d5b2",
+      "name": "Claude 4.5 Sonnet",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dcd8cbf1-af53-454b-8d1e-230de5844e60",
+              "name": "post_humanized_body",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1136,
+        624
+      ],
+      "id": "c04e04f7-8ab8-4b3a-bdcd-188d77892eab",
+      "name": "Set Post Humanized"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Perform the Humanizer edit on: {{ $json.text }}\n\nRETURN ONLY HUMANIZED POST, ADD REQUIRED POINTS AND HEADINGS, NOTHING EXTRA.",
+        "options": {
+          "systemMessage": "System Prompt\n\nYou will receive a blog post. Your role is to humanize the text and preserve meaning.\nReturn only the humanized post.\n\nStyle Rules\n\nAdd necessary headings, bullet points and headers.\nUse clear simple language.\nUse short direct sentences.\nUse active voice.\nProvide practical steps.\nAddress the reader with you or your.\nUse bullet points for lists.\nUse data or examples when helpful.\n\nRestrictions\n\nAvoid em dashes.\nAvoid setup phrases.\nAvoid metaphors.\nAvoid clichés.\nAvoid generalizations.\nAvoid extra adjectives.\nAvoid hashtags.\nAvoid semicolons.\nAvoid asterisks.\nAvoid comments.\n\nBanned Words\n\ncan\nmay\njust\nthat\nvery\nreally\nliterally\nactually\ncertainly\nprobably\nbasically\ncould\nmaybe\ndelve\nembark\nenlightening\nesteemed\nshed light\ncraft\ncrafting\nimagine\nrealm\ngame-changer\nunlock\ndiscover\nskyrocket\nabyss\nnot alone\nin a world where\nrevolutionize\ndisruptive\nutilize\nutilizing\ndive deep\ntapestry\nilluminate\nunveil\npivotal\nintricate\nelucidate\nhence\nfurthermore\nrealm\nhowever\nharness\nexciting\ngroundbreaking\ncutting-edge\nremarkable\nit\nremains to be seen\nglimpse into\nnavigating\nlandscape\nstark\ntestament\nin summary\nin conclusion\nmoreover\nboost\nskyrocketing\nopened up\npowerful\ninquiries\never-evolving"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1440,
+        624
+      ],
+      "id": "aabcfbd9-609e-4077-bfe6-b616aabd62f6",
+      "name": "Post Humanizer Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Content: {{ $json.post_humanized_body }}\n\nYour entire output must strictly adhere to HTML standards and the above instructions, with no extra commentary.",
+        "options": {
+          "systemMessage": "Guidelines\nThe system should produce raw HTML output.\n\nNo CSS or inline style attributes.\n\nPreserve document structure and logical hierarchy using appropriate HTML tags: <h1>, <h2>, <h3>, etc. for headings.\n\nUse <b> for bold, <i> for italics, <s> for strikethrough, and <code> for inline code.\n\nMulti-line code blocks must be wrapped in <pre><code> and labeled with language if required.\n\nInsert unordered lists with <ul><li>, ordered lists with <ol><li>.\n\nIndent nested lists with proper nesting of list tags.\n\nRender blockquotes with <blockquote>, using further nested quotes for deeper levels.\n\nConstruct tables with <table>, <thead>, <tbody>, <tr>, <td>, and <th>, using <colgroup> for alignment if needed.\n\nInsert hyperlinks with <a href=\"URL\">text</a>, images with <img src=\"URL\" alt=\"alt text\" />.\n\nInsert horizontal rules with <hr>.\n\nFor task lists, use <input type=\"checkbox\"> inside <li> if supported.\n\nFor line breaks, use <br> for forced breaks.\n\nEscape literal HTML special characters using entities.\n\nIf supported, embed reference-style footnotes with anchor <a> and <sup> elements.\n\nOnly include the raw HTML output with no comments, explanation, or extra narration."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        624
+      ],
+      "id": "80809e51-efd1-418a-b0f0-a837737e17b4",
+      "name": "HTML Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst data = $input.first().json.output\nconst data_to_raw_html = data\n    .replace(/^```html\\s*/i, '')  // Remove opening ```html\n    .replace(/\\s*```\\s*$/i, '')   // Remove closing ```\n    .replace(/^`html\\s*/i, '')    // Remove `html\n    .replace(/^html\\s*/i, '')     // Remove html at start\n    .replace(/^\\s*}\\s*html\\s*/i, '') // Remove }html\n    .replace(/^\\s*`\\s*/i, '')     // Remove leading backticks\n    .trim();\n\n// HTML template with styling to match original resume format exactly\nconst data_html = `\n<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"UTF-8\">\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            max-width: 800px;\n            margin: 0 auto;\n            padding: 40px;\n            line-height: 1.3;\n            color: #333;\n            background-color: white;\n            font-size: 14px;\n        }\n        \n        h1 {\n            font-size: 28px;\n            font-weight: bold;\n            margin-bottom: 8px;\n            margin-top: 0;\n            color: #000;\n        }\n        \n        .job-title {\n            font-size: 16px;\n            font-weight: bold;\n            margin-bottom: 15px;\n            margin-top: 5px;\n            color: #333;\n        }\n        \n        .contact-section {\n            margin-bottom: 20px;\n        }\n        \n        .contact-section strong {\n            font-weight: bold;\n            display: block;\n            margin-bottom: 8px;\n        }\n        \n        .contact-section ul {\n            list-style: disc;\n            margin-left: 18px;\n            margin-top: 0;\n            margin-bottom: 0;\n            padding: 0;\n        }\n        \n        .contact-section li {\n            margin-bottom: 2px;\n            line-height: 1.2;\n        }\n        \n        h2 {\n            font-size: 16px;\n            font-weight: bold;\n            margin-top: 20px;\n            margin-bottom: 10px;\n            color: #000;\n        }\n        \n        .job-entry {\n            margin-bottom: 20px;\n        }\n        \n        .job-title-line {\n            font-weight: bold;\n            margin-bottom: 2px;\n            line-height: 1.2;\n        }\n        \n        .job-company {\n            font-style: italic;\n            margin-bottom: 8px;\n            line-height: 1.2;\n        }\n        \n        .job-duties ul {\n            list-style: disc;\n            margin-left: 18px;\n            margin-top: 5px;\n            margin-bottom: 0;\n            padding: 0;\n        }\n        \n        .job-duties li {\n            margin-bottom: 5px;\n            line-height: 1.3;\n        }\n        \n        p {\n            margin-bottom: 10px;\n            margin-top: 0;\n            text-align: justify;\n            line-height: 1.3;\n        }\n        \n        a {\n            color: #0066cc;\n            text-decoration: none;\n        }\n        \n        a:hover {\n            text-decoration: underline;\n        }\n        \n        .summary {\n            text-align: justify;\n            margin-bottom: 20px;\n            line-height: 1.3;\n        }\n        \n        /* Ensure proper spacing for different elements */\n        strong {\n            font-weight: bold;\n        }\n        \n        em {\n            font-style: italic;\n        }\n        \n        /* Remove extra spacing from nested elements */\n        ul {\n            margin-top: 0;\n            margin-bottom: 0;\n        }\n        \n        li {\n            line-height: 1.3;\n        }\n    </style>\n</head>\n<body>\n    ${data_to_raw_html}\n</body>\n</html>\n`;\n\n// Return the formatted HTML\nreturn { \n  json: { \n    post_html_body: data_html\n  } \n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        640
+      ],
+      "id": "c9227b6f-e8e7-49ed-8857-5c4940be0cc4",
+      "name": "HTML Body"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        848
+      ],
+      "id": "07e361da-66a2-44f3-8398-d3283250f659",
+      "name": "OpenRouter Chat Model6",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Landmark": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown2": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Set to text/html1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create file from text1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Update file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set to text/html1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check type1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Markdown2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create file from text1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create file from text1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set HTML Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set HTML Data1": {
+      "main": [
+        [
+          {
+            "node": "Make html1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make html1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Post Humanizer Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude 4.5 Sonnet": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Post Humanizer Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Post Humanized": {
+      "main": [
+        [
+          {
+            "node": "HTML Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Humanizer Agent": {
+      "main": [
+        [
+          {
+            "node": "Set Post Humanized",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Agent": {
+      "main": [
+        [
+          {
+            "node": "HTML Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Body": {
+      "main": [
+        [
+          {
+            "node": "Check type1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "HTML Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Landmark": [
+      {
+        "title": "dadu chodu",
+        "text": "Search Engine Optimization, commonly known as SEO, has become one of the most important pillars of the modern internet. Every day billions of searches are made on platforms like Google, Bing, and other search engines. People search for answers, products, services, tutorials, news, and almost everything else that exists online. SEO is the process that helps websites appear in front of these searchers at the right moment. Without SEO, even the best websites can remain invisible.\n\nThe importance of SEO begins with visibility. When someone searches for information, they usually click on one of the first few results that appear on the search engine results page. Very few people go to the second or third page. If a website is optimized properly, it has a much higher chance of appearing on the first page. This visibility brings organic traffic, which means visitors come to the website naturally without paid advertisements.\n\nAnother major reason SEO matters is credibility and trust. Websites that rank higher in search results are often perceived by users as more trustworthy and authoritative. Search engines like Google analyze hundreds of signals such as content quality, website structure, user experience, and backlinks to decide which pages deserve higher rankings. When a website follows good SEO practices, it signals to search engines that the site provides valuable and reliable information.\n\nSEO is also one of the most cost effective digital marketing strategies. Unlike paid advertising where traffic stops as soon as the budget runs out, SEO continues to generate traffic over time. A well optimized blog post or webpage can attract visitors for months or even years. This makes SEO a long term investment rather than a short term expense.\n\nUser experience is another key aspect of SEO. Modern search engines do not only evaluate keywords anymore. They focus heavily on how users interact with a website. Factors such as page speed, mobile friendliness, clear navigation, and useful content all contribute to better rankings. As a result, improving SEO often leads to a better overall experience for visitors.\n\nSEO also helps businesses understand their audience. Through keyword research and search data analysis, companies can learn what people are searching for, what problems they want to solve, and what type of content they prefer. This insight allows businesses to create more relevant content and products that directly address user needs.\n\nIn addition, SEO plays an important role in brand growth. When users repeatedly see a brand appear in search results for relevant topics, the brand becomes more recognizable and authoritative in that field. Even if users do not click immediately, consistent visibility builds familiarity and trust over time.\n\nWith the rapid growth of online content, competition for attention has become extremely intense. Millions of blog posts, videos, and websites are created every day. SEO acts as a structured strategy that helps content stand out in this crowded environment. By optimizing titles, headings, keywords, metadata, and internal links, creators increase the chances that their content will be discovered.\n\nIn recent years, SEO has also started evolving alongside artificial intelligence and generative search engines. Search platforms are increasingly using AI to understand context, intent, and deeper meaning behind queries. This means modern SEO is no longer just about inserting keywords into content. It requires creating genuinely useful, high quality, and well structured information that answers real user questions.\n\nUltimately, SEO is important because it connects information with the people who are looking for it. It helps businesses grow, helps creators reach audiences, and helps users find solutions faster. In a world where almost every interaction begins with a search, mastering SEO is no longer optional. It has become a fundamental skill for anyone who wants to succeed online.",
+        "drive_id": "15Qn9G07w2gkM00WmT60bYucOi6ln3IxO"
+      }
+    ]
+  },
+  "meta": {
+    "instanceId": "882b274fadbd1218fde7f532867584d15494eac23cbd4977e1030187566addda"
+  }
+}
