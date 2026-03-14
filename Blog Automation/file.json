@@ -1,0 +1,1878 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2864,
+        112
+      ],
+      "id": "951dd55c-d13a-49eb-af96-a16ce47887b1",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1nySB7226iP8KqikjsAKuUSMCLi57OhfAi53W8w1rXFI",
+          "mode": "list",
+          "cachedResultName": "Blog Writing Automated SEO Friendly",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nySB7226iP8KqikjsAKuUSMCLi57OhfAi53W8w1rXFI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nySB7226iP8KqikjsAKuUSMCLi57OhfAi53W8w1rXFI/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Pending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2640,
+        112
+      ],
+      "id": "4d173b3f-e144-4d17-9f59-5ef79989ef89",
+      "name": "Get post titles",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ykXIsZ351C3AfZza",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -2416,
+        112
+      ],
+      "id": "d91fe2f1-9e72-4c81-aeb8-b5990c31400d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f28c0f11-a847-4aee-8b83-a1eb3bd5a87b",
+              "name": "title",
+              "value": "={{ $json['IN:Title'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2a246bb6-3520-4821-a97f-1500f792661d",
+              "name": "keywords",
+              "value": "={{$json['IN:Keywords'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2192,
+        112
+      ],
+      "id": "575ca0a7-cd54-42f9-9dc4-28337a9ba1b1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\"\"\"\nUse the given:\nTitle: {{ $json.title }}\nAnd the SERP Results tool to perform research for the primary keyword,{{ $json.keywords }}. \n\nFormat your response as a JSON object:\nIMPORTANT: Do not include extra text, introduction messages, line breaks \\n, or any additional characters.\nJSON Output\n{\n  \"search_intent\": \"<string: informational | transactional | navigational | commercial>\",\n  \"writing_style\": \"<string: concise and professional | engaging and storytelling | data-driven and technical | etc.>\",\n  \"writing_tone\": \"<string: friendly and conversational | formal and authoritative | persuasive and compelling | etc.>\",\n  \"hidden_insight\": \"<string: unique insight if found, otherwise 'No significant insights detected beyond existing content trends.'>\",\n  \"target_audience\": \"<string: who this article is for, e.g., small business owners, tech enthusiasts, marketers, etc.>\",\n  \"goal_of_article\": \"<string: main objective of the article based on search results and insights>\",\n  \"semantic_analysis\": {\n    \"common_subtopics\": [\n      \"<string: subtopic 1>\",\n      \"<string: subtopic 2>\",\n      \"<string: subtopic 3>\"\n    ],\n    \"related_questions\": [\n      \"<string: question 1>\",\n      \"<string: question 2>\",\n      \"<string: question 3>\"\n    ]\n  },\n  \"keywords\": {\n    \"primary_keyword\": \"<string: main focus keyword>\",\n    \"secondary_keywords\": [\n      \"<string: related keyword 1>\",\n      \"<string: related keyword 2>\",\n      \"<string: related keyword 3>\"\n    ],\n    \"semantic_keywords\": [\n      \"<string: semantic keyword 1>\",\n      \"<string: semantic keyword 2>\",\n      \"<string: semantic keyword 3>\"\n    ],\n    \"long_tail_keywords\": [\n      \"<string: long-tail keyword 1>\",\n      \"<string: long-tail keyword 2>\",\n      \"<string: long-tail keyword 3>\"\n    ]\n  }\n}\n\n\nExample JSON Output with Hidden Insight\n{\n  \"search_intent\": \"informational\",\n  \"writing_style\": \"engaging and storytelling\",\n  \"writing_tone\": \"friendly and conversational\",\n  \"hidden_insight\": \"Most content focuses on efficiency and cost savings, but small business owners struggle with decision fatigue. AI automation is not just a time-saver—it helps reduce stress by eliminating repetitive decisions.\",\n  \"target_audience\": \"small business owners, solopreneurs, and startup founders\",\n  \"goal_of_article\": \"Educate small business owners on how AI automation reduces decision fatigue while increasing efficiency and revenue.\",\n  \"semantic_analysis\": {\n    \"common_subtopics\": [\n      \"What is AI automation?\",\n      \"How small businesses can use AI\",\n      \"Best AI tools for business automation\",\n      \"Cost vs. benefit analysis of AI automation\"\n    ],\n    \"related_questions\": [\n      \"How does AI reduce decision fatigue?\",\n      \"What’s the easiest way for small businesses to start using AI?\",\n      \"Is AI automation worth the cost for small businesses?\"\n    ]\n  },\n  \"keywords\": {\n    \"primary_keyword\": \"AI automation for small businesses\",\n    \"secondary_keywords\": [\n      \"AI-powered automation tools\",\n      \"best AI software for small businesses\",\n      \"workflow automation for entrepreneurs\"\n    ],\n    \"semantic_keywords\": [\n      \"business process automation\",\n      \"machine learning in small business\",\n      \"how AI helps efficiency\"\n    ],\n    \"long_tail_keywords\": [\n      \"how can AI help small businesses save time?\",\n      \"best AI automation tools for startups\",\n      \"AI vs manual workflow optimization\"\n    ]\n  }\n}\n\n\nExample JSON Output No Hidden Insight\n{\n  \"search_intent\": \"commercial\",\n  \"writing_style\": \"concise and professional\",\n  \"writing_tone\": \"informative and trustworthy\",\n  \"hidden_insight\": \"No significant insights detected beyond existing content trends.\",\n  \"target_audience\": \"cycling enthusiasts, winter sport athletes, and outdoor adventurers\",\n  \"goal_of_article\": \"Provide an in-depth comparison of the best winter cycling gear and help cyclists choose the right products based on weather conditions.\",\n  \"semantic_analysis\": {\n    \"common_subtopics\": [\n      \"What to look for in winter cycling gear\",\n      \"Top-rated winter cycling jackets and gloves\",\n      \"How to layer clothing for winter rides\",\n      \"Cycling safety tips for cold-weather conditions\"\n    ],\n    \"related_questions\": [\n      \"What is the warmest winter cycling jacket?\",\n      \"Are insulated cycling gloves worth it?\",\n      \"How do I stay warm on long winter bike rides?\"\n    ]\n  },\n  \"keywords\": {\n    \"primary_keyword\": \"best winter gear for cyclists\",\n    \"secondary_keywords\": [\n      \"winter cycling jackets\",\n      \"best gloves for cold weather cycling\",\n      \"waterproof cycling gear\"\n    ],\n    \"semantic_keywords\": [\n      \"insulated bike clothing\",\n      \"cold-weather cycling apparel\",\n      \"bike safety in winter\"\n    ],\n    \"long_tail_keywords\": [\n      \"how to choose winter cycling gloves?\",\n      \"best winter cycling gear for long-distance rides\",\n      \"how to keep hands warm while biking in winter\"\n    ]\n  }\n}\n\n\"\"\"Can you reduce this AI agent prompt to below 4000 tokens?",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an advanced AI content strategist trained to analyze search results and generate precise writing guidelines for an SEO-optimized blog post. Your goal is to ensure that the article aligns with **search intent**, **semantic relevance**, and **audience expectations** while also uncovering **hidden insights** that may provide a unique angle.\n\n### **Your Task:**\nYou will be given:\n- A **working title**\n- An **article description**\n- A **primary keyword**\n- A **set of search results** (retrieved via the Tavily search results tool)\n\nYour job is to analyze the data and generate **optimized writing guidelines** with the following structured JSON output:\n\n### **1️⃣ Search Intent Detection**  \nDetermine whether the primary intent of the keyword is:  \n- **informational** (learning about a topic)  \n- **transactional** (considering a purchase or service)  \n- **navigational** (finding a specific brand/website)  \n- **commercial** (comparing options before making a decision)  \n\n### **2️⃣ Writing Style & Tone**  \n- Identify the best **writing style** based on search results (e.g., “concise and professional,” “engaging and storytelling,” “data-driven and technical,” etc.).  \n- Identify the **appropriate tone** (e.g., “friendly and conversational,” “formal and authoritative,” “persuasive and compelling,” etc.).  \n\n### **3️⃣ Hidden Insight Extraction**  \n- Analyze **patterns in competitor content** to identify **an insight that is not immediately obvious** but could provide a unique angle.  \n- If no meaningful insight is found, return `\"hidden_insight\": \"No significant insights detected beyond existing content trends.\"`  \n- If an insight is found, clearly explain it.  \n- **Do NOT modify writing style or tone based on the insight**—insights should be separate observations, not tone/style adjustments.  \n\n### **4️⃣ Semantic Analysis (Content Structuring)**  \n- Extract the **common subtopics** frequently covered in top-ranking pages.  \n- Identify **related questions** users ask.  \n\n### **5️⃣ Keyword Extraction**  \n- Categorize keywords based on **how they should be used** later in the workflow.  \n- Format them as follows:  \n  - **Primary Keyword** → The main topic focus.  \n  - **Secondary Keywords** → Variations of the primary keyword that should be used naturally in the content.  \n  - **Semantic Keywords** → Contextually related terms that improve topic relevance.  \n  - **Long-Tail Keywords** → Natural search queries and phrases that match user questions.  \n\n### **Format your response strictly in valid JSON.**\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1856,
+        112
+      ],
+      "id": "a2033a79-1c02-46b5-82a6-82a8f76c16d7",
+      "name": "SERPs, Writing, KWs, Insights",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -1968,
+        336
+      ],
+      "id": "2f7f6a53-4157-473d-ae97-0adec991995b",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"SEO Research Output\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"search_intent\": {\n      \"type\": \"string\",\n      \"enum\": [\"informational\", \"transactional\", \"navigational\", \"commercial\"]\n    },\n    \"writing_style\": {\n      \"type\": \"string\",\n      \"description\": \"Describes the overall writing style, e.g., engaging and storytelling, data-driven and technical, concise and professional.\"\n    },\n    \"writing_tone\": {\n      \"type\": \"string\",\n      \"description\": \"Defines the tone of the writing, e.g., friendly and conversational, persuasive and compelling, formal and authoritative.\"\n    },\n    \"hidden_insight\": {\n      \"type\": \"string\",\n      \"description\": \"Unique or uncommon insight derived from SERP analysis, or 'No significant insights detected beyond existing content trends.'\"\n    },\n    \"target_audience\": {\n      \"type\": \"string\",\n      \"description\": \"Specifies who the content is meant for, such as marketers, tech enthusiasts, small business owners, etc.\"\n    },\n    \"goal_of_article\": {\n      \"type\": \"string\",\n      \"description\": \"The main objective or purpose of the article based on search intent and SERP analysis.\"\n    },\n    \"semantic_analysis\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"common_subtopics\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" },\n          \"minItems\": 1,\n          \"description\": \"List of common subtopics found across top SERP results.\"\n        },\n        \"related_questions\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" },\n          \"minItems\": 1,\n          \"description\": \"Common related questions found via SERP or People Also Ask.\"\n        }\n      },\n      \"required\": [\"common_subtopics\", \"related_questions\"]\n    },\n    \"keywords\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"primary_keyword\": {\n          \"type\": \"string\",\n          \"description\": \"The main keyword focus of the article.\"\n        },\n        \"secondary_keywords\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" },\n          \"minItems\": 1\n        },\n        \"semantic_keywords\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" },\n          \"minItems\": 1\n        },\n        \"long_tail_keywords\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" },\n          \"minItems\": 1\n        }\n      },\n      \"required\": [\n        \"primary_keyword\",\n        \"secondary_keywords\",\n        \"semantic_keywords\",\n        \"long_tail_keywords\"\n      ]\n    }\n  },\n  \"required\": [\n    \"search_intent\",\n    \"writing_style\",\n    \"writing_tone\",\n    \"hidden_insight\",\n    \"target_audience\",\n    \"goal_of_article\",\n    \"semantic_analysis\",\n    \"keywords\"\n  ],\n  \"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -1584,
+        336
+      ],
+      "id": "d3ee29fc-283e-42b9-8d8b-561299191101",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        -1840,
+        336
+      ],
+      "id": "44521fe4-c90b-43bf-8949-5d46e09144a1",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "QIz9LeWwEYIZmMhD",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        336
+      ],
+      "id": "eee2eb93-43a8-4bef-b82e-cd32a8dcc68d",
+      "name": "Wikipedia"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e444c83-3d2b-4bd3-a23b-6fb5ca68e670",
+              "name": "writing_style",
+              "value": "={{ $json.output.writing_style }}",
+              "type": "string"
+            },
+            {
+              "id": "e16b5d65-587d-49d8-af5d-4ff1930633a8",
+              "name": "writing_tone",
+              "value": "={{ $json.output.writing_tone }}",
+              "type": "string"
+            },
+            {
+              "id": "ab756373-0186-454a-8e98-d5a5f96cba87",
+              "name": "search_intent",
+              "value": "={{ $json.output.search_intent }}",
+              "type": "string"
+            },
+            {
+              "id": "a14b7657-038a-4b08-911d-314336261a0c",
+              "name": "hidden_insight",
+              "value": "={{ $json.output.hidden_insight }}",
+              "type": "string"
+            },
+            {
+              "id": "19ef4221-5a5d-4321-8a07-4e04f5dcaf44",
+              "name": "target_audience",
+              "value": "={{ $json.output.target_audience }}",
+              "type": "string"
+            },
+            {
+              "id": "0ab17e84-4a2e-4df3-b0a3-91e9ce26cb72",
+              "name": "article_goal",
+              "value": "={{ $json.output.goal_of_article }}",
+              "type": "string"
+            },
+            {
+              "id": "84e7f6a4-48b2-43b2-92cc-7e0337311661",
+              "name": "semantic_analysis",
+              "value": "={{ $json.output.semantic_analysis }}",
+              "type": "string"
+            },
+            {
+              "id": "5e943a46-bb03-438d-b6da-2a6ec414f5af",
+              "name": "keywords",
+              "value": "={{ $json.output.keywords }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1376,
+        112
+      ],
+      "id": "c8b6213c-cffa-4644-8265-4fecf967a038",
+      "name": "Set Post KWs and Insights"
+    },
+    {
+      "parameters": {
+        "query": "=message:[\n{\"role\":\"system\",\"content\":\"You are an SEO blog strategist. Research topics, analyze search intent, find content gaps, and build high-performing blog frameworks with accurate insights.\"},\n{\"role\":\"user\",\"content\":\"Analyze this blog topic: {{ $('Edit Fields').item.json.title }}. Return: 1) search intent, 2) content gaps, 3) key subtopics and questions.\"}\n]\n",
+        "options": {
+          "max_results": 10
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        112
+      ],
+      "id": "5348b3c9-d411-4ee9-b92a-b41492146714",
+      "name": "Search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "4zJotHrtdnjBJmag",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23b8e8c4-9191-415a-9661-1b60d413528a",
+              "name": "research",
+              "type": "string",
+              "value": "=Result 1: {{ $json.results[1].content }}\n\nResult 2: {{ $json.results[2].content }}\n\nResult 3: {{ $json.results[3].content }}\n\nResult 4: {{ $json.results[4].content }}\n\nResult 5: {{ $json.results[5].content }}\n\nResult 6: {{ $json.results[5].content }}\n\nResult 7: {{ $json.results[6].content }}\n\nResult 8: {{ $json.results[7].content }}\n\nResult 9: {{ $json.results[8].content }}\n\nResult 10: {{ $json.results[9].content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a924c8fe-b770-434e-9ead-f16965397cb7",
+      "name": "Cleanup Links",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -928,
+        112
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c2e1b795-01ab-4605-8631-d827bfe346cd",
+              "name": "research",
+              "value": "={{ $json.research }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -704,
+        112
+      ],
+      "id": "7afc1a6e-77e8-43f2-b85b-0514ea97b6aa",
+      "name": "Set Research"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f176090-7f79-47e9-ac06-4643a659298f",
+              "name": "research",
+              "value": "={{ $json.research }}",
+              "type": "string"
+            },
+            {
+              "id": "394c51b8-96c9-45b9-bd92-25a3e22d61d1",
+              "name": "writing_style",
+              "value": "={{ $('Set Post KWs and Insights').item.json.writing_style }}",
+              "type": "string"
+            },
+            {
+              "id": "f38fe9ef-49c9-4806-bca8-82dd0ef1e616",
+              "name": "writing_tone",
+              "value": "={{ $('Set Post KWs and Insights').item.json.writing_tone }}",
+              "type": "string"
+            },
+            {
+              "id": "a2edad8b-d163-4296-a8c8-ee15397ffeb6",
+              "name": "search_intent",
+              "value": "={{ $('Set Post KWs and Insights').item.json.search_intent }}",
+              "type": "string"
+            },
+            {
+              "id": "d24a8fcc-cdf7-4e1e-924b-efd314fdd355",
+              "name": "hidden_insight",
+              "value": "={{ $('Set Post KWs and Insights').item.json.hidden_insight }}",
+              "type": "string"
+            },
+            {
+              "id": "635d994c-372f-45cb-bf38-40e60756e97e",
+              "name": "target_audience",
+              "value": "={{ $('Set Post KWs and Insights').item.json.target_audience }}",
+              "type": "string"
+            },
+            {
+              "id": "5cb50177-9580-48eb-b5b1-705167eab42f",
+              "name": "semantic_analysis",
+              "value": "={{ $('Set Post KWs and Insights').item.json.semantic_analysis }}",
+              "type": "string"
+            },
+            {
+              "id": "3b312cf9-17d6-4187-8ece-9a1e68326cab",
+              "name": "keywords",
+              "value": "={{ $('Set Post KWs and Insights').item.json.keywords }}",
+              "type": "string"
+            },
+            {
+              "id": "3001a115-5868-4d96-b730-d139eb3f470a",
+              "name": "article_goal",
+              "value": "={{ $('Set Post KWs and Insights').item.json.article_goal }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -480,
+        112
+      ],
+      "id": "d9c9f88e-7b90-47e2-afd3-8b0707c4a982",
+      "name": "Merge Research And Serp"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n\nRevise the blog post title. Consider:\nWorking title: {{ $('Edit Fields').item.json.title }}\nPrimary keywords: {{ $('Edit Fields').item.json.keywords }}\nSecondary keywords: {{ $('Merge Research And Serp').item.json.keywords }}\nSearch intent: {{ $('Merge Research And Serp').item.json.search_intent }}\nSemantic analysis: {{ $('Merge Research And Serp').item.json.semantic_analysis }}\nWriting style: {{ $('Merge Research And Serp').item.json.writing_style }}\nWriting tone: {{ $('Merge Research And Serp').item.json.writing_tone }}\nArticle goal: {{ $('Merge Research And Serp').item.json.article_goal }}\n\n\nOutput only JSON\nIMPORTANT: Do not add extra spaces, extra characters or include any additional text.\n\nOutput only JSON:\n{\n  \"revised_title\": \"string\",\n  \"reasoning\": \"string\"\n}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert high-CTR marketing copywriter specializing in short, irresistible headlines that drive clicks and conversions.\n\n## CORE DIRECTIVE\nGenerate ONE optimized title that maximizes click-through rate by triggering psychological engagement and clearly communicating value within 30-55 characters. Return ONLY the JSON format specified.\n\n---\n\n## TITLE REQUIREMENTS\n\n### Length & Format\n- Maximum 55 characters (mobile, email, social, SERPs optimized)\n- Minimum 25 characters (must have sufficient context)\n- No ALL CAPS unless 1-2 words for emphasis\n- Minimal punctuation (colons for structure only)\n\n### Essential Elements (Must include 2+)\n1. **Benefit Statement** — Clear outcome or value for reader\n2. **CTR Trigger** — One psychological hook (see triggers below)\n3. **Specificity** — Concrete detail, not generic language\n4. **Power Word** — Action verb or credibility booster\n\n### CTR Psychological Triggers\n- **Numbers/Data:** \"3 Ways,\" \"10x,\" \"87% More,\" \"$500 in 24 Hours\"\n- **Benefit Lead:** \"Save $X,\" \"Get Results,\" \"Stop Wasting\"\n- **Curiosity Gap:** \"The X Secret,\" \"What Nobody Tells You\"\n- **Emotion/Pain Point:** \"Tired of,\" \"Finally,\" \"Stop,\" \"Escape\"\n- **FOMO/Scarcity:** \"Before It's Gone,\" \"Only Today,\" \"Limited\"\n- **Transformation:** \"From X to Y,\" \"Go From Zero to\"\n- **Contradiction:** \"The Lazy Way,\" \"No Experience Needed,\" \"Without Spending\"\n- **Social Proof:** \"Trusted by 50K+,\" \"Top Marketers Swear By\"\n\n### Power Words\n**Action:** Unlock, Discover, Grab, Claim, Reveal, Crush, Master, Hack, Transform  \n**Credibility:** Proven, Ultimate, Breakthrough, Essential, Banned, Secret  \n**Urgency:** Now, Today, Don't Wait, Limited, Rare, Expired  \n**Emotion:** Sick of, Finally, Never, Tired, Escape, Stop\n\n---\n\n## INPUT EXTRACTION\nExtract or ask for:\n- **Working Title:** Current headline\n- **Target Audience:** Who is clicking? (professionals, budget shoppers, etc.)\n- **Primary Value:** Core benefit or outcome\n- **Content Type:** Email | Ad | Blog | Social | Landing Page\n- **Primary Keyword:** (optional; only if SEO secondary goal)\n- **Search Intent:** Informational | Transactional | Commercial | Urgency-driven\n\n---\n\n## REFINEMENT RULES\n\n### DO:\n✓ Lead with outcome/benefit before method\n✓ Use conversational, human tone\n✓ Create specificity through concrete details\n✓ Balance curiosity with clarity\n✓ Match tone to audience\n✓ Incorporate keyword naturally (first third) if relevant\n✓ Prioritize clarity over cleverness\n✓ Consider platform norms\n\n### DON'T:\n✗ Overpromise or mislead\n✗ Use clickbait with expectation mismatch\n✗ Stuff keywords unnaturally\n✗ Use generic openers: \"Learn,\" \"Discover\" (without specificity)\n✗ Repeat clichés or overused phrases\n✗ Include jargon without context\n✗ Create ambiguous titles\n✗ Exceed character limit\n\n---\n\n## OUTPUT FORMAT (ONLY THIS)\n\n```json\n{\n  \"revised_title\": \"Your optimized headline here\",\n  \"reasoning\": \"Brief explanation of why this title drives clicks and which triggers/psychology it uses\"\n}\n```\n\n**CRITICAL:** Return ONLY valid JSON. No markdown, no code fences, no additional text before or after. No arrays. No variants. Single title only.\n\n---\n\n## REASONING FORMULA\n\nStructure reasoning as: \"[Psychological Trigger] + [Specificity/Benefit] + [Power Word/Action] = Higher CTR because [human psychology insight]\"\n\nExample: \"Numbers trigger (10x) + specific outcome (revenue growth) + power word (unlock) = higher CTR because data points and tangible benefits reduce decision friction for busy professionals.\"\n\n---\n\n## QUALITY CHECKLIST\n\nBefore returning:\n- ☐ Is benefit instantly clear without reading body copy?\n- ☐ Does it stand out in crowded competitor landscape?\n- ☐ Triggers at least one proven CTR psychology hook?\n- ☐ Authentic (no misleading promises)?\n- ☐ Feels human-written, not AI-generated?\n- ☐ Under 55 characters?\n- ☐ Would you click this if you saw it?"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -256,
+        112
+      ],
+      "id": "5ac12421-8c82-4851-9311-d3828b529913",
+      "name": "Refine the Title",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"RevisedBlogTitleResponse\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"revised_title\": {\n      \"type\": \"string\",\n      \"description\": \"The improved and SEO-optimized version of the blog post title.\"\n    },\n    \"reasoning\": {\n      \"type\": \"string\",\n      \"description\": \"A brief explanation describing why this revised title was chosen, referencing keywords, search intent, and tone considerations.\"\n    }\n  },\n  \"required\": [\"revised_title\", \"reasoning\"],\n  \"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        336
+      ],
+      "id": "d54624e8-71e4-423f-a023-e8a9a0757213",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "438738d8-d610-47e3-9ddf-efcfb97d3701",
+              "name": "new_title",
+              "value": "={{ $json.output.revised_title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        112
+      ],
+      "id": "2cb20744-a6c0-4b09-9694-a1af02753596",
+      "name": "Set Post New Title"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create Key Takeaways using:\n\n- **Optimized Title**: {{ $('Set Post New Title').item.json.new_title }}\nPrimary keywords: {{ $('SERPs, Writing, KWs, Insights').item.json.output.keywords.primary_keyword }}\nSecondary keywords: {{ $('SERPs, Writing, KWs, Insights').item.json.output.keywords.secondary_keywords }}\nOther keywords: {{ $('Set Post KWs and Insights').item.json.keywords }}\nSearch intent: {{ $('Merge Research And Serp').item.json.search_intent }}\nSemantic analysis: {{ $('Merge Research And Serp').item.json.semantic_analysis }}\nWriting style: {{ $('Merge Research And Serp').item.json.writing_style }}\nWriting tone: {{ $('Merge Research And Serp').item.json.writing_tone }}\nArticle goal: {{ $('Merge Research And Serp').item.json.article_goal }}\nResearch Insights: {{ $('Merge Research And Serp').item.json.research }}",
+        "options": {
+          "systemMessage": "You are an expert content strategist specializing in crafting structured, insightful, and engaging **key takeaways** for articles. Your goal is to summarize the most important information while ensuring the takeaways are **concise, impactful, and easy to digest**.\n\n### **Your Task:**\n1. **Generate an introductory paragraph** that sets up the key takeaways and provides context for the reader.\n2. **Extract the most valuable takeaways** from the provided data:\n   - **Key concepts** covered in the article.\n   - **Relevant semantic subtopics** that align with the topic.\n   - **Hidden insights** (if applicable) that add unique value.\n3. **Format each takeaway in Markdown** as:\n[Action-driven bolded heading]: Concise explanation inline.\n- The **bolded heading** should be **engaging and impactful** (not generic).  \n- The **explanation should be concise and inline with the heading**.  \n- **No section headers, extra spaces, or dividers**.  \n4. **Ensure takeaways provide substantial knowledge** but are not overwhelming:\n- If the **hidden insight** adds value, incorporate it as a **dedicated takeaway** or **enhance an existing one**.\n- If the **hidden insight does not fit naturally**, exclude it.\n5. **Write an outro paragraph** that smoothly leads into the main body of the article.\n\n### **Formatting & Style Guidelines**\n✅ **Use Markdown for formatting**  \n✅ **Bullet points with inline bolded headings**  \n✅ **No extra section headers, dividers, or spaces**  \n✅ **Use engaging, action-driven takeaway headers** (e.g., \"Beyond fixed rules: AI adapts in real time\" instead of \"A paradigm shift from traditional automation\")  \n✅ **Ensure takeaways are concise yet informative**  \n\n### **Example Inputs & Outputs**\n---\n#### **Input Example**\n**Article Title:** `\"AI Automation for Small Businesses: How to Save Time & Boost Revenue\"`  \n**Primary Keyword:** `\"AI automation for small businesses\"`  \n**Hidden Insight:** `\"Most AI automation content focuses on efficiency, but a major benefit is reducing decision fatigue.\"`  \n**Common Subtopics:** `[\"What is AI automation?\", \"How small businesses can use AI\", \"Best AI tools for automation\"]`\n\n---\n#### **Output Example**\n```markdown\nAI automation is transforming small businesses by optimizing workflows, improving efficiency, and enhancing decision-making. Below are the key takeaways highlighting its potential.\n\n- **AI enables true autonomy through adaptive learning:** Unlike traditional systems, AI learns and evolves over time, reducing human supervision by refining its decision-making processes independently.  \n- **Beyond fixed rules: AI adapts in real time:** Traditional AI follows static rules, whereas AI-driven automation dynamically adjusts to changing environments, solving complex, unsupervised tasks.  \n- **AI agents optimize complex workflows effortlessly:** These intelligent systems manage intricate processes with greater efficiency, improving operations like customer support, supply chain management, and fraud detection.  \n- **Seamless integration into business operations:** AI integrates with existing systems like CRMs and ERP platforms, allowing businesses to modernize workflows without overhauling infrastructure.  \n- **Scalability without added complexity:** AI systems manage process complexity and expand capabilities, enabling businesses to scale efficiently without requiring proportional increases in resources.  \n- **AI minimizes decision fatigue, maximizing human focus:** By handling routine and complex decisions autonomously, AI reduces cognitive load on human teams, allowing them to focus on high-value tasks.  \n- **AI ensures resilience through continuous optimization:** Through machine learning, AI refines its models over time, ensuring consistent performance even in dynamic and unpredictable environments.  \n- **AI innovation transforming industries:** Sectors like manufacturing, healthcare, and finance leverage AI for predictive maintenance, personalized care, and risk assessment.  \n\nAI-driven automation offers a new frontier for workflow innovation by replacing static rule-based automation with intelligent, adaptive systems. In the sections ahead, we’ll explore its core components, industry applications, and strategies for seamless business integration.\n\nOutput Format:\nReturn the final takeaways in Markdown format, structured as:\n\nIntro paragraph\nBullet points with inline bolded headings and concise explanations\nOutro paragraph\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        320,
+        112
+      ],
+      "id": "c3e79a05-b8aa-4304-862c-785b6e100e26",
+      "name": "Key Takeaways AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        400,
+        336
+      ],
+      "id": "4c77264b-70b2-46df-98aa-53b3f9886036",
+      "name": "OpenRouter Chat Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        336
+      ],
+      "id": "28590bb1-513f-4672-b04b-c373d0299889",
+      "name": "OpenRouter Chat Model2",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5b6a40be-b640-4caf-a531-50a45df07be8",
+              "name": "post_outline",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "4d23b941-4453-40f9-967c-5d256e50a8fe",
+              "name": "post_word_limit",
+              "value": "2000",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        112
+      ],
+      "id": "309bcdb4-9b7d-47fc-bd8a-69faaa815281",
+      "name": "Set Post Outline"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert content writer with a strong command of clear, structured, and value-driven writing. Your task is to write a high-quality content block based on the inputs provided.\n\n### INPUTS:\nBlock Title: {{ $('Set Post New Title').item.json.new_title }}\nKeywords to Include: {{ $('Set Post KWs and Insights').item.json.keywords }}, \nOutline / Structure to Follow: {{ $json.post_outline }}\nKey Takeaways (must be reflected in writing): {{ $('Key Takeaways AI Agent').item.json.output }}\n\n### SUB-DATA (Use this to guide positioning, depth, and writing style — DO NOT copy directly):\nWriting Style: {{ $('Merge Research And Serp').item.json.writing_style }}\nWriting Tone: {{ $('Merge Research And Serp').item.json.writing_tone }}\nSearch Intent: {{ $('Merge Research And Serp').item.json.search_intent }}\nHidden Insight to Highlight: {{ $('Merge Research And Serp').item.json.hidden_insight }}\nTarget Audience: {{ $('Merge Research And Serp').item.json.target_audience }}\nArticle Goal: {{ $('Merge Research And Serp').item.json.article_goal }}\n- Semantic Insights & Related Topics: {{ $('Merge Research And Serp').item.json.semantic_analysis }}\n- Keyword Strategy & Variations: {{ $('Merge Research And Serp').item.json.keywords }}\n\n### INSTRUCTIONS:\n1. Write a well-structured **content block body** that fits the block title and follows the outline strictly.\n2. Incorporate the given keywords **naturally** without keyword stuffing.\n3. Optimize the writing to satisfy the **search intent** and align with the **target audience** and **article goal**.\n4. Infuse the **hidden insight** into the narrative so the piece feels unique and high-authority.\n5. The writing must:\n   - Be original (no copying from the scrubbed data or sub-data).\n   - Be clear, concise, engaging, and written in a professional yet friendly tone.\n   - Provide value, actionable insights, and smooth flow between sections.\n6. Use the SERP scrubbed data only as **supporting reference**, not as direct text.\n7. Ensure the key takeaways are clearly communicated across the block.\n8. Avoid filler, generic language, repetition, and unnecessary fluff.\n9. Add examples, micro-case studies, or short explanations to improve clarity if needed.\n10. Output must be **1–4 paragraphs** (depending on outline length) unless otherwise stated.\n\n### OUTPUT:\nProvide the final **Content Body only**, with no preface or explanation.\n\nWord Limit: {{ $json.post_word_limit }}",
+        "options": {
+          "systemMessage": "You are an AI writing agent responsible for generating a complete, publication-ready blog article that includes an Introduction, Body sections, and Conclusion.\nYour writing must be insightful, logically structured, deeply analytical, SEO-optimized, and formatted in clean Markdown.\n\n🔷 STRUCTURE REQUIREMENTS\n\nYou must produce a blog with the following structure:\n\n1. Introduction\n\nProvide context and relevance.\n\nFrame a challenge or opportunity.\n\nAvoid clichés and generic filler.\n\nKeep it concise (2–4 short paragraphs).\n\nEnd with a smooth transition into the first body section.\n\n2. Body Sections (Main Content)\n\nFollow the exact outline provided by the user.\n\nUse ## for main sections and ### for subsections.\n\nEach section must introduce new insights—no repetition.\n\nEnsure each section ends with a sentence that logically leads into the next topic.\n\n3. Conclusion\n\nSummarize key insights without repeating entire sections.\n\nProvide a forward-looking perspective or actionable takeaway.\n\nKeep it brief (2–3 paragraphs).\n\nDo not introduce brand-new major concepts.\n\n🔷 FORMATTING RULES\n\nUse Markdown only.\n\nUse:\n\n## for main headings\n\n### for subsections\n\nBold text for emphasis\n\nNumbered or bulleted lists only where necessary\n\nMaintain a balance of paragraphs and lists.\n\nLists should highlight key takeaways, not dominate the content.\n\n🔷 DEPTH & ANALYSIS EXPECTATIONS\n\nYour writing must be:\n\nFact-driven\n\nLogically structured\n\nFree of redundancy\n\nRich with insight and analysis\n\nProfessional and engaging\n\nEach section should meaningfully expand the argument or narrative—never repeat what was covered earlier.\n\n🔷 CASE STUDIES & REAL-WORLD EXAMPLES\n\nInclude relevant case studies or examples within the body:\n\nA high-quality case study must have:\n\nContext\n\nProblem/challenge\n\nApproach or solution\n\nMeasurable business outcome\n\ne.g., “Reduced processing errors by 32% and saved $1.4M annually.”\n\nDo not fabricate unrealistic results; keep examples plausible.\n\n🔷 SEO GUIDELINES\n\nIntegrate primary and secondary keywords naturally.\n\nPrioritize readability and flow over keyword density.\n\nDo not over-optimize (no keyword stuffing).\n\n🔷 PROHIBITED\n\nNo irrelevant tangents.\n\nNo repeated concepts across sections.\n\nNo filler phrases (“In today’s world…”, “Since the beginning of time…”).\n\nNo markdown outside the allowed structure.\n\nNo breaking the user’s outline.\n\n🔷 YOUR ROLE\n\nYou are not allowed to alter the outline.\nYou must only generate high-quality content following the user’s structure and this system prompt."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        896,
+        112
+      ],
+      "id": "f84dade4-578f-4803-a397-5c295a0d5207",
+      "name": "Post Content Writer Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        976,
+        336
+      ],
+      "id": "e01aff4b-d2c7-42af-b71b-a96159e61ea2",
+      "name": "OpenRouter Chat Model3",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c282be5-3020-44b9-bf77-61639e3dd763",
+              "name": "post_draft_body",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1248,
+        112
+      ],
+      "id": "71899907-00d4-46de-9c7b-fef3167be56d",
+      "name": "Set Draft Post"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-32b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        736
+      ],
+      "id": "e95e200d-bc7e-456c-b0a9-b21fb844180b",
+      "name": "Claude 4.5 Sonnet",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dcd8cbf1-af53-454b-8d1e-230de5844e60",
+              "name": "post_humanized_body",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2272,
+        512
+      ],
+      "id": "4d00c324-8e92-4761-a445-e71bcca8e732",
+      "name": "Set Post Humanized"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Perform the Humanizer edit on:\n{{ $('Set Draft Post').item.json.post_draft_body }}\n\nRETURN ONLY HUMANIZED POST, NOTHING EXTRA.",
+        "options": {
+          "systemMessage": "System Prompt\n\nYou will receive a blog post. Your role is to humanize the text and preserve meaning.\nReturn only the humanized post.\n\nStyle Rules\n\nUse clear simple language.\nUse short direct sentences.\nUse active voice.\nProvide practical steps.\nAddress the reader with you or your.\nUse bullet points for lists.\nUse data or examples when helpful.\n\nRestrictions\n\nAvoid em dashes.\nAvoid setup phrases.\nAvoid metaphors.\nAvoid clichés.\nAvoid generalizations.\nAvoid extra adjectives.\nAvoid hashtags.\nAvoid semicolons.\nAvoid asterisks.\nAvoid comments.\n\nBanned Words\n\ncan\nmay\njust\nthat\nvery\nreally\nliterally\nactually\ncertainly\nprobably\nbasically\ncould\nmaybe\ndelve\nembark\nenlightening\nesteemed\nshed light\ncraft\ncrafting\nimagine\nrealm\ngame-changer\nunlock\ndiscover\nskyrocket\nabyss\nnot alone\nin a world where\nrevolutionize\ndisruptive\nutilize\nutilizing\ndive deep\ntapestry\nilluminate\nunveil\npivotal\nintricate\nelucidate\nhence\nfurthermore\nrealm\nhowever\nharness\nexciting\ngroundbreaking\ncutting-edge\nremarkable\nit\nremains to be seen\nglimpse into\nnavigating\nlandscape\nstark\ntestament\nin summary\nin conclusion\nmoreover\nboost\nskyrocketing\nopened up\npowerful\ninquiries\never-evolving"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        512
+      ],
+      "id": "eb2898f4-fa1c-48db-ad43-a66e136034d7",
+      "name": "Post Humanizer Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const wordLimit = $('Set Draft Post').first().json.post_word_count\nfunction countWordsAndCharacters(text) {\n  // Trim to avoid counting whitespace at start/end\n  const trimmed = text.trim();\n\n  // Character count (including spaces & newlines)\n  const charCount = trimmed.length;\n\n  // Word count — split by any whitespace & filter empty results\n  const wordCount = trimmed.split(/\\s+/).filter(Boolean).length;\n\n  const wordLimitOver =  wordCount > wordLimit\n  \n  return { wordCount, wordLimitOver, wordLimit, charCount };\n}\n\nconst data = countWordsAndCharacters($input.first().json.post_draft_body)\n\n\nreturn {\n  json: data\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        112
+      ],
+      "id": "41626f71-4ee3-4b72-a755-1aeba7db9c04",
+      "name": "Count Words & Characters"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Word Limit: {{ $('Set Draft Post').first().json.post_word_count }}\nContent: {{ $('Set Draft Post').item.json.post_draft_body }}",
+        "options": {
+          "systemMessage": "You are a expert editorial AI specialized in compressing long-form content while preserving its meaning, tone, value, and narrative integrity.\n\nTask:\nYou will receive a blog article or essay along with a maximum word limit. Your goal is to rewrite the content so that it fits under the specified limit—preferably by an additional 5–15% margin (e.g., if the limit is 2000 words, aim for 1700–1900 words).\n\nRequirements:\n\nPreserve the original message, insights, tone, and structure as much as possible.\n\nRemove or shorten:\n\nredundant sentences\n\nfiller phrases\n\noverly long explanations\n\nrepetitive examples\n\nunnecessary adjectives and adverbs\n\nMaintain:\n\nclarity\n\nlogical flow\n\nemotional resonance\n\nvalue delivered to the reader\n\nDo not introduce new information or opinions.\n\nEnsure the final word count is below the provided limit and include the final word count at the end.\n\nOutput Format:\n\nRewritten Article (compressed version)\n\nFinal Word Count\n\nPercentage Reduction from Original (optional)\n\nUser Input Format:\n\nThe blog/article text\n\nThe target maximum word count"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        0
+      ],
+      "id": "8d44e421-f1f4-4633-bf66-09430b6eb47e",
+      "name": "Under Word Limit Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "124fc211-ddbc-440f-a779-1fbf8347e0d9",
+              "leftValue": "={{ $json.wordLimitOver }}",
+              "rightValue": "={{ $('Set Draft Post').item.json.post_draft_body }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1696,
+        112
+      ],
+      "id": "5cbdc112-b442-4f1e-a246-7742a655b20f",
+      "name": "If Words Over Limit"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        224
+      ],
+      "id": "dfb2a103-e8f7-48dc-b996-a639cbe0e5d3",
+      "name": "OpenRouter Chat Model4",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "=blog_image_{{ $('Get post titles').item.json.row_number }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1QxRuBANZpNyXOVwkFfpu2nCwu2xK9D6O",
+          "mode": "list",
+          "cachedResultName": "Automation",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1QxRuBANZpNyXOVwkFfpu2nCwu2xK9D6O"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        4192,
+        80
+      ],
+      "id": "8f076cfd-c05e-426a-9e5d-b1769012acbc",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "jSuPzdDTUOEGqepn",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Content: {{ $json.post_humanized_body }}\n\nYour entire output must strictly adhere to HTML standards and the above instructions, with no extra commentary.",
+        "options": {
+          "systemMessage": "Guidelines\nThe system should produce raw HTML output.\n\nNo CSS or inline style attributes.\n\nPreserve document structure and logical hierarchy using appropriate HTML tags: <h1>, <h2>, <h3>, etc. for headings.\n\nUse <b> for bold, <i> for italics, <s> for strikethrough, and <code> for inline code.\n\nMulti-line code blocks must be wrapped in <pre><code> and labeled with language if required.\n\nInsert unordered lists with <ul><li>, ordered lists with <ol><li>.\n\nIndent nested lists with proper nesting of list tags.\n\nRender blockquotes with <blockquote>, using further nested quotes for deeper levels.\n\nConstruct tables with <table>, <thead>, <tbody>, <tr>, <td>, and <th>, using <colgroup> for alignment if needed.\n\nInsert hyperlinks with <a href=\"URL\">text</a>, images with <img src=\"URL\" alt=\"alt text\" />.\n\nInsert horizontal rules with <hr>.\n\nFor task lists, use <input type=\"checkbox\"> inside <li> if supported.\n\nFor line breaks, use <br> for forced breaks.\n\nEscape literal HTML special characters using entities.\n\nIf supported, embed reference-style footnotes with anchor <a> and <sup> elements.\n\nOnly include the raw HTML output with no comments, explanation, or extra narration."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2496,
+        512
+      ],
+      "id": "cd39d30c-d3f0-41c4-830c-7b79d6973636",
+      "name": "HTML Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst data = $input.first().json.output\nconst data_to_raw_html = data\n    .replace(/^```html\\s*/i, '')  // Remove opening ```html\n    .replace(/\\s*```\\s*$/i, '')   // Remove closing ```\n    .replace(/^`html\\s*/i, '')    // Remove `html\n    .replace(/^html\\s*/i, '')     // Remove html at start\n    .replace(/^\\s*}\\s*html\\s*/i, '') // Remove }html\n    .replace(/^\\s*`\\s*/i, '')     // Remove leading backticks\n    .trim();\n\n// HTML template with styling to match original resume format exactly\nconst data_html = `\n<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"UTF-8\">\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            max-width: 800px;\n            margin: 0 auto;\n            padding: 40px;\n            line-height: 1.3;\n            color: #333;\n            background-color: white;\n            font-size: 14px;\n        }\n        \n        h1 {\n            font-size: 28px;\n            font-weight: bold;\n            margin-bottom: 8px;\n            margin-top: 0;\n            color: #000;\n        }\n        \n        .job-title {\n            font-size: 16px;\n            font-weight: bold;\n            margin-bottom: 15px;\n            margin-top: 5px;\n            color: #333;\n        }\n        \n        .contact-section {\n            margin-bottom: 20px;\n        }\n        \n        .contact-section strong {\n            font-weight: bold;\n            display: block;\n            margin-bottom: 8px;\n        }\n        \n        .contact-section ul {\n            list-style: disc;\n            margin-left: 18px;\n            margin-top: 0;\n            margin-bottom: 0;\n            padding: 0;\n        }\n        \n        .contact-section li {\n            margin-bottom: 2px;\n            line-height: 1.2;\n        }\n        \n        h2 {\n            font-size: 16px;\n            font-weight: bold;\n            margin-top: 20px;\n            margin-bottom: 10px;\n            color: #000;\n        }\n        \n        .job-entry {\n            margin-bottom: 20px;\n        }\n        \n        .job-title-line {\n            font-weight: bold;\n            margin-bottom: 2px;\n            line-height: 1.2;\n        }\n        \n        .job-company {\n            font-style: italic;\n            margin-bottom: 8px;\n            line-height: 1.2;\n        }\n        \n        .job-duties ul {\n            list-style: disc;\n            margin-left: 18px;\n            margin-top: 5px;\n            margin-bottom: 0;\n            padding: 0;\n        }\n        \n        .job-duties li {\n            margin-bottom: 5px;\n            line-height: 1.3;\n        }\n        \n        p {\n            margin-bottom: 10px;\n            margin-top: 0;\n            text-align: justify;\n            line-height: 1.3;\n        }\n        \n        a {\n            color: #0066cc;\n            text-decoration: none;\n        }\n        \n        a:hover {\n            text-decoration: underline;\n        }\n        \n        .summary {\n            text-align: justify;\n            margin-bottom: 20px;\n            line-height: 1.3;\n        }\n        \n        /* Ensure proper spacing for different elements */\n        strong {\n            font-weight: bold;\n        }\n        \n        em {\n            font-style: italic;\n        }\n        \n        /* Remove extra spacing from nested elements */\n        ul {\n            margin-top: 0;\n            margin-bottom: 0;\n        }\n        \n        li {\n            line-height: 1.3;\n        }\n    </style>\n</head>\n<body>\n    ${data_to_raw_html}\n</body>\n</html>\n`;\n\n// Return the formatted HTML\nreturn { \n  json: { \n    post_html_body: data_html\n  } \n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2848,
+        512
+      ],
+      "id": "b9d872d2-25c3-48af-92a0-7a67a24de7f2",
+      "name": "HTML Body"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2576,
+        736
+      ],
+      "id": "cad18320-3878-4bc1-9b83-34a9cf85eded",
+      "name": "OpenRouter Chat Model6",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate an SEO-optimized meta description for the following article. Ensure it is concise (150–160 characters), engaging, and includes high-impact keywords naturally.\nArticle Details:\n\nTitle: {{ $('Set Post New Title').item.json.new_title }}\nKeywords: {{ $('Merge Research And Serp').item.json.keywords }}\nBody: {{ $('Set Post Humanized').item.json.post_humanized_body }}\n\nRequirements:\n\nMeta description: 150–160 characters including spaces\nPrimary keyword in first 30 characters, naturally integrated\nInclude 1–2 secondary keywords organically\nAddress what readers will gain/learn (user intent)\nInclude a subtle benefit or hook that encourages clicks\nAvoid keyword stuffing, superlatives, or robotic phrasing\nSound conversational and human\nGenerate image by adding all the details also mention use the refrence image only for refrence ration size \n\nOutput — Return ONLY this JSON with no additional text:\njson{\n  \"seo_meta\": {\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"image_prompt\": \"string\"\n  }\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert SEO copywriter tasked with creating high-converting meta descriptions. Your goal is to generate a single, compelling meta description that ranks well in search engines while accurately reflecting the article's value to readers.\nYour meta description should:\n\nBe between 150-160 characters (including spaces) to display fully in search results\nInclude the primary keyword naturally, ideally near the beginning\nIncorporate 1-2 secondary keywords where they fit organically\nAddress user intent—explain what the reader will gain or learn\nInclude a subtle emotional hook or benefit statement that encourages clicks\nAvoid keyword stuffing, superlatives (\"best,\" \"ultimate\"), or manipulation tactics\nSound natural and human, not robotic or templated\nDifferentiate from competitor descriptions for the same topic\n\nInput I will provide:\n\nArticle title\nPrimary keyword (the main search term you're targeting)\nSecondary keywords (2-4 related terms to naturally weave in)\nMain body (key sections, main themes, or core argument of the article)\n\nYour output format:\nReturn ONLY valid JSON in this exact structure, with no additional text or explanation:\njson{\n  \"seo_meta\": {\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"image_prompt\": \"string\"\n  }\n}\nWhere:\n\ntitle: The SEO-optimized page title (50-60 characters)\ndescription: The meta description (150-160 characters)\nimage_prompt: A detailed, vivid text-to-image prompt optimized for Banana (formerly Replicate) text-to-image models, in 3:1 aspect ratio. The prompt should be cinematic, specific, and directly reflect the article's theme and visual narrative. Include style, mood, lighting, composition, and key visual elements that represent the article's core message."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        3392,
+        80
+      ],
+      "id": "ada16d4e-39ca-45b3-80b6-2845a915896e",
+      "name": "Post Meta Agent1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"SeoMetaSchema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"seo_meta\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"title\": {\n          \"type\": \"string\",\n          \"description\": \"The SEO-optimized title of the article (50-60 characters). Must include the primary keyword naturally.\"\n        },\n        \"description\": {\n          \"type\": \"string\",\n          \"description\": \"The SEO-optimized meta description of the article (150-160 characters). Concise, engaging, keyword-rich, and includes a benefit statement or hook to encourage clicks.\"\n        },\n        \"image_prompt\": {\n          \"type\": \"string\",\n          \"description\": \"A detailed, cinematic text-to-image prompt optimized for Banana generative models (4:3 aspect ratio). Must be specific and vivid, including style, mood, lighting, composition, and key visual elements that represent the article's core message.\"\n        }\n      },\n      \"required\": [\"title\", \"description\", \"image_prompt\"],\n      \"additionalProperties\": false\n    }\n  },\n  \"required\": [\"seo_meta\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3536,
+        304
+      ],
+      "id": "45cc2f97-c201-46d4-b407-80425bda7f64",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-14b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        3408,
+        304
+      ],
+      "id": "4aa0daf2-238b-42ec-8678-8fe6329b8e6e",
+      "name": "OpenRouter Chat Model7",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Q9jQeJXuPiCv40Uv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb68117e-7039-4cb1-83b2-599cd8edb26c",
+              "name": "title",
+              "value": "={{ $json.output.seo_meta.title }}",
+              "type": "string"
+            },
+            {
+              "id": "fdb707c9-52f4-4e13-bfb7-8fb2a4238e98",
+              "name": "description",
+              "value": "={{ $json.output.seo_meta.description }}",
+              "type": "string"
+            },
+            {
+              "id": "d9e7d7c2-8366-4bae-907c-bd36bcee2e09",
+              "name": "image_prompt",
+              "value": "=Use the shared image to refer aspect ratio\n\n{{ $json.output.seo_meta.image_prompt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3744,
+        80
+      ],
+      "id": "8baf1d01-b69d-4208-ae0d-a65436ca35f3",
+      "name": "Set Post Metadata1"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "=  {\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"{{ $json.image_prompt.replace(/\\r?\\n|\\r/g, ' ') }}\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"https://i.ibb.co/8nSWzn9N/3by1ratio.png\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        3968,
+        80
+      ],
+      "id": "bba2f49c-cb60-4f6c-bce7-1f94f2d5429c",
+      "name": "Generate an image",
+      "credentials": {
+        "openAiApi": {
+          "id": "kxSw4SPIAdn9GZVc",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $('Landmark').item.json.text }}",
+        "options": {
+          "requireSpaceBeforeHeadingText": true,
+          "noHeaderId": true,
+          "tables": true
+        }
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        4000,
+        816
+      ],
+      "id": "ec88b8f5-53e8-4477-955e-d991ea5ca341",
+      "name": "Markdown2"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "binaryPropertyName": "file",
+        "options": {
+          "fileName": "={{ $('Set Post New Title').item.json.new_title }}.html{{ $('HTML Agent').item.json.output }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        4224,
+        912
+      ],
+      "id": "069bded4-1266-429a-9965-67585338d0fc",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "createFromText",
+        "content": "file content",
+        "name": "={{ $('Set Post New Title').item.json.new_title }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=11aloz7zM7dbfBQNX5jJ2AO0fXA3gEDCq",
+          "mode": "id"
+        },
+        "options": {
+          "convertToGoogleDocument": true
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        4448,
+        1168
+      ],
+      "id": "1d22b343-15aa-4f8e-a073-72fb340af2fa",
+      "name": "Create file from text1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "4gLEfNPWIVgPZBfj",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4672,
+        1008
+      ],
+      "id": "d886fe0f-b82b-49cf-9e8b-aa963531f17e",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "changeFileContent": true,
+        "inputDataFieldName": "file",
+        "options": {
+          "fields": [
+            "id",
+            "webViewLink"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        4896,
+        1008
+      ],
+      "id": "09b323b8-10a9-4e6c-bb41-fa9dabdae16d",
+      "name": "Update file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "jSuPzdDTUOEGqepn",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item;\n\nif (item.binary && item.binary.file) {\n  item.binary.file.mimeType = 'text/html';\n}\n\nreturn item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4448,
+        912
+      ],
+      "id": "6182c247-6f80-4c20-bd7d-c598594ba6c6",
+      "name": "Set to text/html1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detect if text is Markdown, HTML, or plain text\nfunction detectType(text) {\n  const htmlPattern = /<\\s*([a-z0-9]+)(\\s+[^>]*)?>.*?<\\s*\\/\\1>/is;\n  const htmlSelfClosing = /<\\s*([a-z0-9]+)(\\s+[^>]*)?\\/>/i;\n\n  // Common Markdown patterns\n  const markdownPatterns = [\n    /^\\s{0,3}#/m,                        // headings\n    /\\*\\*.*\\*\\*/, /__.*__/,              // bold\n    /\\*[^*]+\\*/, /_[^_]+_/,              // italic\n    /\\[[^\\]]+\\]\\([^)]+\\)/,               // links\n    /^\\s{0,3}- /m, /^\\s{0,3}\\* /m,       // lists\n    /```[\\s\\S]*?```/,                    // code block\n    /^\\s{4,}/m,\n    \n    // indented code block\n  ];\n\n  // HTML detection\n  if (htmlPattern.test(text) || htmlSelfClosing.test(text)) {\n    return { type: 'html', confidence: 0.98 };\n  }\n\n  // Markdown detection\n  let markdownMatches = 0;\n  markdownPatterns.forEach((re) => { if (re.test(text)) markdownMatches++; });\n  if (markdownMatches > 1) {\n    return { type: 'markdown', confidence: 0.95 + 0.01 * markdownMatches };\n  }\n\n  // Fallback to plain text\n  return { type: 'plain_text', confidence: 0.80 };\n}\n\n// n8n code node: passthrough all JSON fields\nconst text = $json.text || '';\n\nreturn items.map(item => {\n  const result = detectType(text);\n  return {\n    json: {\n      ...item.json,\n      detectedType: result.type,\n      confidence: result.confidence,\n      analysedText: text // Optional: include the analysed text for traceability\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3328,
+        1008
+      ],
+      "id": "702b0508-af3a-45f6-a5c5-a442cd7dfa40",
+      "name": "Check type1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6c7409b2-9f50-45d6-9ccd-afba184c6ea0",
+              "leftValue": "={{ $json.detectedType.toLowerCase() }}",
+              "rightValue": "markdown",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3552,
+        1008
+      ],
+      "id": "54b8a0ba-5ffc-4603-b642-65cfa8d939bf",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7fff7bd2-37ab-4b77-8bfe-1abf7ca33795",
+              "name": "data",
+              "value": "={{ $json.post_html_body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3776,
+        1008
+      ],
+      "id": "3a5dc1f3-a139-4815-afa7-c1a7674c7167",
+      "name": "Set HTML Data1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  let htmlString = item.json.data || item.json.text || '';\n\n  if (typeof htmlString === 'string' && htmlString.startsWith('\"') && htmlString.endsWith('\"')) {\n    try {\n      htmlString = JSON.parse(htmlString);\n    } catch(e) {\n      htmlString = htmlString\n        .replace(/^\"/, '').replace(/\"$/, '')\n        .replace(/\\\\\"/g, '\"')\n        .replace(/\\\\n/g, '\\n');\n    }\n  }\n\n  htmlString = htmlString.trim();\n\n  return {\n    json: {\n      ...item.json,\n      data: htmlString\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4000,
+        1008
+      ],
+      "id": "6a1fca1d-24d5-4d46-bf5a-00e28972b758",
+      "name": "Make html1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1nySB7226iP8KqikjsAKuUSMCLi57OhfAi53W8w1rXFI",
+          "mode": "list",
+          "cachedResultName": "Blog Writing Automated SEO Friendly",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nySB7226iP8KqikjsAKuUSMCLi57OhfAi53W8w1rXFI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nySB7226iP8KqikjsAKuUSMCLi57OhfAi53W8w1rXFI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Complete",
+            "row_number": "={{ $('Get post titles').item.json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "IN:Title",
+              "displayName": "IN:Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "IN:Keywords",
+              "displayName": "IN:Keywords",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "OUT:Title",
+              "displayName": "OUT:Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "OUT:Article",
+              "displayName": "OUT:Article",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "OUT:SEO-Title",
+              "displayName": "OUT:SEO-Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "OUT:SEO-Description",
+              "displayName": "OUT:SEO-Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5200,
+        512
+      ],
+      "id": "f8a454f3-22ca-4f48-adb2-495378a88483",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ykXIsZ351C3AfZza",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get post titles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get post titles": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "SERPs, Writing, KWs, Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SERPs, Writing, KWs, Insights": {
+      "main": [
+        [
+          {
+            "node": "Set Post KWs and Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "SERPs, Writing, KWs, Insights",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "SERPs, Writing, KWs, Insights",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "SERPs, Writing, KWs, Insights",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "SERPs, Writing, KWs, Insights",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Post KWs and Insights": {
+      "main": [
+        [
+          {
+            "node": "Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search": {
+      "main": [
+        [
+          {
+            "node": "Cleanup Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup Links": {
+      "main": [
+        [
+          {
+            "node": "Set Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Research": {
+      "main": [
+        [
+          {
+            "node": "Merge Research And Serp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Research And Serp": {
+      "main": [
+        [
+          {
+            "node": "Refine the Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refine the Title": {
+      "main": [
+        [
+          {
+            "node": "Set Post New Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Refine the Title",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Post New Title": {
+      "main": [
+        [
+          {
+            "node": "Key Takeaways AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Key Takeaways AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Set Post Outline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Key Takeaways AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Refine the Title",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Post Outline": {
+      "main": [
+        [
+          {
+            "node": "Post Content Writer Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Content Writer Agent": {
+      "main": [
+        [
+          {
+            "node": "Set Draft Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Post Content Writer Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Draft Post": {
+      "main": [
+        [
+          {
+            "node": "Count Words & Characters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude 4.5 Sonnet": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Post Humanizer Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Post Humanized": {
+      "main": [
+        [
+          {
+            "node": "HTML Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Humanizer Agent": {
+      "main": [
+        [
+          {
+            "node": "Set Post Humanized",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Count Words & Characters": {
+      "main": [
+        [
+          {
+            "node": "If Words Over Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Under Word Limit Agent": {
+      "main": [
+        [
+          {
+            "node": "Set Draft Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Words Over Limit": {
+      "main": [
+        [
+          {
+            "node": "Under Word Limit Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Post Humanizer Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Under Word Limit Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Agent": {
+      "main": [
+        [
+          {
+            "node": "HTML Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Body": {
+      "main": [
+        [
+          {
+            "node": "Post Meta Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check type1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "HTML Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Meta Agent1": {
+      "main": [
+        [
+          {
+            "node": "Set Post Metadata1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Post Meta Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Post Meta Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Post Metadata1": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown2": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Set to text/html1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create file from text1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Update file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update file1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set to text/html1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check type1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Markdown2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create file from text1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create file from text1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set HTML Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set HTML Data1": {
+      "main": [
+        [
+          {
+            "node": "Make html1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make html1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Post Humanizer Agent": [
+      {
+        "output": "Modern SEO requires a shift from chasing popular keywords to understanding what users actually seek. For example, someone searching “best gluten-free bread near me” isn’t just looking for coffee; they want a specific type of bakery item. Tools like Ahrefs or Google Keyword Planner can help businesses find and target these intent-based keywords. Focusing on user intent means content gets more targeted traffic and higher engagement.  \n\n**Map Keywords to Business Goals**  \nLink intent-driven keywords to your business priorities. E-commerce sites might use transactional keywords like “buy organic skincare,” while service providers could target informational terms like “how to choose a web developer.” Categorize keywords into groups such as navigating (finding your site), learning (informational), buying (transactional), or exploring (research). This helps create content that directly supports your marketing goals and builds expertise in your field.  \n\n**Set Up a Strong Google Business Profile**  \nLocal visibility depends heavily on your Google Business Profile. Start by claiming your listing, updating business hours, adding clear photos, and confirming your address. A plumbing service in Denver saw 45% more calls after refining these details and including customer testimonials.  \n\n**Use Local SEO Features Effectively**  \nGoogle highlights local results in the “Maps Pack” and through voice search. Ensure your name, address, and phone number are identical across all online directories. Use location-specific terms like “SEO agency in Chicago.” For instance, a hotel in Austin climbed local rankings by optimizing content for voice search with phrases such as “best places to stay in downtown Austin.”  \n\n**Fix Technical SEO Issues**  \nSearch engines rank faster, mobile-friendly sites higher. If a webpage loads slower than three seconds, it risks losing over half its visitors. Tools like Screaming Frog or Google PageSpeed Insights can detect problems like broken links or large images. Fix these to improve user experience and search performance.  \n\n**Meet Core Web Vitals Standards**  \nFocus on three Google metrics: Largest Contentful Paint (how fast main content loads), First Input Delay (responsiveness), and Cumulative Layout Shift (visual stability). A retail brand hit these benchmarks by reducing image sizes, using browser caching, and cutting unnecessary JavaScript. Their traffic grew by 22% in six months. Ensure your site works well on mobile, which handles over 60% of searches.  \n\n**Use AI for Smarter SEO**  \nTools like Surfer SEO and Clearscope analyze what top-ranking pages do well and suggest improvements based on topic relevance and keyword use. A marketing agency raised featured snippet visibility by 35% after adjusting blog topics with these insights.  \n\n**Optimize for Conversational Search**  \nVoice and chat-based queries require natural language content. AI tools like Jasper or WriteSonic can help create this type of content. A real estate team saw 28% more leads by answering questions like “how to buy a house with bad credit” in their posts.  \n\n**Mix New and Classic SEO Methods**  \nDon’t abandon basics, but add modern tactics. For example, use AI to generate blog posts while keeping backlinks and keyword research strong. A tech company improved its domain authority by 15% this way.  \n\n**Structure Content and Improve Technical SEO**  \nUpdate meta tags, headers, and internal links as usual. Then, add tools like schema markup to clarify content meaning to search engines. An education site used structured data to list course details directly in search results, boosting clicks by 19%.  \n\n**Hire Experts for Targeted Help**  \nAgencies such as Ignite Visibility can audit your site, spot technical mistakes, and build strategies for your industry. A fitness brand gained 50% more organic traffic by refining its keyword focus with an SEO partner.  \n\n**Use Modern Tools to Monitor Results**  \nTrack SEO using platforms like Ahrefs or SEMrush. These tools show where keywords stand, how backlinks perform, and how competitors are doing. A software firm increased leads by 30% after using such tools to improve landing pages.  \n\n**Create Deep, Organized Content**  \nWebsites with detailed guides, case studies, or expert insights rank higher. A tech blog reached the top of Google for an AI trends query by publishing a 5,000-word guide. Structure content with main topic pages and supporting articles for better search visibility.  \n\n**Cover All SEO Areas**  \nTackle technical SEO, mobile readiness, local optimization, and AI compatibility across platforms. A restaurant with strong local and mobile SEO, plus AI-optimized answers, can attract more customers. Cover these 12 areas to align with current search trends and maintain steady growth.  \n\nBy focusing on user needs, local details, technical accuracy, and AI tools, businesses can improve their online presence. Regularly update strategies based on data and aim to provide value where users seek it. This ensures traffic, credibility, and long-term results become priorities."
+      }
+    ],
+    "HTML Agent": [
+      {
+        "output": "<h2>Modern SEO requires a shift from chasing popular keywords to understanding what users actually seek. For example, someone searching “best gluten-free bread near me” isn’t just looking for coffee; they want a specific type of bakery item. Tools like Ahrefs or Google Keyword Planner can help businesses find and target these intent-based keywords. Focusing on user intent means content gets more targeted traffic and higher engagement.</h2>\n\n<h2>Map Keywords to Business Goals</h2>\n<p>Link intent-driven keywords to your business priorities. E-commerce sites might use transactional keywords like “buy organic skincare,” while service providers could target informational terms like “how to choose a web developer.” Categorize keywords into groups such as navigating (finding your site), learning (informational), buying (transactional), or exploring (research). This helps create content that directly supports your marketing goals and builds expertise in your field.</p>\n\n<ul>\n<li>navigating (finding your site)</li>\n<li>learning (informational)</li>\n<li>buying (transactional)</li>\n<li>exploring (research)</li>\n</ul>\n\n<h2>Set Up a Strong Google Business Profile</h2>\n<p>Local visibility depends heavily on your Google Business Profile. Start by claiming your listing, updating business hours, adding clear photos, and confirming your address. A plumbing service in Denver saw 45% more calls after refining these details and including customer testimonials.</p>\n\n<h2>Use Local SEO Features Effectively</h2>\n<p>Google highlights local results in the “Maps Pack” and through voice search. Ensure your name, address, and phone number are identical across all online directories. Use location-specific terms like “SEO agency in Chicago.” For instance, a hotel in Austin climbed local rankings by optimizing content for voice search with phrases such as “best places to stay in downtown Austin.”</p>\n\n<h2>Fix Technical SEO Issues</h2>\n<p>Search engines rank faster, mobile-friendly sites higher. If a webpage loads slower than three seconds, it risks losing over half its visitors. Tools like Screaming Frog or Google PageSpeed Insights can detect problems like broken links or large images. Fix these to improve user experience and search performance.</p>\n\n<h2>Meet Core Web Vitals Standards</h2>\n<p>Focus on three Google metrics: Largest Contentful Paint (how fast main content loads), First Input Delay (responsiveness), and Cumulative Layout Shift (visual stability). A retail brand hit these benchmarks by reducing image sizes, using browser caching, and cutting unnecessary JavaScript. Their traffic grew by 22% in six months. Ensure your site works well on mobile, which handles over 60% of searches.</p>\n\n<h2>Use AI for Smarter SEO</h2>\n<p>Tools like Surfer SEO and Clearscope analyze what top-ranking pages do well and suggest improvements based on topic relevance and keyword use. A marketing agency raised featured snippet visibility by 35% after adjusting blog topics with these insights.</p>\n\n<h2>Optimize for Conversational Search</h2>\n<p>Voice and chat-based queries require natural language content. AI tools like Jasper or WriteSonic can help create this type of content. A real estate team saw 28% more leads by answering questions like “how to buy a house with bad credit” in their posts.</p>\n\n<h2>Mix New and Classic SEO Methods</h2>\n<p>Don’t abandon basics, but add modern tactics. For example, use AI to generate blog posts while keeping backlinks and keyword research strong. A tech company improved its domain authority by 15% this way.</p>\n\n<h2>Structure Content and Improve Technical SEO</h2>\n<p>Update meta tags, headers, and internal links as usual. Then, add tools like schema markup to clarify content meaning to search engines. An education site used structured data to list course details directly in search results, boosting clicks by 19%.</p>\n\n<h2>Hire Experts for Targeted Help</h2>\n<p>Agencies such as Ignite Visibility can audit your site, spot technical mistakes, and build strategies for your industry. A fitness brand gained 50% more organic traffic by refining its keyword focus with an SEO partner.</p>\n\n<h2>Use Modern Tools to Monitor Results</h2>\n<p>Track SEO using platforms like Ahrefs or SEMrush. These tools show where keywords stand, how backlinks perform, and how competitors are doing. A software firm increased leads by 30% after using such tools to improve landing pages.</p>\n\n<h2>Create Deep, Organized Content</h2>\n<p>Websites with detailed guides, case studies, or expert insights rank higher. A tech blog reached the top of Google for an AI trends query by publishing a 5,000-word guide. Structure content with main topic pages and supporting articles for better search visibility.</p>\n\n<h2>Cover All SEO Areas</h2>\n<p>Tackle technical SEO, mobile readiness, local optimization, and AI compatibility across platforms. A restaurant with strong local and mobile SEO, plus AI-optimized answers, can attract more customers. Cover these 12 areas to align with current search trends and maintain steady growth.</p>\n\n<p>By focusing on user needs, local details, technical accuracy, and AI tools, businesses can improve their online presence. Regularly update strategies based on data and aim to provide value where users seek it. This ensures traffic, credibility, and long-term results become priorities.</p>"
+      }
+    ],
+    "Post Meta Agent1": [
+      {
+        "output": {
+          "seo_meta": {
+            "title": "Top 10 SEO Strategies for 2023 Business Visibility",
+            "description": "Master SEO strategies for 2023 with keyword research and Google search optimization. Boost business visibility, rankings, and traffic with proven techniques.",
+            "image_prompt": "A cinematic 3:1 aspect ratio scene of a modern office with digital elements: a glowing laptop showing rising SEO rankings, a smartphone displaying Google search results, and a team collaborating around a digital whiteboard. The background features charts, keywords, and website traffic metrics. Style: vibrant, modern, professional. Lighting: bright and dynamic. Composition: focus on growth and digital success."
+          }
+        }
+      }
+    ]
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "882b274fadbd1218fde7f532867584d15494eac23cbd4977e1030187566addda"
+  }
+}
